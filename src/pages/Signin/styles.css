@@ -1,0 +1,115 @@
+label,
+input {
+	font-size: 1.4rem !important;
+	font-weight: 500;
+}
+.container-signin {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.panel-left,
+.panel-right {
+	display: flex;
+	height: 100vh;
+}
+
+.panel-left {
+	width: 55%;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.panel-right {
+	width: 45%;
+	background-color: white;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.panel_title {
+	font-size: 3.8rem;
+	font-weight: 600;
+	margin-bottom: 25px;
+}
+
+.form_login {
+	width: 100%;
+	height: auto;
+	padding: 40px;
+	row-gap: 15px;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid hsla(0, 0%, 80%, 0.658);
+	border-radius: 15px;
+	box-shadow: 1px 1px 32px hsl(29, 100%, 50%);
+}
+
+.form_link,
+.form_link a {
+	font-size: 1.48rem !important;
+	font-weight: 500;
+	color: hsl(29, 100%, 50%);
+}
+
+.form_link a {
+	text-decoration: none;
+}
+
+.form_link a:hover {
+	font-weight: 600;
+	color: hsla(0, 0%, 0%, 0.705);
+}
+.card {
+	width: 100%;
+	height: 100%;
+	row-gap: 15px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.btn {
+	width: 100%;
+	height: 40px;
+	cursor: pointer;
+	margin-top: 20px;
+	text-align: center;
+	border-radius: 5px;
+	color: #fff;
+	font-weight: 600;
+	border: 1px solid #ccc;
+}
+
+.btn_success {
+	background-color: hsla(29, 100%, 50%, 1) !important;
+	opacity: 0.7;
+}
+
+.btn:hover {
+	opacity: 1;
+}
+
+@media (max-width: 768px) {
+	.panel-left {
+		display: none;
+	}
+
+	.panel-right {
+		width: 100vw;
+		height: 100vh;
+	}
+
+	.form_login {
+		width: 400px;
+	}
+}
