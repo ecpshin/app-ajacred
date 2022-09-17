@@ -1,0 +1,7 @@
+.MuiTreeItem-root {
+	color: rgb(0, 0, 0);
+	border-radius: 4px;
+	font-size: 20px !important;
+	text-transform: uppercase;
+	cursor: pointer;
+}

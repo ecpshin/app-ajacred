@@ -1,9 +1,13 @@
+import { Container } from "@mui/material";
+import AddUser from "../../components/AddUser";
 import "./styles.css";
 
 export default function Signup() {
 	return (
 		<div className='signup'>
-			<h1>Signup</h1>
+			<Container maxWidth='sm'>
+				<AddUser />
+			</Container>
 		</div>
 	);
 }

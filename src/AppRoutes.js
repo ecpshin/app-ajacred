@@ -1,6 +1,11 @@
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import Header from "./components/Header";
+import useGeralContext from "./hooks/useGeralContext";
+import Clients from "./pages/Clients";
+import Contracts from "./pages/Contracts";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
+import Others from "./pages/Others";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 
@@ -13,7 +18,11 @@ function AppRoutes() {
 			</Route>
 
 			<Route path='' element={<ProtectedRoutes redirectTo='/' />}>
+				<Route element={<Header />} />
 				<Route path='/home' element={<Home />} />
+				<Route path='/contratos' element={<Contracts />} />
+				<Route path='/clientes' element={<Clients />} />
+				<Route path='/outros' element={<Others />} />
 			</Route>
 			<Route path='*' element={<NotFound />} />
 		</Routes>
@@ -21,7 +30,8 @@ function AppRoutes() {
 }
 
 function ProtectedRoutes({ redirectTo }) {
-	const isAuthenticated = true;
+	const { token } = useGeralContext();
+	const isAuthenticated = token;
 	return isAuthenticated ? <Outlet /> : <Navigate to={redirectTo} />;
 }
 
