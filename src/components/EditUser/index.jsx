@@ -5,42 +5,64 @@ import {
 	TextField,
 	Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
 import Logo from "../../assets/images/logo_300.png";
 import useGeralContext from "../../hooks/useGeralContext";
 import api from "../../service/api";
 import Alerts from "../Alerts";
-import "./styles.css";
 
-export default function AddUser() {
-	const { formAddUser, setFormAddUser, toast, setToast } = useGeralContext();
+export default function EditUser({ title }) {
+	const {
+		formAddUser,
+		setFormAddUser,
+		setToast,
+		setUser,
+		toast,
+		token,
+		user,
+	} = useGeralContext();
 
 	async function handleSubmitUser(event) {
 		event.preventDefault();
 		const { nome, email, senha, confirmaSenha } = formAddUser;
 
-		if (
-			nome === "" ||
-			email === "" ||
-			senha === "" ||
-			confirmaSenha === ""
-		) {
-			alert("Preencha todos os campos!");
-			return;
+		const userData = {};
+
+		if (nome && nome !== user.nome) {
+			userData.nome = nome;
 		}
 
-		if (senha !== confirmaSenha) {
-			alert("Senhas não conferem!");
+		if (email && email !== user.email) {
+			userData.email = email;
+		}
+
+		if (senha && senha !== confirmaSenha) {
+			setToast({
+				...toast,
+				open: true,
+				message: "Senhas não conferem!",
+				reason: "error",
+			});
 			return;
+		} else if (senha && senha === confirmaSenha) {
+			userData.senha = senha;
 		}
 
 		try {
-			const response = await api.post("http://localhost:3334/usuarios", {
-				nome,
-				email,
-				senha,
-				nivel: "ROLE_USER",
-				avatar: "man.png",
+			const response = await api.patch(
+				"http://localhost:3334/usuarios",
+				userData,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			setFormAddUser({
+				nome: "",
+				email: "",
+				senha: "",
+				confirmaSenha: "",
 			});
 
 			setToast({
@@ -49,21 +71,27 @@ export default function AddUser() {
 				message: response.data,
 				reason: "success",
 			});
-			setFormAddUser({
-				nome: "",
-				email: "",
-				senha: "",
-				nivel: "ROLE_USER",
-				avatar: "man.png",
-				confirmaSenha: "",
-			});
+
+			await handleGetUser();
+			return;
 		} catch (error) {
-			setToast({
-				...toast,
-				open: true,
-				message: error.response.data,
-				reason: "error",
-			});
+			console.log(error.message);
+		}
+	}
+
+	async function handleGetUser() {
+		try {
+			const response = await api.get(
+				"http://localhost:3334/usuarios/profile",
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+			setUser(response.data);
+		} catch (error) {
+			console.log(error.message);
 		}
 	}
 
@@ -72,11 +100,12 @@ export default function AddUser() {
 	};
 
 	return (
-		<div className='add-user'>
-			<Card about='Cadastro de usuário.' sx={{ maxWidth: "500px" }}>
+		<>
+			<Card sx={{ maxWidth: "500px" }}>
 				<CardContent
 					sx={{
 						width: "100%",
+						height: "auto",
 						display: "flex",
 						alignItems: "center",
 						flexDirection: "column",
@@ -88,7 +117,7 @@ export default function AddUser() {
 					>
 						<img
 							src={Logo}
-							width='125px'
+							width='90px'
 							alt=''
 							style={{ alignSelf: "center" }}
 						/>
@@ -96,23 +125,23 @@ export default function AddUser() {
 							component='h1'
 							variant='h4'
 							textAlign='center'
-							sx={{ mt: 1, mb: 1 }}
 							style={{ color: "hsla(10, 97%, 58%, 1)" }}
 						>
-							Cadastre-se
+							{title}
 						</Typography>
 						<TextField
 							label='Nome'
 							type='text'
-							value={formAddUser.nome}
 							onChange={handleChange("nome")}
+							defaultValue={user.nome}
 							required
 							variant='outlined'
 						/>
 						<TextField
 							label='E-mail'
-							value={formAddUser.email}
+							type='email'
 							onChange={handleChange("email")}
+							defaultValue={user.email}
 							required
 							variant='outlined'
 							sx={{ height: "40xp" }}
@@ -137,22 +166,12 @@ export default function AddUser() {
 							onClick={(e) => handleSubmitUser(e)}
 							className='button-add-user'
 						>
-							Salvar
+							Confirmar
 						</Button>
-						<Typography
-							component='p'
-							className='cadastrese'
-							alignSelf='center'
-						>
-							Já tem cadastro.
-							<Link to='/' className='cadastrese-link'>
-								Clique aqui
-							</Link>
-						</Typography>
 					</form>
 				</CardContent>
 			</Card>
-			{toast && <Alerts />}
-		</div>
+			{toast.open && <Alerts />}
+		</>
 	);
 }

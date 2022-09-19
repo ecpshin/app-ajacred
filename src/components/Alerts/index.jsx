@@ -18,7 +18,7 @@ export default function Alerts() {
 				horizontal: toast.horizontal,
 			}}
 			open={toast.open}
-			autoHideDuration={1200}
+			autoHideDuration={2000}
 			onClose={handleOnClose}
 			key={toast.vertical + toast.horizontal}
 		>

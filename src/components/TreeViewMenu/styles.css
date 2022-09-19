@@ -1,7 +1,15 @@
-.MuiTreeItem-root {
-	color: rgb(0, 0, 0);
-	border-radius: 4px;
-	font-size: 20px !important;
-	text-transform: uppercase;
+:root {
+	font-size: 62.5%;
+}
+.MuiTreeItem-label {
+	color: rgb(255, 255, 255);
+	font-size: 1.4rem !important;
 	cursor: pointer;
+}
+
+.MuiDrawer-paper {
+	display: flex;
+	flex-direction: column;
+	padding: 5px;
+	width: 275px;
 }

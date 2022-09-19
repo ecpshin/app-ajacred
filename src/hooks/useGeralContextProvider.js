@@ -17,9 +17,20 @@ import LogoApp from "../assets/images/logo_app.jpg";
 
 export default function useGeralContextProvider() {
 	const [open, setOpen] = useState(false);
+	const [openMenu, setOpenMenu] = useState(false);
+	const [openModal, setOpenModal] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
 	const [token, setToken, removeToken] = useLocalStorage("token", "");
 	const [user, setUser, removeUser] = useLocalStorage("user");
+
+	const [formAddUser, setFormAddUser] = useState({
+		nome: "",
+		email: "",
+		senha: "",
+		nivel: "ROLE_USER",
+		avatar: "man.png",
+		confirmaSenha: "",
+	});
 
 	const [toast, setToast] = useState({
 		open: false,
@@ -33,6 +44,7 @@ export default function useGeralContextProvider() {
 		Card,
 		CardContent,
 		CardHeader,
+		formAddUser,
 		Input,
 		IconButton,
 		LogoApp,
@@ -40,9 +52,14 @@ export default function useGeralContextProvider() {
 		Logout,
 		OutlinedInput,
 		open,
+		openMenu,
+		openModal,
 		removeToken,
 		removeUser,
+		setFormAddUser,
 		setOpen,
+		setOpenMenu,
+		setOpenModal,
 		setShowPassword,
 		setToast,
 		setToken,
