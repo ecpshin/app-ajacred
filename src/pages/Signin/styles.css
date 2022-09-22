@@ -125,7 +125,18 @@ input {
 	font-weight: 600;
 	text-decoration: none;
 }
-
+.error-message {
+	background: #a50606;
+	color: #fff;
+	font-size: 1.6rem !important;
+	font-weight: 500;
+}
+.success-message {
+	background: #0ab627;
+	color: #fff;
+	font-size: 1.6rem !important;
+	font-weight: 500;
+}
 @media (max-width: 768px) {
 	.panel-left {
 		display: none;

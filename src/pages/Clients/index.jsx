@@ -1,4 +1,5 @@
 import Header from "../../components/Header";
+import ModalClient from "../../components/ModalClient";
 import "./styles.css";
 
 function Clients() {
@@ -8,6 +9,7 @@ function Clients() {
 			<main className='container-home_main'>
 				<h1>Clientes</h1>
 			</main>
+			<ModalClient />
 		</div>
 	);
 }

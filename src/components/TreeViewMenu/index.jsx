@@ -39,8 +39,14 @@ export default function FileSystemNavigator() {
 				nodeId='3'
 				label='Contratos'
 				onClick={() => handleClick("/contratos")}
-			/>
-			<TreeItem nodeId='4' label='Usuários' />
+			>
+				<TreeItem
+					nodeId='4'
+					label='Ajuste de Comissões'
+					onClick={() => handleClick("/comissoes")}
+				/>
+			</TreeItem>
+			<TreeItem nodeId='5' label='Usuários' />
 			<TreeItem nodeId='50' label='Outros'>
 				<TreeItem nodeId='5' label='Órgão' />
 				<TreeItem nodeId='6' label='Situações' />
