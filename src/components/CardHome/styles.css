@@ -1,0 +1,38 @@
+.cards-status {
+	display: flex;
+	flex-direction: row !important;
+	justify-content: space-between !important;
+	align-items: center;
+	gap: 15px;
+	font-weight: 700;
+}
+.aprovados {
+	display: flex;
+	color: #0a6e23;
+	background-color: #9affb2;
+	font-weight: 600;
+}
+.digitados {
+	display: flex;
+	color: #0049bf;
+	background-color: #88aae2;
+	font-weight: 600;
+}
+.pendentes {
+	display: flex;
+	color: #c99628;
+	background-color: #fff700;
+}
+.reprovados {
+	display: flex;
+	color: #5c0f0f;
+	background-color: #ff0000;
+}
+.vencidos {
+	display: flex;
+	color: #696969;
+	background-color: #bebebe;
+}
+.icon-ok {
+	color: #0a6e23;
+}

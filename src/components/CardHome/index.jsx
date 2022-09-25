@@ -2,6 +2,7 @@ import {
 	ArrowCircleRight,
 	AssignmentTurnedIn,
 	Cancel,
+	EventBusy,
 	KeyboardAlt,
 	PendingActions,
 } from "@mui/icons-material";
@@ -13,61 +14,17 @@ import {
 	IconButton,
 	Typography,
 } from "@mui/material";
+import cardStyle from "./styles";
+import "./styles.css";
 
 export default function CardHome({ quantidade, situacao, estilo, action }) {
-	const cardStyle = {
-		aprovados: {
-			display: "flex",
-			justifyContent: "space-between",
-			alignItems: "center",
-			gap: "15px",
-			color: "#0d7e29",
-			backgroundColor: "#28A745",
-		},
-		reprovados: {
-			display: "flex",
-			justifyContent: "space-between",
-			alignItems: "center",
-			gap: "15px",
-			color: "#AF0F0F",
-			backgroundColor: " #fd0019",
-		},
-		pendentes: {
-			display: "flex",
-			justifyContent: "space-between",
-			alignItems: "center",
-			gap: "15px",
-			color: "#c99628",
-			backgroundColor: "#fff700",
-		},
-		digitados: {
-			display: "flex",
-			justifyContent: "space-between",
-			alignItems: "center",
-			gap: "15px",
-			color: "#0049bf",
-			backgroundColor: "#88aae2",
-		},
-		actionOk: {
-			color: "#e5f3f5",
-			backgroundColor: "#0d7e29",
-		},
-		actionDigitados: {
-			color: "#c99628",
-			backgroundColor: "#0049bf",
-		},
-		actionPendente: {
-			color: "#c99628",
-			backgroundColor: "#c99628",
-		},
-		actionCancel: {
-			color: "#f5e5e5",
-			backgroundColor: " #AF0F0F",
-		},
-	};
+	function handleRenderStyle(string) {
+		return `card-status ${string}`;
+	}
+
 	return (
 		<Card>
-			<CardContent style={cardStyle[estilo]}>
+			<CardContent className={handleRenderStyle(estilo)}>
 				<div style={{ textAlign: "center" }}>
 					<Typography variant='h3' element='h2'>
 						{quantidade}
@@ -99,10 +56,17 @@ export default function CardHome({ quantidade, situacao, estilo, action }) {
 									fontSize: "55px",
 								}}
 							/>
-						) : (
+						) : estilo === "pendentes" ? (
 							<PendingActions
 								style={{
 									color: "#c99628",
+									fontSize: "55px",
+								}}
+							/>
+						) : (
+							<EventBusy
+								style={{
+									color: "#696969",
 									fontSize: "55px",
 								}}
 							/>

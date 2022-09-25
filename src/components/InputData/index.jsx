@@ -26,11 +26,11 @@ export default function InputData({ id, label, type }) {
 		<div className='input-group'>
 			{/* <InputLabel htmlFor={id}>{label}</InputLabel>
 			<OutlinedInput id={id} type={type} className='inputs' /> */}
-			<Stack sx={{ width: "100%" }}>
+			<Stack sx={{ width: "250px" }}>
 				<LinearProgress
 					variant='determinate'
 					value={progress}
-					style={{ color: "#fff", bgcolor: "#fff" }}
+					sx={{ bar1Determinate: { backgroundColor: "red" } }}
 				/>
 			</Stack>
 		</div>

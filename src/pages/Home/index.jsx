@@ -109,6 +109,12 @@ function Home() {
 							estilo={"reprovados"}
 							action={"actionCancel"}
 						/>
+						<CardHome
+							quantidade={25}
+							situacao={"Vencidos"}
+							estilo={"vencidos"}
+							action={"actionVencidos"}
+						/>
 					</div>
 				</Paper>
 			</main>
