@@ -1,6 +1,5 @@
 import { Box, Grid, Modal, Paper } from "@mui/material";
 import useGeralContext from "../../hooks/useGeralContext";
-import InputData from "../InputData";
 
 export default function ModalClient() {
 	const { open, setOpen } = useGeralContext();
@@ -56,9 +55,7 @@ export default function ModalClient() {
 							columnGap: "0.5rem",
 						}}
 					>
-						<Grid item xs={12}>
-							<InputData />
-						</Grid>
+						<Grid item xs={12}></Grid>
 					</Grid>
 				</Box>
 			</Paper>
