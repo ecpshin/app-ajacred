@@ -1,15 +1,15 @@
 import Header from "../../components/Header";
+import ListClients from "../../components/ListClients";
+
 import "./styles.css";
 
-function Clients() {
+export default function Clients() {
 	return (
 		<div className='container-home'>
 			<Header />
 			<main className='container-home_main'>
-				<h1>Clientes</h1>
+				<ListClients />
 			</main>
 		</div>
 	);
 }
-
-export default Clients;

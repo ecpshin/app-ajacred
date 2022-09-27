@@ -1,0 +1,15 @@
+p {
+	font-size: 1.3rem !important;
+}
+p.MuiTablePagination-displayedRows,
+p.MuiTablePagination-selectLabel {
+	font-size: 1.3rem !important;
+	font-weight: 600;
+}
+.MuiInputBase-root {
+	font-size: 1.3rem !important;
+	font-weight: 600;
+}
+.MuiSvgIcon-root1 {
+	font-size: 1.4rem !important;
+}

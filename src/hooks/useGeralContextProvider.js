@@ -20,8 +20,14 @@ export default function useGeralContextProvider() {
 	const [openMenu, setOpenMenu] = useState(false);
 	const [openModal, setOpenModal] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
+	const [search, setSearch] = useState("");
+	const [clients, setClients] = useState([]);
 	const [token, setToken, removeToken] = useLocalStorage("token", "");
 	const [user, setUser, removeUser] = useLocalStorage("user");
+
+	function formatDate(date) {
+		return new Date(date).toLocaleDateString("pt-BR", { timeZone: "UTC" });
+	}
 
 	const [formAddUser, setFormAddUser] = useState({
 		nome: "",
@@ -44,6 +50,9 @@ export default function useGeralContextProvider() {
 		Card,
 		CardContent,
 		CardHeader,
+		clients,
+		setClients,
+		formatDate,
 		formAddUser,
 		Input,
 		IconButton,
@@ -54,27 +63,29 @@ export default function useGeralContextProvider() {
 		open,
 		openMenu,
 		openModal,
+		search,
+		showPassword,
+		toast,
+		token,
+		user,
 		removeToken,
 		removeUser,
 		setFormAddUser,
 		setOpen,
 		setOpenMenu,
 		setOpenModal,
-		setShowPassword,
 		setToast,
 		setToken,
 		setUser,
-		showPassword,
-		toast,
-		token,
+		setSearch,
+		setShowPassword,
 		TextField,
-		Visibility,
-		VisibilityOff,
-		user,
 		useLocalStorage,
 		useEffect,
 		useLocation,
 		useNavigate,
 		useState,
+		Visibility,
+		VisibilityOff,
 	};
 }

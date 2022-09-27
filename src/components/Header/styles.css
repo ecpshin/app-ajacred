@@ -56,3 +56,7 @@
 .active-link {
 	text-decoration: underline;
 }
+.MuiSvgIcon-root2 {
+	font-size: 5.5rem !important;
+	color: #f3f3f3 !important;
+}

@@ -6,6 +6,17 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	row-gap: 10px;
 	overflow: hidden;
-	overflow-y: scroll;
+	overflow-y: "scroll";
+}
+.container-home_top {
+	width: 90%;
+	height: auto;
+	margin-top: 10px;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-end;
+	justify-content: space-between;
+	color: #ff3401;
 }
