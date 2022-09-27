@@ -24,6 +24,7 @@ export default function useGeralContextProvider() {
 	const [clients, setClients] = useState([]);
 	const [token, setToken, removeToken] = useLocalStorage("token", "");
 	const [user, setUser, removeUser] = useLocalStorage("user");
+	const [cliente, setCliente, removeCliente] = useLocalStorage("cliente");
 
 	function formatDate(date) {
 		return new Date(date).toLocaleDateString("pt-BR", { timeZone: "UTC" });
@@ -50,8 +51,11 @@ export default function useGeralContextProvider() {
 		Card,
 		CardContent,
 		CardHeader,
+		cliente,
 		clients,
 		setClients,
+		setCliente,
+		removeCliente,
 		formatDate,
 		formAddUser,
 		Input,

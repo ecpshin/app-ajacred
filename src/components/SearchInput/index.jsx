@@ -7,7 +7,7 @@ export default function SearchInput() {
 			label='Pesquisar'
 			size='small'
 			endAdornment={
-				<InputAdornment edge='end'>
+				<InputAdornment position='end'>
 					<Search />
 				</InputAdornment>
 			}

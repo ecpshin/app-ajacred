@@ -1,8 +1,21 @@
-import { PeopleAlt, Search } from "@mui/icons-material";
 import {
+	FolderShared,
+	PeopleAlt,
+	PersonAdd,
+	Search,
+} from "@mui/icons-material";
+import {
+	Button,
+	Dialog,
+	DialogContent,
+	Grid,
+	IconButton,
 	InputAdornment,
 	InputBase,
+	InputLabel,
+	MenuItem,
 	Paper,
+	Select,
 	Table,
 	TableBody,
 	TableCell,
@@ -14,6 +27,7 @@ import {
 } from "@mui/material";
 import * as locales from "@mui/material/locale";
 import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
+import { Box } from "@mui/system";
 import { useMemo } from "react";
 import useGeral from "../../hooks/useGeralContext";
 import api from "../../service/api";
@@ -33,17 +47,34 @@ const estiloSearch = {
 };
 
 export default function ListClients() {
-	const { formatDate, token, useEffect, useState, clients, setClients } =
-		useGeral();
+	const {
+		clients,
+		setClients,
+		formatDate,
+		token,
+		useEffect,
+		useState,
+		useNavigate,
+		setCliente,
+		open,
+		setOpen,
+	} = useGeral();
 	const [page, setPage] = useState(0);
 	const [query, setQuery] = useState("");
-	const [rowsPerPage, setRowsPerPage] = useState(7);
+	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const [locale, setLocale] = useState("ptBR");
 	const theme = useTheme();
 	const themeWithLocale = useMemo(
 		() => createTheme(theme, locales[locale]),
 		[locale, theme]
 	);
+	const navigate = useNavigate();
+
+	function handleGoClient(client) {
+		console.log(client);
+		setCliente(client);
+		navigate("/cliente");
+	}
 
 	async function handleGetClients() {
 		try {
@@ -119,26 +150,36 @@ export default function ListClients() {
 						Clientes Cadastrados
 					</Typography>
 				</div>
-				<InputBase
-					label='Pesquisar'
-					size='small'
-					sx={estiloSearch.inputSearch}
-					value={query}
-					onChange={handleChangeInput}
-					endAdornment={
-						<InputAdornment edge='end'>
-							<Search sx={estiloSearch.search} />
-						</InputAdornment>
-					}
-					onBlur={handleGetClients}
-				/>
+				<div style={{ display: "flex", columnGap: "1.5rem" }}>
+					<Button
+						className='btn__cadastrar'
+						startIcon={<PersonAdd style={{ fontSize: "2.8rem" }} />}
+						onClick={() => setOpen(!open)}
+					>
+						Adicionar Cliente
+					</Button>
+					<InputBase
+						label='Pesquisar'
+						size='small'
+						sx={estiloSearch.inputSearch}
+						value={query}
+						onChange={handleChangeInput}
+						endAdornment={
+							<InputAdornment position='end'>
+								<Search sx={estiloSearch.search} />
+							</InputAdornment>
+						}
+						onBlur={handleGetClients}
+					/>
+				</div>
 			</div>
 			<Paper sx={{ width: "90%", overflow: "hidden" }}>
 				<ThemeProvider theme={themeWithLocale}>
-					<TableContainer sx={{ maxHeight: 440 }}>
+					<TableContainer sx={{ maxHeight: 400 }}>
 						<Table stickyHeader aria-label='sticky table'>
 							<TableHead>
 								<TableRow>
+									<TableCell style={estilos.th}>#</TableCell>
 									<TableCell style={estilos.th}>
 										Nome
 									</TableCell>
@@ -161,6 +202,29 @@ export default function ListClients() {
 										.map((client) => {
 											return (
 												<TableRow key={client.id}>
+													<TableCell
+														style={estilos.td}
+													>
+														<IconButton
+															sx={{
+																all: "unset",
+															}}
+															onClick={() =>
+																handleGoClient(
+																	client
+																)
+															}
+														>
+															<FolderShared
+																style={{
+																	width: "23px",
+																	height: "auto",
+																	color: "#011557",
+																	cursor: "pointer",
+																}}
+															/>
+														</IconButton>
+													</TableCell>
 													<TableCell
 														style={estilos.td}
 													>
@@ -191,7 +255,7 @@ export default function ListClients() {
 					</TableContainer>
 					<TablePagination
 						className='MuiSvgIcon-root1'
-						rowsPerPageOptions={[7, 10, 15]}
+						rowsPerPageOptions={[5, 10, 15]}
 						component='div'
 						count={clients.length}
 						rowsPerPage={rowsPerPage}
@@ -201,6 +265,100 @@ export default function ListClients() {
 					/>
 				</ThemeProvider>
 			</Paper>
+			<Dialog open={open} onClose={() => setOpen(!open)}>
+				<DialogContent>
+					<Box>
+						<Grid container xs={12}>
+							<Grid item xs={12}>
+								<InputBase
+									name='nome'
+									type='text'
+									fullWidth
+									sx={{ border: "1px solid #ccc" }}
+									placeholder='Nome'
+								/>
+							</Grid>
+							<Grid item xs={6}>
+								<InputBase
+									name='cpf'
+									type='text'
+									fullWidth
+									sx={{ border: "1px solid #ccc" }}
+									placeholder='CPF'
+								/>
+							</Grid>
+							<Grid item xs={3}>
+								<InputBase
+									name='rg'
+									type='text'
+									sx={{ border: "1px solid #ccc" }}
+									placeholder='RG'
+								/>
+							</Grid>
+							<Grid item xs={3}>
+								<InputBase
+									name='expedicao'
+									type='date'
+									sx={{ border: "1px solid #ccc" }}
+									title='Data da expedição'
+								/>
+							</Grid>
+							<Grid item xs={3}>
+								<InputBase
+									name='nascimento'
+									type='date'
+									fullWidth
+									sx={{ border: "1px solid #ccc" }}
+									title='Data de nascimento'
+								/>
+							</Grid>
+							<Grid item xs={9}>
+								<InputBase
+									name='naturalidade'
+									sx={{ border: "1px solid #ccc" }}
+									fullWidth
+									placeholder='Naturalidade'
+								/>
+							</Grid>
+							<Grid item xs={6}>
+								<InputBase
+									name='genitora'
+									type='text'
+									fullWidth
+									sx={{ border: "1px solid #ccc" }}
+									placeholder='Nome da mãe'
+								/>
+							</Grid>
+							<Grid item xs={6}>
+								<InputBase
+									name='genitor'
+									type='text'
+									fullWidth
+									sx={{ border: "1px solid #ccc" }}
+									placeholder='Nome do pai'
+								/>
+							</Grid>
+							<InputLabel>Sexo</InputLabel>
+							<Select name='sexo' label='Sexo'>
+								<MenuItem value='Masculino' selected={true}>
+									Masculino
+								</MenuItem>
+								<MenuItem value='Feminino'>Feminino</MenuItem>
+							</Select>
+							<InputLabel>Estado Civil</InputLabel>
+							<Select name='sexo' label='Sexo'>
+								<MenuItem value='Solteiro(a)' selected={true}>
+									Solteiro(a)
+								</MenuItem>
+								<MenuItem value='Casado(a)'>Casado(a)</MenuItem>
+								<MenuItem value='Divorciado(a)'>
+									Divorciado(a)
+								</MenuItem>
+							</Select>
+						</Grid>
+					</Box>
+				</DialogContent>
+			</Dialog>
 		</>
 	);
 }
