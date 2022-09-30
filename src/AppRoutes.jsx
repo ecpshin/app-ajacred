@@ -10,7 +10,7 @@ import Others from "./pages/Others";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 
-function AppRoutes() {
+export default function AppRoutes() {
 	return (
 		<Routes>
 			<Route path=''>
@@ -36,5 +36,3 @@ function ProtectedRoutes({ redirectTo }) {
 	const isAuthenticated = token;
 	return isAuthenticated ? <Outlet /> : <Navigate to={redirectTo} />;
 }
-
-export default AppRoutes;

@@ -2,7 +2,7 @@
 	width: 100%;
 	height: auto;
 	padding: 10px 14px;
-	position: fixed;
+	position: sticky;
 	top: 0;
 	left: 0;
 	z-index: 1;
@@ -10,7 +10,6 @@
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
-
 	background-color: hsl(21, 100%, 49%);
 }
 
@@ -28,7 +27,7 @@
 	padding: 8px;
 	margin-left: 15px;
 	background-color: #f3f3f3;
-	border-radius: 50%;
+	border-radius: 25%;
 }
 
 .header__navbar {

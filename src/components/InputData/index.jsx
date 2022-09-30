@@ -1,38 +1,35 @@
-import { LinearProgress, Stack } from "@mui/material";
+import { FormControl, FormLabel, TextField } from "@mui/material";
 import useGeralContext from "../../hooks/useGeralContext";
 import "./styles.css";
 
-export default function InputData({ id, label, type }) {
-	const { useState, useEffect } = useGeralContext();
-	const [progress, setProgress] = useState(100);
-
-	useEffect(() => {
-		const timer = setInterval(() => {
-			setProgress((oldProgress) => {
-				if (oldProgress === 0) {
-					clearInterval(timer);
-				}
-				const diff = Math.random() * 10;
-				return Math.min(oldProgress - diff, 100);
-			});
-		}, 100);
-
-		return () => {
-			clearInterval(timer);
-		};
-	}, []);
+export default function InputData({ id, name, label, type }) {
+	const { formClient, handleChangeCliente } = useGeralContext();
 
 	return (
-		<div className='input-group'>
-			{/* <InputLabel htmlFor={id}>{label}</InputLabel>
-			<OutlinedInput id={id} type={type} className='inputs' /> */}
-			<Stack sx={{ width: "250px" }}>
-				<LinearProgress
-					variant='determinate'
-					value={progress}
-					sx={{ bar1Determinate: { backgroundColor: "red" } }}
-				/>
-			</Stack>
-		</div>
+		<FormControl fullWidth>
+			<FormLabel
+				sx={{
+					width: "100%",
+					textAlign: "left",
+					fontSize: "1.2rem",
+					fontWeight: 600,
+					color: "#000",
+					m: 0.5,
+				}}
+			>
+				{label}
+			</FormLabel>
+			<TextField
+				id={id}
+				name={name}
+				type={type}
+				value={formClient[name]}
+				onChange={handleChangeCliente(name)}
+				variant='outlined'
+				size='small'
+				title={`Digite ${label}`}
+				fullWidth
+			/>
+		</FormControl>
 	);
 }

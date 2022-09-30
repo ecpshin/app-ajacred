@@ -25,6 +25,45 @@ export default function useGeralContextProvider() {
 	const [token, setToken, removeToken] = useLocalStorage("token", "");
 	const [user, setUser, removeUser] = useLocalStorage("user");
 	const [cliente, setCliente, removeCliente] = useLocalStorage("cliente");
+	const [formClient, setFormClient] = useState({
+		nome: "",
+		cpf: "",
+		rg: "",
+		expedicao: "",
+		nascimento: "",
+		naturalidade: "",
+		genitora: "",
+		genitor: "",
+		sexo: "",
+		estadoCivil: "",
+		cep: "",
+		logradouro: "",
+		complemento: "",
+		bairro: "",
+		localidade: "",
+		uf: "",
+		phone1: "",
+		phone2: "",
+		phone3: "",
+		phone4: "",
+		beneficios: "",
+		senhas: "",
+		emails: "",
+		accode: "",
+		accbanco: "",
+		nragencia: "",
+		nrconta: "",
+		acctipo: "",
+		accoperacao: "",
+		observacoes: "",
+	});
+
+	const handleChangeCliente = (prop) => (event) => {
+		setFormClient({
+			...formClient,
+			[prop]: event.target.value,
+		});
+	};
 
 	function formatDate(date) {
 		return new Date(date).toLocaleDateString("pt-BR", { timeZone: "UTC" });
@@ -53,6 +92,9 @@ export default function useGeralContextProvider() {
 		CardHeader,
 		cliente,
 		clients,
+		formClient,
+		setFormClient,
+		handleChangeCliente,
 		setClients,
 		setCliente,
 		removeCliente,

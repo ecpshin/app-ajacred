@@ -1,10 +1,11 @@
-import { Drawer } from "@mui/material";
+import { SwipeableDrawer } from "@mui/material";
 import MenuBlack from "../../assets/images/menu-black.svg";
 import useGeralContext from "../../hooks/useGeralContext";
 import TreeViewMenu from "../TreeViewMenu";
 
 export default function DrawerMenu() {
-	const { setOpenMenu, openMenu } = useGeralContext();
+	const { openMenu, setOpenMenu } = useGeralContext();
+
 	const handleToggleDrawer = (event) => {
 		if (
 			event.type === "keydown" &&
@@ -20,8 +21,10 @@ export default function DrawerMenu() {
 
 	return (
 		<div>
-			<Drawer
+			<SwipeableDrawer
+				anchor='left'
 				open={openMenu}
+				onOpen={handleCloseMenu}
 				onClose={handleCloseMenu}
 				onKeyDown={handleToggleDrawer}
 				sx={{ fontSize: "1.8rem!important" }}
@@ -43,7 +46,7 @@ export default function DrawerMenu() {
 					<h4>Menu de Opções</h4>
 				</div>
 				<TreeViewMenu />
-			</Drawer>
+			</SwipeableDrawer>
 		</div>
 	);
 }

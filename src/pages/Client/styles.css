@@ -1,1 +1,81 @@
+.paper {
+	width: 900px;
+	max-height: 100%;
+	display: flex;
+	flex-direction: column;
+	padding: 1.5rem;
+	margin: 20px 0;
+	row-gap: 20px;
+}
 
+.MuiFormLabel-root {
+	font-size: 1.2rem;
+	margin-bottom: 5px;
+	margin-top: 10px;
+}
+
+.info__header {
+	width: calc(100vw - 20%);
+	height: 4.8rem;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	column-gap: 1.6rem;
+	margin-top: 1.5rem;
+	color: #fa5700;
+	box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.418);
+}
+
+.badge-icon {
+	font-size: 4rem !important;
+}
+.info__header h1 {
+	font-size: 2.2rem;
+	height: auto;
+	font-weight: 500;
+}
+
+.card__info {
+	width: calc(100vw - 20%);
+	height: 15rem;
+	background-color: #f3f3f3;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	margin: 1rem 0;
+	border-radius: 5px;
+	box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.418);
+}
+.botao {
+	width: 150px;
+	justify-self: flex-end;
+	font-size: 1.4rem !important;
+	gap: 0.8rem;
+	text-transform: capitalize;
+	background-color: #fa5700 !important;
+	color: #fff !important;
+}
+
+.card__info__content {
+	width: 100%;
+	height: auto;
+	padding: 2.5rem;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.minicard {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
