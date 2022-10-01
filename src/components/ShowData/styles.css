@@ -1,7 +1,9 @@
 .tag-group {
-	max-width: 200px;
-	height: auto;
-	margin: 1rem;
+	min-width: 150px;
+	max-width: 20rem;
+	height: 3.6rem;
+	margin-bottom: 0.8rem;
+
 	display: flex;
 	flex-grow: 1;
 	flex-direction: column;
@@ -13,19 +15,21 @@
 .titulos {
 	display: flex;
 	flex-direction: row;
-	max-width: 200px;
+	min-width: 150px;
+	max-width: 100%;
 	font-size: 1.3rem !important;
 	font-weight: 600 !important;
 	color: #fa5700;
 }
+
 .tags {
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
+	min-width: 150px;
+	max-width: 100%;
 	font-size: 1.2rem !important;
 	font-weight: 500 !important;
 	color: #707070;
 	border-radius: 5px;
 	white-space: nowrap;
+	overflow: hidden;
 	text-overflow: ellipsis;
 }

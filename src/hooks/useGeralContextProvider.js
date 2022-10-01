@@ -25,6 +25,13 @@ export default function useGeralContextProvider() {
 	const [token, setToken, removeToken] = useLocalStorage("token", "");
 	const [user, setUser, removeUser] = useLocalStorage("user");
 	const [cliente, setCliente, removeCliente] = useLocalStorage("cliente");
+	const [funcionais, setFuncionais, removeFuncionais] =
+		useLocalStorage("funcionais");
+	const [bancarias, setBancarias, removeBancarias] =
+		useLocalStorage("bancarias");
+	const [residenciais, setResidenciais, removeResidenciais] =
+		useLocalStorage("residenciais");
+
 	const [formClient, setFormClient] = useState({
 		nome: "",
 		cpf: "",
@@ -86,6 +93,7 @@ export default function useGeralContextProvider() {
 		reason: "",
 	});
 	return {
+		bancarias,
 		Button,
 		Card,
 		CardContent,
@@ -93,10 +101,8 @@ export default function useGeralContextProvider() {
 		cliente,
 		clients,
 		formClient,
-		setFormClient,
+		funcionais,
 		handleChangeCliente,
-		setClients,
-		setCliente,
 		removeCliente,
 		formatDate,
 		formAddUser,
@@ -109,22 +115,32 @@ export default function useGeralContextProvider() {
 		open,
 		openMenu,
 		openModal,
+		residenciais,
 		search,
 		showPassword,
 		toast,
 		token,
 		user,
-		removeToken,
-		removeUser,
+		setBancarias,
+		setClients,
+		setCliente,
 		setFormAddUser,
+		setFormClient,
+		setFuncionais,
 		setOpen,
 		setOpenMenu,
 		setOpenModal,
+		setResidenciais,
 		setToast,
 		setToken,
 		setUser,
 		setSearch,
 		setShowPassword,
+		removeBancarias,
+		removeFuncionais,
+		removeResidenciais,
+		removeToken,
+		removeUser,
 		TextField,
 		useLocalStorage,
 		useEffect,
