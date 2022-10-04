@@ -56,6 +56,9 @@ export default function ListClients() {
 		useState,
 		useNavigate,
 		setCliente,
+		setBancarias,
+		setResidenciais,
+		setFuncionais,
 		open,
 		setOpen,
 	} = useGeral();
@@ -70,10 +73,24 @@ export default function ListClients() {
 	);
 	const navigate = useNavigate();
 
-	function handleGoClient(client) {
-		console.log(client);
-		setCliente(client);
-		navigate("/cliente");
+	async function handleGoClient(client) {
+		try {
+			setCliente(client);
+			const response = await api.get(`/cliente/${client.id}`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			console.log(response);
+			const { bancarias, funcionais, residenciais } = response.data;
+
+			setBancarias(bancarias);
+			setFuncionais(funcionais);
+			setResidenciais(residenciais);
+			navigate("/cliente");
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	async function handleGetClients() {
@@ -100,7 +117,6 @@ export default function ListClients() {
 
 	function handleChangeInput(e) {
 		setQuery(e.target.value);
-		console.log(query);
 	}
 
 	function handleSearch() {
@@ -204,17 +220,13 @@ export default function ListClients() {
 												<TableRow key={client.id}>
 													<TableCell
 														style={estilos.td}
+														onClick={() =>
+															handleGoClient(
+																client
+															)
+														}
 													>
-														<IconButton
-															sx={{
-																all: "unset",
-															}}
-															onClick={() =>
-																handleGoClient(
-																	client
-																)
-															}
-														>
+														<IconButton>
 															<FolderShared
 																style={{
 																	width: "23px",
@@ -268,7 +280,7 @@ export default function ListClients() {
 			<Dialog open={open} onClose={() => setOpen(!open)}>
 				<DialogContent>
 					<Box>
-						<Grid container xs={12}>
+						<Grid container>
 							<Grid item xs={12}>
 								<InputBase
 									name='nome'

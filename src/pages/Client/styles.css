@@ -7,6 +7,24 @@
 	margin: 20px 0;
 	row-gap: 20px;
 }
+.button-edit {
+	all: unset;
+	cursor: pointer;
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	width: 30px;
+	height: 30px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	color: #f3f3f3;
+	border: none;
+	border-radius: 50%;
+	font-weight: 600;
+	background-color: #fa5700;
+}
 .main__content {
 	background-color: #dfd0d0;
 }
