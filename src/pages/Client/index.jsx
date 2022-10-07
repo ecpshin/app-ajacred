@@ -1,5 +1,5 @@
 import { Badge, Edit } from "@mui/icons-material";
-import { Breadcrumbs, Dialog, Stack } from "@mui/material";
+import { Breadcrumbs, Dialog, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import EditBancarias from "../../components/Bancarias/Edit";
 import EditFuncionais from "../../components/Funcionais/Edit";
@@ -16,10 +16,21 @@ const capitalize = (str) => {
 };
 
 export default function Client() {
-	const { cliente, useState, bancarias, funcionais, residenciais } =
-		useGeralContext();
+	const {
+		cliente,
+		removeCliente,
+		bancarias,
+		removeBancarias,
+		funcionais,
+		removeFuncionais,
+		residenciais,
+		removeResidenciais,
+		useState,
+		useNavigate,
+	} = useGeralContext();
 	const [open, setOpen] = useState(false);
 	const [modal, setModal] = useState({ title: "", id: "" });
+	const navigate = useNavigate();
 
 	function handleOpen(title) {
 		setOpen(!open);
@@ -28,6 +39,14 @@ export default function Client() {
 
 	const handleClose = () => {
 		setOpen(!open);
+	};
+
+	const handleClear = () => {
+		removeCliente();
+		removeBancarias();
+		removeFuncionais();
+		removeResidenciais();
+		navigate("/clientes");
 	};
 
 	return (
@@ -54,24 +73,25 @@ export default function Client() {
 							key='1'
 							underline='hover'
 							color='inherit'
-							to={-1}
 							style={{
 								color: "#fa5700",
+								textDecoration: "none",
 							}}
+							to='/clientes'
+							onClick={handleClear}
 						>
 							Clientes
 						</Link>
-						<Link
+						<Typography
 							key='2'
 							underline='hover'
 							style={{
 								color: "#000",
 								textDecoration: "none",
 							}}
-							to='/cliente'
 						>
 							Cliente
-						</Link>
+						</Typography>
 					</Breadcrumbs>
 				</Stack>
 				<div className='info__header'>
@@ -180,7 +200,11 @@ export default function Client() {
 						setOpen={setOpen}
 					/>
 				) : modal.title === "Pessoais" ? (
-					<EditPessoais title='Pessoais' cliente={cliente} />
+					<EditPessoais
+						title='Pessoais'
+						setOpen={setOpen}
+						cliente={cliente}
+					/>
 				) : modal.title === "Funcionais" ? (
 					<EditFuncionais
 						title='Funcionais'
