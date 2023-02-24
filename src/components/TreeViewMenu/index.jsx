@@ -48,11 +48,31 @@ export default function FileSystemNavigator() {
 			</TreeItem>
 			<TreeItem nodeId='5' label='Usuários' />
 			<TreeItem nodeId='50' label='Outros'>
-				<TreeItem nodeId='5' label='Órgão' />
-				<TreeItem nodeId='6' label='Situações' />
-				<TreeItem nodeId='7' label='Financeira' />
-				<TreeItem nodeId='8' label='Correspondente' />
-				<TreeItem nodeId='12' label='Nivel de Usuário' />
+				<TreeItem
+					nodeId='5'
+					label='Órgão'
+					onClick={() => handleClick("/orgaos")}
+				/>
+				<TreeItem
+					nodeId='6'
+					label='Situações'
+					onClick={() => handleClick("/situacoes")}
+				/>
+				<TreeItem
+					nodeId='7'
+					label='Financeiras'
+					onClick={() => handleClick("/financeiras")}
+				/>
+				<TreeItem
+					nodeId='8'
+					label='Correspondentes'
+					onClick={() => handleClick("/correspondentes")}
+				/>
+				<TreeItem
+					nodeId='12'
+					label='Nivel de Usuário'
+					onClick={() => handleClick("/niveis")}
+				/>
 			</TreeItem>
 		</TreeView>
 	);

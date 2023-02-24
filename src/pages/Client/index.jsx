@@ -201,7 +201,7 @@ export default function Client() {
 					/>
 				) : modal.title === "Pessoais" ? (
 					<EditPessoais
-						title='Pessoais'
+						open={open}
 						setOpen={setOpen}
 						cliente={cliente}
 					/>

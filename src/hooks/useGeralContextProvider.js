@@ -31,59 +31,76 @@ export default function useGeralContextProvider() {
 		useLocalStorage("bancarias");
 	const [residenciais, setResidenciais, removeResidenciais] =
 		useLocalStorage("residenciais");
+	const initForms = {
+		cliente: {
+			nome: "",
+			cpf: "",
+			rg: "",
+			expedicao: "",
+			nascimento: "",
+			naturalidade: "",
+			genitora: "",
+			genitor: "",
+			sexo: "",
+			estadoCivil: "",
+			observacoes: "",
+		},
+		endereco: {
+			cep: "",
+			logradouro: "",
+			complemento: "",
+			bairro: "",
+			localidade: "",
+			uf: "",
+		},
+		funcional: {
+			beneficios: "",
+			emails: "",
+			senhas: "",
+			phone1: "",
+			phone2: "",
+			phone3: "",
+			phone4: "",
+		},
+		bancaria: {
+			codigo: "",
+			banco: "",
+			agencia: "",
+			conta: "",
+			tipo: "",
+			operacao: "",
+		},
+		user: {
+			nome: "",
+			email: "",
+			senha: "",
+			nivel: "ROLE_USER",
+			avatar: "man.png",
+			confirmaSenha: "",
+		},
+		login: {
+			email: "",
+			senha: "",
+		},
+	};
 
-	const [formClient, setFormClient] = useState({
-		nome: "",
-		cpf: "",
-		rg: "",
-		expedicao: "",
-		nascimento: "",
-		naturalidade: "",
-		genitora: "",
-		genitor: "",
-		sexo: "",
-		estadoCivil: "",
-		cep: "",
-		logradouro: "",
-		complemento: "",
-		bairro: "",
-		localidade: "",
-		uf: "",
-		phone1: "",
-		phone2: "",
-		phone3: "",
-		phone4: "",
-		beneficios: "",
-		senhas: "",
-		emails: "",
-		accode: "",
-		accbanco: "",
-		nragencia: "",
-		nrconta: "",
-		acctipo: "",
-		accoperacao: "",
-		observacoes: "",
-	});
+	const [form, setForm] = useState({});
 
 	const handleChangeCliente = (prop) => (event) => {
-		setFormClient({
-			...formClient,
+		setForm({
+			...form,
 			[prop]: event.target.value,
 		});
 	};
 
+	function dateFormulario(date) {
+		const string = new Date(date).toLocaleDateString();
+		console.log(string);
+	}
+
 	function formatDate(date) {
 		return new Date(date).toLocaleDateString("pt-BR", { timeZone: "UTC" });
 	}
-
-	const [formAddUser, setFormAddUser] = useState({
-		nome: "",
-		email: "",
-		senha: "",
-		nivel: "ROLE_USER",
-		avatar: "man.png",
-		confirmaSenha: "",
-	});
 
 	const [toast, setToast] = useState({
 		open: false,
@@ -92,6 +109,7 @@ export default function useGeralContextProvider() {
 		message: "",
 		reason: "",
 	});
+
 	return {
 		bancarias,
 		Button,
@@ -100,12 +118,13 @@ export default function useGeralContextProvider() {
 		CardHeader,
 		cliente,
 		clients,
-		formClient,
+		form,
 		funcionais,
 		handleChangeCliente,
 		removeCliente,
+		dateFormulario,
+		initForms,
 		formatDate,
-		formAddUser,
 		Input,
 		IconButton,
 		LogoApp,
@@ -124,8 +143,7 @@ export default function useGeralContextProvider() {
 		setBancarias,
 		setClients,
 		setCliente,
-		setFormAddUser,
-		setFormClient,
+		setForm,
 		setFuncionais,
 		setOpen,
 		setOpenMenu,

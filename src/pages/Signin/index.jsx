@@ -5,10 +5,8 @@ import {
 	IconButton,
 	InputAdornment,
 	OutlinedInput,
-	TextField,
 	Typography,
 } from "@mui/material";
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Bg from "../../assets/images/bg.png";
@@ -19,21 +17,27 @@ import "./styles.css";
 
 export default function Signin() {
 	const {
+		form,
+		setForm,
+		initForms,
+		token,
+		setShowPassword,
 		setToken,
 		setUser,
-		useState,
 		showPassword,
-		setShowPassword,
-		//toast,
-		token,
-		//setToast,
 		useNavigate,
+		useEffect,
 	} = useGeralContext();
 	const navigate = useNavigate();
-	const [formLogin, setFormLogin] = useState({
-		email: "",
-		senha: "",
-	});
+
+	useEffect(() => {
+		token && navigate("/home");
+		const init = () => {
+			setForm({ ...form, ...initForms.login });
+		};
+		init();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	function handleShowPassword() {
 		setShowPassword(!showPassword);
@@ -41,28 +45,42 @@ export default function Signin() {
 	}
 
 	const handleOnChange = (prop) => (event) => {
-		setFormLogin({ ...formLogin, [prop]: event.target.value });
-		return;
+		console.log(form);
+		setForm({ ...form, [prop]: event.target.value });
 	};
 
 	const handleOnSubmit = async (event) => {
 		event.preventDefault();
 
+		if (!form.email || !form.senha) {
+			toast.error("Preencha todos os campos!", {
+				position: "top-right",
+				autoClose: 1800,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: false,
+				draggable: false,
+				progress: undefined,
+			});
+			return;
+		}
+
 		try {
-			const response = await api.post("/login", formLogin);
-			const { token, usuario } = response.data;
-			setToken(token);
+			const response = await api.post("/login", form);
+			const { token: userToken, usuario } = response.data;
+			setToken(userToken);
 			setUser(usuario);
 			toast.success("Login efetuado com sucesso!", {
 				position: "top-right",
-				autoClose: 2000,
+				autoClose: 1800,
 				hideProgressBar: false,
 				closeOnClick: true,
 				pauseOnHover: true,
 				draggable: true,
 				progress: undefined,
 			});
-			setFormLogin({ email: "", senha: "" });
+
+			setForm({ ...initForms.login });
 
 			setTimeout(() => {
 				navigate("/home");
@@ -70,25 +88,19 @@ export default function Signin() {
 		} catch (error) {
 			toast.error(error.response.data, {
 				position: "top-right",
-				autoClose: 2000,
+				autoClose: 1800,
 				hideProgressBar: false,
 				closeOnClick: true,
 				pauseOnHover: true,
 				draggable: true,
 				progress: undefined,
 			});
-			setFormLogin({ email: "", senha: "" });
+			setForm({ ...initForms.login });
 			setTimeout(() => {
 				navigate("/");
 			}, 3200);
 		}
 	};
-	useEffect(() => {
-		if (token) {
-			navigate("/home");
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
 
 	return (
 		<div className='container-signin'>
@@ -105,22 +117,20 @@ export default function Signin() {
 				>
 					<Grid item xs={7}>
 						<form onSubmit={handleOnSubmit} className='form_login'>
-							<TextField
+							<OutlinedInput
 								type='email'
-								value={formLogin.email}
+								defaultValue={form.email}
 								onChange={handleOnChange("email")}
-								placeholder='Email*'
-								helperText='Digite seu email'
-								required={true}
-								variant='outlined'
+								placeholder='Email'
+								required
 								sx={{ width: "100%" }}
 							/>
 							<OutlinedInput
 								type={showPassword ? "text" : "password"}
-								value={formLogin.senha}
+								defaultValue={form.senha}
 								onChange={handleOnChange("senha")}
-								placeholder='Senha*'
-								required={true}
+								placeholder='Senha'
+								required
 								sx={{ width: "100%" }}
 								endAdornment={
 									<InputAdornment position='end'>

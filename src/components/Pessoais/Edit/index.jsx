@@ -19,13 +19,22 @@ function formatarData(data) {
 	return formata[0];
 }
 
-export default function EditPessoais({ title, cliente, setOpen }) {
-	const { useState } = useGeralContext();
-	const [pessoais, setPessoais] = useState({ ...cliente });
-	const handleChange = (prop) => (e) => {
-		setPessoais({ ...pessoais, [prop]: e.target.value });
-	};
-
+export default function EditPessoais({ cliente, open, setOpen }) {
+	const { useState, initForms } = useGeralContext();
+	const [pessoais, setPessoais] = useState(initForms.cliente);
+	const {
+		nome,
+		cpf,
+		rg,
+		expedicao,
+		nascimento,
+		naturalidade,
+		genitora,
+		genitor,
+		sexo,
+		estado_civil,
+		observacoes,
+	} = cliente;
 	const sexos = ["MASCULINO", "FEMININO", "NÃO BINÁRIO", "OUTRO"];
 	const ecivis = [
 		"SOLTEIRO(A)",
@@ -38,9 +47,22 @@ export default function EditPessoais({ title, cliente, setOpen }) {
 		"UNIÃO MESMO SEXO",
 	];
 
+	const handleChange = (prop) => (e) => {
+		setPessoais({ ...pessoais, [prop]: e.target.value });
+	};
+
+	const handleClear = () => {
+		setPessoais({ ...initForms.cliente });
+	};
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		console.log(pessoais);
+	};
+
 	return (
 		<div>
-			<DialogContent style={{ width: 600 }}>
+			<DialogContent style={{ width: "100%" }}>
 				<Grid container columnSpacing={1} style={{ rowGap: "1rem" }}>
 					<Grid item xs={12}>
 						<Typography variant='h4' component='h2'>
@@ -52,7 +74,7 @@ export default function EditPessoais({ title, cliente, setOpen }) {
 							type='text'
 							name='nome'
 							onChange={handleChange("nome")}
-							defaultValue={pessoais.nome}
+							defaultValue={nome}
 						/>
 					</Grid>
 					<Grid item xs={4}>
@@ -60,7 +82,7 @@ export default function EditPessoais({ title, cliente, setOpen }) {
 							type='text'
 							name='cpf'
 							onChange={handleChange("cpf")}
-							defaultValue={pessoais.cpf}
+							defaultValue={cpf}
 						/>
 					</Grid>
 					<Grid item xs={4}>
@@ -68,7 +90,7 @@ export default function EditPessoais({ title, cliente, setOpen }) {
 							type='date'
 							name='nascimento'
 							onChange={handleChange("nascimento")}
-							defaultValue={formatarData(pessoais.nascimento)}
+							defaultValue={formatarData(nascimento)}
 						/>
 					</Grid>
 					<Grid item xs={4}>
@@ -76,7 +98,7 @@ export default function EditPessoais({ title, cliente, setOpen }) {
 							name='rg'
 							type='text'
 							onChange={handleChange("rg")}
-							defaultValue={pessoais.rg}
+							defaultValue={rg}
 						/>
 					</Grid>
 					<Grid item xs={4}>
@@ -84,7 +106,7 @@ export default function EditPessoais({ title, cliente, setOpen }) {
 							name='expedicao'
 							type='date'
 							onChange={handleChange("expedicao")}
-							defaultValue={formatarData(pessoais.expedicao)}
+							defaultValue={formatarData(expedicao)}
 						/>
 					</Grid>
 					<Grid item xs={4}>
@@ -92,7 +114,7 @@ export default function EditPessoais({ title, cliente, setOpen }) {
 							name='naturalidade'
 							type='text'
 							onChange={handleChange("naturalidade")}
-							defaultValue={pessoais.naturalidade}
+							defaultValue={naturalidade}
 						/>
 					</Grid>
 					<Grid item xs={6}>
@@ -100,7 +122,7 @@ export default function EditPessoais({ title, cliente, setOpen }) {
 							name='genitora'
 							type='text'
 							onChange={handleChange("genitora")}
-							defaultValue={pessoais.genitora}
+							defaultValue={genitora}
 						/>
 					</Grid>
 					<Grid item xs={6}>
@@ -108,7 +130,7 @@ export default function EditPessoais({ title, cliente, setOpen }) {
 							name='genitor'
 							type='text'
 							onChange={handleChange("genitor")}
-							defaultValue={pessoais.genitor}
+							defaultValue={genitor}
 						/>
 					</Grid>
 					<Grid item xs={6}>
@@ -131,7 +153,7 @@ export default function EditPessoais({ title, cliente, setOpen }) {
 									fontWeight: 600,
 								}}
 								onChange={handleChange("sexo")}
-								value={pessoais.sexo}
+								value={sexo}
 							>
 								{sexos.map((sexo) => (
 									<MenuItem key={sexo} value={sexo}>
@@ -161,7 +183,7 @@ export default function EditPessoais({ title, cliente, setOpen }) {
 									fontSize: "1.3rem",
 									fontWeight: 600,
 								}}
-								value={pessoais.estado_civil.toLocaleUpperCase()}
+								value={estado_civil.toLocaleUpperCase()}
 								onChange={handleChange("estado_civil")}
 							>
 								{ecivis.map((ecivil) => (
@@ -190,7 +212,7 @@ export default function EditPessoais({ title, cliente, setOpen }) {
 								name='observacoes'
 								minRows={3}
 								defaultValue={
-									pessoais.observacoes
+									observacoes
 										? pessoais.observacoes
 										: "Não há observações!"
 								}
@@ -206,6 +228,7 @@ export default function EditPessoais({ title, cliente, setOpen }) {
 			</DialogContent>
 			<DialogActions>
 				<Button
+					onClick={() => setOpen(!open)}
 					startIcon={<Cancel />}
 					style={{
 						width: "150px",
@@ -216,6 +239,7 @@ export default function EditPessoais({ title, cliente, setOpen }) {
 					Cancelar
 				</Button>
 				<Button
+					onClick={handleSubmit}
 					startIcon={<Save />}
 					style={{
 						width: "150px",
