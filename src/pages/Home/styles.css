@@ -1,32 +1,35 @@
 .container__home {
-	width: 100%;
-	height: 100vh;
+  width: 100%;
+  height: 100vh;
 
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
 }
 .main__content {
-	width: 100%;
-	height: 100%;
+  width: 100%;
+  height: 100%;
 
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	background-color: #f3f3f3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f3f3f3;
 }
 .cards__home {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	min-width: 100%;
+  width: 100%;
+  column-gap: 15px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
 }
+
 .card__icon:hover {
-	cursor: pointer;
-	transform: scale(1.1);
+  cursor: pointer;
+  transform: scale(1.1);
 }
 .number__contract {
-	font-size: 2rem;
+  font-size: 2rem;
 }

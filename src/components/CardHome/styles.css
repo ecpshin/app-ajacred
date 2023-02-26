@@ -1,38 +1,80 @@
-.cards-status {
-	display: flex;
-	flex-direction: row !important;
-	justify-content: space-between !important;
-	align-items: center;
-	gap: 15px;
-	font-weight: 700;
+.card-home {
+  width: 235px;
+  padding: 5px;
+  box-shadow: 1px 2px 30px #181818 !important;
+  border: 1px solid transparent;
+  border-radius: 10px;
 }
-.aprovados {
-	display: flex;
-	color: #0a6e23;
-	background-color: #9affb2;
-	font-weight: 600;
+
+.card-header {
+  width: 100%;
+  display: flex;
+  border-radius: 5px;
 }
-.digitados {
-	display: flex;
-	color: #0049bf;
-	background-color: #88aae2;
-	font-weight: 600;
+
+.card-footer {
+  width: 100%;
+  display: flex;
+  border-radius: 5px;
 }
-.pendentes {
-	display: flex;
-	color: #c99628;
-	background-color: #fff700;
+
+.card-title {
+  width: 100%;
+  padding: 8px;
+  font-size: 1.8rem;
+  color: #bebebe;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
-.reprovados {
-	display: flex;
-	color: #5c0f0f;
-	background-color: #ff0000;
+
+.card-content {
+  width: 98%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
 }
-.vencidos {
-	display: flex;
-	color: #696969;
-	background-color: #bebebe;
+
+.digitado {
+  background-color: blue;
 }
-.icon-ok {
-	color: #0a6e23;
+
+.aprovado {
+  background-color: green;
+}
+
+.pendente {
+  background-color: #c99628;
+}
+
+.cancelado {
+  background-color: #af1a10;
+}
+
+.vencido {
+  background-color: #696969;
+}
+
+.card-home-aprovado {
+  background-color: #00ff4077;
+}
+
+.card-home-digitado {
+  background-color: hsla(240, 31%, 58%, 0.658);
+}
+
+.card-home-pendente {
+  background-color: hsla(54, 100%, 50%, 0.452);
+}
+
+.card-home-cancelado {
+  background-color: hsla(0, 100%, 50%, 0.363);
+}
+
+.card-home-vencido {
+  background-color: hsla(0, 0%, 69%, 0.705);
 }
