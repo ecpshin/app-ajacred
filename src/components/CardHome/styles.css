@@ -58,6 +58,9 @@
 .vencido {
   background-color: #696969;
 }
+.total {
+  background-color: #696969;
+}
 
 .card-home-aprovado {
   background-color: #00ff4077;
@@ -76,5 +79,9 @@
 }
 
 .card-home-vencido {
+  background-color: hsla(0, 0%, 69%, 0.705);
+}
+
+.card-home-total {
   background-color: hsla(0, 0%, 69%, 0.705);
 }

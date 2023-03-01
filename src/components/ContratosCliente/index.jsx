@@ -23,10 +23,10 @@ import * as locales from '@mui/material/locale';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useState, useEffect } from 'react';
+import { useLocalStorage } from 'react-use';
 import api from '../../service/api';
 import estilos from './styles';
 import './styles.css';
-import { useParams } from 'react-router-dom';
 
 const estiloSearch = {
   search: { fontSize: '2.45rem', color: '#ff3401' },
@@ -44,8 +44,14 @@ const formatarData = (string) => {
   return new Date(string).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
 };
 
-export default function ListContratos({ token, openNew, setOpenNew }) {
+export default function ContratosCliente({
+  cliente,
+  openDialog,
+  setOpenDialog,
+  token,
+}) {
   const [contratos, setContratos] = useState([]);
+  const [contrato, setContrato, removeContrato] = useLocalStorage('contrato');
   const [page, setPage] = useState(0);
   const [query, setQuery] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -56,20 +62,15 @@ export default function ListContratos({ token, openNew, setOpenNew }) {
     [locale, theme]
   );
 
-  const { situacao } = useParams();
-
-  useEffect(() => {
-    function init() {
-      handleGetContratos();
-    }
-    init();
-    setLocale('ptBR');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  async function handleGoContrato(obj) {
+    setContrato(obj);
+    setOpenDialog(!openDialog);
+    return;
+  }
 
   async function handleGetContratos() {
     try {
-      const response = await api.get(`/contratos?search=${situacao}`, {
+      const response = await api.get(`/clientes/contratos/${cliente.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -115,6 +116,15 @@ export default function ListContratos({ token, openNew, setOpenNew }) {
     return search.length > 0 ? search : false;
   }
 
+  useEffect(() => {
+    function init() {
+      handleGetContratos();
+    }
+    init();
+    setLocale('ptBR');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <div className='container-home_top'>
@@ -140,7 +150,7 @@ export default function ListContratos({ token, openNew, setOpenNew }) {
           <Button
             className='btn__cadastrar'
             startIcon={<PersonAdd style={{ fontSize: '28px' }} />}
-            onClick={() => setOpenNew(!openNew)}
+            onClick={() => setOpenDialog(!openDialog)}
           >
             Novo Contrato
           </Button>
@@ -166,13 +176,15 @@ export default function ListContratos({ token, openNew, setOpenNew }) {
               <TableHead>
                 <TableRow>
                   <TableCell style={estilos.th}>#</TableCell>
-                  <TableCell style={estilos.th}>DATA FINAL</TableCell>
-                  <TableCell style={estilos.th}>NOME</TableCell>
-                  <TableCell style={estilos.th}>CPF</TableCell>
+                  <TableCell style={estilos.th}>DIGITADO</TableCell>
+                  <TableCell style={estilos.th}>FINALIZADO</TableCell>
+                  <TableCell style={estilos.th}>ÓRGÃO</TableCell>
                   <TableCell style={estilos.th}>PRAZO</TableCell>
                   <TableCell style={estilos.th}>TOTAL</TableCell>
                   <TableCell style={estilos.th}>PARCELA</TableCell>
                   <TableCell style={estilos.th}>LIQUIDO</TableCell>
+                  <TableCell style={estilos.th}>OPERAÇÃO</TableCell>
+                  <TableCell style={estilos.th}>SITUAÇÃO</TableCell>
                   <TableCell style={estilos.th}>FINANCEIRA</TableCell>
                   <TableCell style={estilos.th}>CORRESPONDENTE</TableCell>
                 </TableRow>
@@ -184,8 +196,11 @@ export default function ListContratos({ token, openNew, setOpenNew }) {
                     .map((item) => {
                       return (
                         <TableRow key={item.pid}>
-                          <TableCell style={estilos.td}>
-                            <IconButton onClick={handleEditContrato}>
+                          <TableCell
+                            style={estilos.td}
+                            onClick={() => handleGoContrato(item)}
+                          >
+                            <IconButton>
                               <FolderShared
                                 style={{
                                   width: '23px',
@@ -197,10 +212,14 @@ export default function ListContratos({ token, openNew, setOpenNew }) {
                             </IconButton>
                           </TableCell>
                           <TableCell style={estilos.td}>
+                            {formatarData(item.digitacao)}
+                          </TableCell>
+                          <TableCell style={estilos.td}>
                             {formatarData(item.finalizacao)}
                           </TableCell>
-                          <TableCell style={estilos.td}>{item.nome}</TableCell>
-                          <TableCell style={estilos.td}>{item.cpf}</TableCell>
+                          <TableCell style={estilos.td}>
+                            {item.nome_orgao}
+                          </TableCell>
                           <TableCell style={estilos.td}>{item.prazo}</TableCell>
                           <TableCell style={estilos.td}>{item.total}</TableCell>
                           <TableCell style={estilos.td}>
@@ -208,6 +227,12 @@ export default function ListContratos({ token, openNew, setOpenNew }) {
                           </TableCell>
                           <TableCell style={estilos.td}>
                             {item.liquido}
+                          </TableCell>
+                          <TableCell style={estilos.td}>
+                            {item.operacao}
+                          </TableCell>
+                          <TableCell style={estilos.td}>
+                            {item.situacao}
                           </TableCell>
                           <TableCell style={estilos.td}>
                             {item.nome_financeira}

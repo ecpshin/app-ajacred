@@ -29,7 +29,6 @@ function Home() {
           Authorization: `Bearer ${token}`,
         },
       });
-
       setListaLocal(response.data);
       return;
     } catch (error) {

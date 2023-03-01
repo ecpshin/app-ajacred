@@ -45,8 +45,8 @@ export default function Signin() {
   }
 
   const handleOnChange = (prop) => (event) => {
-    console.log(form);
     setForm({ ...form, [prop]: event.target.value });
+    return;
   };
 
   const handleOnSubmit = async (event) => {
@@ -95,7 +95,7 @@ export default function Signin() {
         draggable: true,
         progress: undefined,
       });
-      setForm({ ...initForms.login });
+      setForm({ email: '', senha: '' });
       setTimeout(() => {
         navigate('/');
       }, 3200);

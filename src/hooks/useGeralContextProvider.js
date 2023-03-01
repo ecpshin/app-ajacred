@@ -63,6 +63,28 @@ export default function useGeralContextProvider() {
       phone3: '',
       phone4: '',
     },
+    contrato: {
+      cliente: 1,
+      nrcontrole: '',
+      nrcontrato: '',
+      digitacao: null,
+      finalizacao: null,
+      prazo: 0,
+      total: 0,
+      parcela: 0,
+      liquido: 0,
+      refrencia: '',
+      tabela: '',
+      percentual: 0,
+      comissao: 0,
+      observacoes: 'Nenhuma',
+      operacao: 1,
+      financeira: 1,
+      correspondente: 1,
+      situacao: 1,
+      orgao: 1,
+      usuario: 0,
+    },
     bancaria: {
       codigo: '',
       banco: '',
@@ -95,7 +117,11 @@ export default function useGeralContextProvider() {
   };
 
   const dateFormulario = (date) => {
-    return new Date(date).toLocaleDateString();
+    const formatacao = new Date(date).toLocaleDateString('en-US', {
+      timeZone: 'UTC',
+    });
+
+    return formatacao;
   };
 
   const formatDate = (date) => {

@@ -79,6 +79,7 @@ export default function Header() {
             />
           </IconButton>
         </div>
+        {openMenu && <DrawerMenu />}
       </div>
       {openModal && (
         <Dialog open={openModal} onClose={handleCloseModal}>
@@ -87,7 +88,6 @@ export default function Header() {
           </DialogContent>
         </Dialog>
       )}
-      {openMenu && <DrawerMenu />}
     </header>
   );
 }

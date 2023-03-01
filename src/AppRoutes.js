@@ -19,7 +19,6 @@ export default function AppRoutes() {
 
       <Route path='' element={<ProtectedRoutes redirectTo='/' />}>
         <Route path='/home' element={<Home />} />
-        <Route path='/contratos/:situacao' element={<Contracts />} />
         <Route path='/contratos' element={<Contracts />} />
         <Route path='/clientes' element={<Clients />} />
         <Route path='/cliente' element={<Client />} />

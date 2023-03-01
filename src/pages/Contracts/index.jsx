@@ -1,69 +1,40 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Header from '../../components/Header';
-import './styles.css';
-import api from '../../service/api';
 import ListContratos from '../../components/ListContratos';
-import { useLocalStorage } from 'react-use';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import './styles.css';
+import useGeralContext from '../../hooks/useGeralContext';
+import ModalNewContract from '../../components/ModalNewContract';
 
-function Contracts() {
-  const [token, setToken, removeToken] = useLocalStorage('token');
+export default function Contracts() {
+  const { token } = useGeralContext();
+  const [openNew, setOpenNew] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
 
-  function remove() {
-    removeToken();
+  function handleClose() {
+    setOpenNew(false);
+    setOpenEdit(false);
   }
-
-  function incluir() {
-    setToken(token);
-  }
-
-  useEffect(() => {}, []);
 
   return (
     <div className='container-home'>
       <Header />
       <main className='container-home_main'>
-        <h1>Contratos</h1>
-        {/* <TableContainer component={Paper}>
-          <Table
-            size='small'
-            sx={{
-              width: '90%',
-            }}
-          >
-            <TableBody>
-              {lista.map((item) => (
-                <TableRow key={item.pid}>
-                  <TableCell sx={{ fontSize: '1.4rem' }}>{item.nome}</TableCell>
-                  <TableCell sx={{ fontSize: '1.4rem' }}>
-                    {item.prazo}
-                  </TableCell>
-                  <TableCell sx={{ fontSize: '1.4rem' }}>
-                    {item.total}
-                  </TableCell>
-                  <TableCell sx={{ fontSize: '1.4rem' }}>
-                    {item.parcela}
-                  </TableCell>
-                  <TableCell style={{ fontSize: '1.29rem' }}>
-                    {item.liquido}
-                  </TableCell>
-                  <TableCell
-                    style={{ overflow: 'hidden', fontSize: '1.29rem' }}
-                  >
-                    {item.nome_financeira}
-                  </TableCell>
-                  <TableCell sx={{ fontSize: '1.4rem' }}>
-                    {item.nome_correspondente}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer> */}
-        <ListContratos token={token} />
+        <h1 style={{ fontFamily: 'Montserrat', fontSize: '4.8rem' }}>
+          Contratos
+        </h1>
+        <ListContratos
+          token={token}
+          openNew={openNew}
+          setOpenNew={setOpenNew}
+          handleClose={handleClose}
+        />
       </main>
+      <ModalNewContract
+        openNew={openNew}
+        setOpenDialogNew={setOpenNew}
+        handleClose={handleClose}
+      />
     </div>
   );
 }
-
-export default Contracts;
