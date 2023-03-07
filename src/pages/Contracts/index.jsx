@@ -3,11 +3,11 @@ import Header from '../../components/Header';
 import ListContratos from '../../components/ListContratos';
 import { useState } from 'react';
 import './styles.css';
-import useGeralContext from '../../hooks/useGeralContext';
+import useGeral from '../../hooks/useGeral';
 import ModalNewContract from '../../components/ModalNewContract';
 
 export default function Contracts() {
-  const { token } = useGeralContext();
+  const { token } = useGeral();
   const [openNew, setOpenNew] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
 

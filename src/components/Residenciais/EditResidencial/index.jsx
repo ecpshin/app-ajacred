@@ -1,84 +1,84 @@
-import { Search } from "@mui/icons-material";
+import { Search } from '@mui/icons-material';
 import {
   DialogActions,
   DialogContent,
   DialogTitle,
   InputBase,
   SvgIcon,
-} from "@mui/material";
-import useGeralContext from "../../../hooks/useGeralContext";
-import viaCepApi from "../../../service/viacep";
+} from '@mui/material';
+import useGeral from '../../../hooks/useGeral';
+import viaCepApi from '../../../service/viacep';
 
 const styles = {
   form: {
-    width: "400px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    gap: "0.5rem",
+    width: '400px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    gap: '0.5rem',
   },
   actions: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    borderTop: "1px solid #ccc",
-    padding: "1rem 2rem",
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    borderTop: '1px solid #ccc',
+    padding: '1rem 2rem',
   },
   buttonCancel: {
-    width: "75px",
-    height: "35px",
-    border: "none",
-    backgroundColor: "grey",
-    color: "#fff",
-    borderRadius: "5px",
+    width: '75px',
+    height: '35px',
+    border: 'none',
+    backgroundColor: 'grey',
+    color: '#fff',
+    borderRadius: '5px',
   },
   buttonSuccess: {
-    width: "75px",
-    height: "35px",
-    border: "none",
-    backgroundColor: "#fa5700",
-    color: "#fff",
-    borderRadius: "5px",
+    width: '75px',
+    height: '35px',
+    border: 'none',
+    backgroundColor: '#fa5700',
+    color: '#fff',
+    borderRadius: '5px',
   },
   content: {
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
-    gap: "0.8rem",
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    gap: '0.8rem',
   },
   inputs: {
-    width: "100%",
-    height: "35px",
-    padding: "0 1rem",
-    borderRadius: "5px",
-    border: "1px solid #ccc",
+    width: '100%',
+    height: '35px',
+    padding: '0 1rem',
+    borderRadius: '5px',
+    border: '1px solid #ccc',
   },
   inputSearch: {
-    width: "30%",
-    height: "35px",
-    padding: "0 1rem",
-    borderRadius: "5px",
-    border: "1px solid #ccc",
+    width: '30%',
+    height: '35px',
+    padding: '0 1rem',
+    borderRadius: '5px',
+    border: '1px solid #ccc',
   },
   label: {
-    color: "#fa5700",
+    color: '#fa5700',
   },
   titles: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    width: "100%",
-    color: "#fa5700",
-    fontSize: "1.8rem",
-    fontWeight: "600",
-    borderBottom: "1px solid #ccc",
-    padding: "5px",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '100%',
+    color: '#fa5700',
+    fontSize: '1.8rem',
+    fontWeight: '600',
+    borderBottom: '1px solid #ccc',
+    padding: '5px',
   },
 };
 
 export default function EditResidencial({ residencial, setOpen }) {
-  const { useState, setResidenciais, removeResidenciais } = useGeralContext();
+  const { useState, setResidenciais, removeResidenciais } = useGeral();
   const { cep, logradouro, complemento, bairro, municipio, uf } = residencial;
   const [form, setForm] = useState({
     cep,
@@ -91,7 +91,7 @@ export default function EditResidencial({ residencial, setOpen }) {
 
   async function handleSearch(e) {
     e.preventDefault();
-    form.cep.replace("-", "");
+    form.cep.replace('-', '');
     try {
       const response = await viaCepApi.get(`/${form.cep}/json`);
 
@@ -136,8 +136,8 @@ export default function EditResidencial({ residencial, setOpen }) {
         <DialogContent style={styles.content}>
           <label style={styles.label}>CEP</label>
           <InputBase
-            type="text"
-            placeholder="Cep"
+            type='text'
+            placeholder='Cep'
             onChange={(e) => handleChangeCep(e.target.value)}
             style={styles.inputs}
             value={form.cep}
@@ -145,50 +145,50 @@ export default function EditResidencial({ residencial, setOpen }) {
               <SvgIcon
                 component={Search}
                 onClick={(e) => handleSearch(e)}
-                style={{ cursor: "pointer" }}
+                style={{ cursor: 'pointer' }}
               />
             }
           />
           <label style={styles.label}>Logradouro</label>
           <InputBase
-            type="text"
+            type='text'
             value={form.logradouro}
-            onChange={(e) => handleChangeValue("logradouro", e.target.value)}
-            placeholder="Endereço"
+            onChange={(e) => handleChangeValue('logradouro', e.target.value)}
+            placeholder='Endereço'
             style={styles.inputs}
           />
           <label style={styles.label}>Complemento</label>
           <InputBase
-            type="text"
+            type='text'
             value={form.complemento}
-            onChange={(e) => handleChangeValue("complemento", e.target.value)}
-            placeholder="Complemento"
+            onChange={(e) => handleChangeValue('complemento', e.target.value)}
+            placeholder='Complemento'
             style={styles.inputs}
           />
           <label style={styles.label}>Bairro</label>
           <InputBase
-            type="text"
+            type='text'
             value={form.bairro}
-            onChange={(e) => handleChangeValue("bairro", e.target.value)}
-            placeholder="Bairro"
+            onChange={(e) => handleChangeValue('bairro', e.target.value)}
+            placeholder='Bairro'
             style={styles.inputs}
           />
           <label style={styles.label}>Cidade</label>
           <InputBase
-            type="text"
+            type='text'
             value={form.municipio}
-            onChange={(e) => handleChangeValue("municipio", e.target.value)}
-            placeholder="Cidade"
+            onChange={(e) => handleChangeValue('municipio', e.target.value)}
+            placeholder='Cidade'
             style={styles.inputs}
           />
           <label style={styles.label}>UF</label>
           <InputBase
-            type="text"
+            type='text'
             value={form.uf}
-            onChange={(e) => handleChangeValue("uf", e.target.value)}
-            placeholder="UF"
+            onChange={(e) => handleChangeValue('uf', e.target.value)}
+            placeholder='UF'
             style={styles.inputs}
-            aria-label="UF"
+            aria-label='UF'
           />
         </DialogContent>
         <DialogActions style={styles.actions}>

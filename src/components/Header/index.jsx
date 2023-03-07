@@ -3,7 +3,7 @@ import { Dialog, DialogContent, IconButton } from '@mui/material';
 import Logout from '@mui/icons-material/Logout';
 //import Logo300 from '../assets/images/logo_300.png';
 import LogoApp from '../../assets/images/logo_app.jpg';
-import useGeralContext from '../../hooks/useGeralContext';
+import useGeral from '../../hooks/useGeral';
 import DrawerMenu from '../DrawerMenu';
 import EditUser from '../EditUser';
 import './styles.css';
@@ -18,13 +18,14 @@ export default function Header() {
     openModal,
     setOpenModal,
     user,
-  } = useGeralContext();
+  } = useGeral();
 
   const navigate = useNavigate();
 
   function handleExit() {
     removeToken();
     removeUser();
+    localStorage.clear();
     navigate('/');
   }
 

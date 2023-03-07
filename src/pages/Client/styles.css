@@ -97,6 +97,7 @@
 
 .card-info-contratos {
   width: 90%;
+  padding: 10px;
   height: 500px;
   margin: 8px 0;
   gap: 8px;
@@ -112,12 +113,16 @@
 
 .card-content-contratos {
   width: 100%;
+  height: 100%;
   padding: 15px;
   gap: 0.8rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  overflow: scroll;
+  border: 1px solid #fa5700;
+  border-radius: 10px;
 }
 
 .card__info__content {
@@ -130,6 +135,7 @@
   justify-content: flex-start;
   flex-wrap: wrap;
 }
+
 .content__item_pessoais {
   width: 100%;
   height: auto;
@@ -144,6 +150,7 @@
   border: 1px outset #ccc;
   border-radius: 0.8rem;
 }
+
 .content__item_minicards {
   width: 100%;
   height: auto;

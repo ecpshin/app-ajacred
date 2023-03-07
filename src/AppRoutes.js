@@ -1,5 +1,5 @@
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
-import useGeralContext from './hooks/useGeralContext';
+import useGeral from './hooks/useGeral';
 import Client from './pages/Client';
 import Clients from './pages/Clients';
 import Contracts from './pages/Contracts';
@@ -30,7 +30,7 @@ export default function AppRoutes() {
 }
 
 function ProtectedRoutes({ redirectTo }) {
-  const { token } = useGeralContext();
+  const { token } = useGeral();
   const isAuthenticated = token;
   return isAuthenticated ? <Outlet /> : <Navigate to={redirectTo} />;
 }

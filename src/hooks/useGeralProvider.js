@@ -94,6 +94,7 @@ export default function useGeralContextProvider() {
       operacao: '',
     },
     user: {
+      chave: '',
       nome: '',
       email: '',
       senha: '',

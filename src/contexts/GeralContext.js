@@ -1,12 +1,12 @@
-import { createContext } from "react";
-import useGeralContextProvider from "../hooks/useGeralContextProvider";
+import { createContext } from 'react';
+import useGeralProvider from '../hooks/useGeralProvider';
 
-const GeralContext = createContext(useGeralContextProvider);
+const GeralContext = createContext(useGeralProvider);
 
 export function GeralContextProvider(props) {
-  const geralContextProvider = useGeralContextProvider();
+  const geralProvider = useGeralProvider();
   return (
-    <GeralContext.Provider value={geralContextProvider}>
+    <GeralContext.Provider value={geralProvider}>
       {props.children}
     </GeralContext.Provider>
   );

@@ -2,9 +2,9 @@ import './styles.css';
 import { Box, IconButton, Modal } from '@mui/material';
 import CalculateRounded from '@mui/icons-material/CalculateRounded';
 import { useEffect } from 'react';
-import useGeralContext from '../../hooks/useGeralContext';
+import useGeral from '../../hooks/useGeral';
 
-export default function ModalNewContract({ openNew, handleClose }) {
+export default function ModalNewContract({ openNew, setOpenNew }) {
   const style = {
     position: 'absolute',
     top: '50%',
@@ -18,10 +18,11 @@ export default function ModalNewContract({ openNew, handleClose }) {
     overflow: 'hidden',
     overflowY: 'scroll',
   };
-  const { user, form, setForm, initForms } = useGeralContext();
+  const { user, form, setForm, initForms } = useGeral();
 
   const handleSubmitForm = async (e) => {
     e.preventDefault();
+    setOpenNew(false);
     return;
   };
 
@@ -32,6 +33,10 @@ export default function ModalNewContract({ openNew, handleClose }) {
   function handleSelectItem(prop, value) {
     setForm({ ...form, [prop]: value });
     return;
+  }
+
+  function handleClose() {
+    setOpenNew(false);
   }
 
   function handleHide(nivel) {

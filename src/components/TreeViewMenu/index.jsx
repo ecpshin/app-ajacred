@@ -2,11 +2,11 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TreeItem from '@mui/lab/TreeItem';
 import TreeView from '@mui/lab/TreeView';
-import useGeralContext from '../../hooks/useGeralContext';
+import useGeral from '../../hooks/useGeral';
 import './styles.css';
 
 export default function FileSystemNavigator() {
-  const { useNavigate, setOpenMenu, openMenu } = useGeralContext();
+  const { useNavigate, setOpenMenu, openMenu } = useGeral();
   const navigateTo = useNavigate();
 
   const handleClick = (pathname) => {

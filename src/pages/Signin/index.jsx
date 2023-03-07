@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Bg from '../../assets/images/bg.png';
 import Toastify from '../../components/Toastify';
-import useGeralContext from '../../hooks/useGeralContext';
+import useGeral from '../../hooks/useGeral';
 import api from '../../service/api';
 import './styles.css';
 
@@ -27,7 +27,7 @@ export default function Signin() {
     showPassword,
     useNavigate,
     useEffect,
-  } = useGeralContext();
+  } = useGeral();
   const navigate = useNavigate();
 
   useEffect(() => {

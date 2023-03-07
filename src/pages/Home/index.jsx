@@ -1,12 +1,12 @@
 import { Paper, Typography } from '@mui/material';
 import CardHome from '../../components/CardHome';
 import Header from '../../components/Header';
-import useGeralContext from '../../hooks/useGeralContext';
+import useGeral from '../../hooks/useGeral';
 import api from '../../service/api';
 import './styles.css';
 
 function Home() {
-  const { token, useEffect, useNavigate, useState } = useGeralContext();
+  const { token, useEffect, useNavigate, useState } = useGeral();
   const navigate = useNavigate();
   const [localData, setLocalData] = useState(
     new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })

@@ -24,7 +24,7 @@ import * as locales from '@mui/material/locale';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import { Box } from '@mui/system';
 import { useMemo } from 'react';
-import useGeral from '../../hooks/useGeralContext';
+import useGeral from '../../hooks/useGeral';
 import api from '../../service/api';
 import estilos from './styles';
 import './styles.css';

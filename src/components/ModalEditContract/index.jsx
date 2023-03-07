@@ -1,7 +1,8 @@
+import useModalContext from '../../hooks/useModalContext';
+import useGeral from '../../hooks/useGeral';
 import { Box, IconButton, Modal } from '@mui/material';
 import Calculadora from '@mui/icons-material/CalculateRounded';
 import { useEffect, useState } from 'react';
-import useGeral from '../../hooks/useGeralContext';
 import { useLocalStorage } from 'react-use';
 import './styles.css';
 
@@ -13,7 +14,8 @@ const dateFormulario = (date) => {
   return `${a[2]}-${a[1]}-${a[0]}`;
 };
 
-export default function ModalEditContract({ openDialog, setOpenDialog }) {
+export default function ModalEditContract() {
+  const { openEdit, setOpenEdit } = useModalContext();
   const style = {
     position: 'absolute',
     top: '50%',
@@ -41,10 +43,6 @@ export default function ModalEditContract({ openDialog, setOpenDialog }) {
     return;
   };
 
-  const handleClose = () => {
-    setOpenDialog(!openDialog);
-  };
-
   function handleInputChange(prop, value) {
     setForm({ ...localForm, [prop]: value });
     return;
@@ -55,8 +53,7 @@ export default function ModalEditContract({ openDialog, setOpenDialog }) {
   }
 
   function handleHide(nivel) {
-    // console.log(nivel)
-    return 'hide';
+    return nivel === 'ROLE_ADMIN' ? true : false;
   }
 
   const handleCalcularComissao = () => {
@@ -68,6 +65,10 @@ export default function ModalEditContract({ openDialog, setOpenDialog }) {
     setLocalForm({ ...localForm, comissao: calculo / 100 });
     return;
   };
+
+  function handleClose() {
+    setOpenEdit(false);
+  }
 
   useEffect(() => {
     function initForm() {
@@ -99,7 +100,7 @@ export default function ModalEditContract({ openDialog, setOpenDialog }) {
 
   return (
     <Modal
-      open={openDialog}
+      open={openEdit}
       onClose={handleClose}
       style={{
         display: 'flex',

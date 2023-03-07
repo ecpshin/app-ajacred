@@ -1,3 +1,5 @@
+import estilos from './styles';
+import './styles.css';
 import {
   FolderShared,
   PeopleAlt,
@@ -24,9 +26,8 @@ import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useState, useEffect } from 'react';
 import api from '../../service/api';
-import estilos from './styles';
-import './styles.css';
 import { useParams } from 'react-router-dom';
+import { useLocalStorage } from 'react-use';
 
 const estiloSearch = {
   search: { fontSize: '2.45rem', color: '#ff3401' },
@@ -44,7 +45,13 @@ const formatarData = (string) => {
   return new Date(string).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
 };
 
-export default function ListContratos({ token, openNew, setOpenNew }) {
+export default function ListContratos({
+  token,
+  openNew,
+  setOpenNew,
+  openEdit,
+  setOpenEdit,
+}) {
   const [contratos, setContratos] = useState([]);
   const [page, setPage] = useState(0);
   const [query, setQuery] = useState('');
@@ -55,6 +62,7 @@ export default function ListContratos({ token, openNew, setOpenNew }) {
     () => createTheme(theme, locales[locale]),
     [locale, theme]
   );
+  const [contrato, setContrato, removeContrato] = useLocalStorage('contrato');
 
   const { situacao } = useParams();
 
@@ -78,6 +86,12 @@ export default function ListContratos({ token, openNew, setOpenNew }) {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  function handleLoadContrato(obj) {
+    setContrato(obj);
+    setOpenEdit(!openEdit);
+    return;
   }
 
   const handleChangePage = (event, newPage) => {
@@ -155,7 +169,7 @@ export default function ListContratos({ token, openNew, setOpenNew }) {
                 <Search sx={estiloSearch.search} />
               </InputAdornment>
             }
-            onBlur={handleGetContratos}
+            onBlur={() => handleGetContratos()}
           />
         </div>
       </div>
@@ -185,7 +199,9 @@ export default function ListContratos({ token, openNew, setOpenNew }) {
                       return (
                         <TableRow key={item.pid}>
                           <TableCell style={estilos.td}>
-                            <IconButton onClick={handleEditContrato}>
+                            <IconButton
+                              onClick={() => handleLoadContrato(item)}
+                            >
                               <FolderShared
                                 style={{
                                   width: '23px',

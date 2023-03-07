@@ -1,20 +1,78 @@
-import { Badge, Edit } from '@mui/icons-material';
-import { Breadcrumbs, Dialog, Stack, Typography } from '@mui/material';
+import {
+  Badge,
+  Edit,
+  Description,
+  PeopleAlt,
+  Search,
+  FileOpen,
+} from '@mui/icons-material';
+import {
+  Breadcrumbs,
+  Dialog,
+  Button,
+  InputBase,
+  IconButton,
+  Stack,
+  TableContainer,
+  Table,
+  TableRow,
+  TableBody,
+  TableCell,
+  TableHead,
+  TablePagination,
+  Typography,
+  InputAdornment,
+} from '@mui/material';
 import { Link } from 'react-router-dom';
+import * as locales from '@mui/material/locale';
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import EditBancarias from '../../components/Bancarias/Edit';
 import EditFuncionais from '../../components/Funcionais/Edit';
 import Header from '../../components/Header';
 import EditPessoais from '../../components/Pessoais/Edit';
 import EditResidencial from '../../components/Residenciais/EditResidencial';
 import ShowData from '../../components/ShowData';
-import useGeralContext from '../../hooks/useGeralContext';
+import useGeral from '../../hooks/useGeral';
 import Content from './Content';
-import ContratosCliente from '../../components/ContratosCliente';
-import './styles.css';
 import ModalEditContract from '../../components/ModalEditContract';
+import api from '../../service/api';
+import './styles.css';
+import { useEffect } from 'react';
+import { useMemo } from 'react';
+const estilos = {
+  th: {
+    color: '#000',
+    backgroundColor: '#f5f5f5',
+    fontSize: '1.3rem',
+    fontWeight: '600',
+  },
+  td: {
+    fontSize: '1.2em',
+    fontWeight: '500',
+  },
+  pagination: {
+    fontSize: '1.2em',
+    fontWeight: '500',
+  },
+};
 
 const capitalize = (str) => {
   return str.toLowerCase();
+};
+const estiloSearch = {
+  search: { fontSize: '2.45rem', color: '#ff3401' },
+  inputSearch: {
+    width: '400px',
+    height: 'auto',
+    borderRadius: '5px',
+    padding: '8px 10px',
+    marginBottom: '3px',
+    border: '1px solid hsl(12, 100%, 80%)',
+  },
+};
+
+const formatarData = (string) => {
+  return new Date(string).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
 };
 
 export default function Client() {
@@ -30,10 +88,24 @@ export default function Client() {
     useState,
     useNavigate,
     token,
-  } = useGeralContext();
+  } = useGeral();
+  const [openContrato, setOpenContrato] = useState({
+    editar: false,
+    novo: false,
+  });
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [page, setPage] = useState(0);
+  const [query, setQuery] = useState('');
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [modal, setModal] = useState({ title: '', id: '' });
+  const [contratos, setContratos] = useState([]);
+  const [locale, setLocale] = useState('ptBR');
+  const theme = useTheme();
+  const themeWithLocale = useMemo(
+    () => createTheme(theme, locales[locale]),
+    [locale, theme]
+  );
   const navigate = useNavigate();
 
   function handleOpen(title) {
@@ -45,6 +117,61 @@ export default function Client() {
       setOpenDialog(false);
       return;
     }
+  }
+  function handleChangeInput(e) {
+    setQuery(e.target.value);
+    return;
+  }
+  useEffect(() => {
+    function init() {
+      handleGetContratos();
+    }
+    init();
+    setLocale('ptBR');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function handleGetContratos() {
+    try {
+      const response = await api.get(`/clientes/contratos/${cliente.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setContratos(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    return;
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+    return;
+  };
+
+  function handleSearch() {
+    const localContratos = [...contratos];
+    // eslint-disable-next-line array-callback-return
+    const search = localContratos.filter((item) => {
+      if (query === '') {
+        return item;
+      } else if (
+        item.nome.toLowerCase().includes(query.toLowerCase()) ||
+        item.cpf.includes(query) ||
+        item.nome_financeira.toLowerCase().includes(query) ||
+        item.nome_correspondente.toLowerCase().includes(query)
+      ) {
+        return item;
+      }
+    });
+
+    return search.length > 0 ? search : false;
   }
 
   const handleClose = (modalType) => {
@@ -201,13 +328,124 @@ export default function Client() {
           </div>
         </div>
         <div className='card-info-contratos'>
+          <div className='container-home_top'>
+            <div
+              style={{
+                width: 'auto',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'flex-end',
+                justifyContent: 'flex-start',
+                columnGap: '10px',
+              }}
+            >
+              <PeopleAlt sx={{ fontSize: '38px' }} />
+              <Typography
+                variant='h4'
+                sx={{ fontSize: '2.4rem', fontWeight: '500' }}
+              >
+                Contratos
+              </Typography>
+            </div>
+            <div style={{ display: 'flex', columnGap: '15px' }}>
+              <Button
+                className='btn__cadastrar'
+                startIcon={<FileOpen style={{ fontSize: '28px' }} />}
+                onClick={() => setOpenContrato({ ...openContrato, novo: true })}
+              >
+                Novo Contrato
+              </Button>
+              <InputBase
+                label='Pesquisar'
+                size='small'
+                sx={estiloSearch.inputSearch}
+                value={query}
+                onChange={handleChangeInput}
+                endAdornment={
+                  <InputAdornment position='end'>
+                    <Search sx={estiloSearch.search} />
+                  </InputAdornment>
+                }
+                onBlur={() => handleGetContratos()}
+              />
+            </div>
+          </div>
           <div className='card-content-contratos'>
-            <ContratosCliente
-              cliente={cliente}
-              token={token}
-              openDialog={openDialog}
-              setOpenDialog={setOpenDialog}
-            />
+            <ThemeProvider theme={themeWithLocale}>
+              <TableContainer>
+                <Table stickyHeader aria-label='sticky table'>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell style={estilos.th}>#</TableCell>
+                      <TableCell style={estilos.th}>DATA FINAL</TableCell>
+                      <TableCell style={estilos.th}>PRAZO</TableCell>
+                      <TableCell style={estilos.th}>TOTAL</TableCell>
+                      <TableCell style={estilos.th}>PARCELA</TableCell>
+                      <TableCell style={estilos.th}>LIQUIDO</TableCell>
+                      <TableCell style={estilos.th}>FINANCEIRA</TableCell>
+                      <TableCell style={estilos.th}>CORRESPONDENTE</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {handleSearch() &&
+                      handleSearch()
+                        .slice(
+                          page * rowsPerPage,
+                          page * rowsPerPage + rowsPerPage
+                        )
+                        .map((item) => {
+                          return (
+                            <TableRow key={item.pid}>
+                              <TableCell style={estilos.td}>
+                                <IconButton>
+                                  <Description
+                                    style={{
+                                      width: '23px',
+                                      height: 'auto',
+                                      color: '#011557',
+                                      cursor: 'pointer',
+                                    }}
+                                  />
+                                </IconButton>
+                              </TableCell>
+                              <TableCell style={estilos.td}>
+                                {formatarData(item.finalizacao)}
+                              </TableCell>
+                              <TableCell style={estilos.td}>
+                                {item.prazo}
+                              </TableCell>
+                              <TableCell style={estilos.td}>
+                                {item.total}
+                              </TableCell>
+                              <TableCell style={estilos.td}>
+                                {item.parcela}
+                              </TableCell>
+                              <TableCell style={estilos.td}>
+                                {item.liquido}
+                              </TableCell>
+                              <TableCell style={estilos.td}>
+                                {item.nome_financeira}
+                              </TableCell>
+                              <TableCell style={estilos.td}>
+                                {item.nome_correspondente}
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                  </TableBody>
+                </Table>
+                <TablePagination
+                  className='MuiSvgIcon-root1'
+                  rowsPerPageOptions={[5, 10, 15]}
+                  component='div'
+                  count={contratos.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </TableContainer>
+            </ThemeProvider>
           </div>
         </div>
       </main>
