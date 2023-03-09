@@ -1,11 +1,6 @@
 import estilos from './styles';
 import './styles.css';
-import {
-  FolderShared,
-  PeopleAlt,
-  PersonAdd,
-  Search,
-} from '@mui/icons-material';
+import { FolderShared, Description, Search } from '@mui/icons-material';
 import {
   Button,
   IconButton,
@@ -146,7 +141,7 @@ export default function ListContratos({
             columnGap: '10px',
           }}
         >
-          <PeopleAlt sx={{ fontSize: '38px' }} />
+          <Description sx={{ fontSize: '38px' }} />
           <Typography
             variant='h4'
             sx={{ fontSize: '2.4rem', fontWeight: '500' }}
@@ -157,7 +152,7 @@ export default function ListContratos({
         <div style={{ display: 'flex', columnGap: '15px' }}>
           <Button
             className='btn__cadastrar'
-            startIcon={<PersonAdd style={{ fontSize: '28px' }} />}
+            startIcon={<Description style={{ fontSize: '28px' }} />}
             onClick={() => handleIsNew()}
           >
             Novo Contrato
