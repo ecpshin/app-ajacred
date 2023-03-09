@@ -1,12 +1,11 @@
-import ShowData from '../../components/ShowData';
+import ShowData from '../ShowData';
 import useGeral from '../../hooks/useGeral';
 
-const Content = () => {
+function ClientContent() {
   const { formatDate, cliente } = useGeral();
   return (
     <>
       <ShowData label='CPF' dado={cliente.cpf} />
-
       <ShowData label='Data nascimento' dado={formatDate(cliente.nascimento)} />
       <ShowData label='RG' dado={cliente.rg} />
       <ShowData label='Expedição' dado={formatDate(cliente.expedicao)} />
@@ -17,6 +16,6 @@ const Content = () => {
       <ShowData label='Nome do pai' dado={cliente.genitor} />
     </>
   );
-};
+}
 
-export default Content;
+export default ClientContent;

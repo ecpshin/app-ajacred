@@ -26,19 +26,20 @@ import {
 import { Link } from 'react-router-dom';
 import * as locales from '@mui/material/locale';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import Header from '../../components/Header';
 import EditBancarias from '../../components/Bancarias/Edit';
 import EditFuncionais from '../../components/Funcionais/Edit';
-import Header from '../../components/Header';
 import EditPessoais from '../../components/Pessoais/Edit';
 import EditResidencial from '../../components/Residenciais/EditResidencial';
 import ShowData from '../../components/ShowData';
 import useGeral from '../../hooks/useGeral';
-import Content from './Content';
+import ClientContent from '../../components/ClientContent';
 import ModalEditContract from '../../components/ModalEditContract';
 import api from '../../service/api';
 import './styles.css';
 import { useEffect } from 'react';
 import { useMemo } from 'react';
+import { useLocalStorage } from 'react-use';
 const estilos = {
   th: {
     color: '#000',
@@ -89,10 +90,8 @@ export default function Client() {
     useNavigate,
     token,
   } = useGeral();
-  const [openContrato, setOpenContrato] = useState({
-    editar: false,
-    novo: false,
-  });
+  const [isEdit, setIsEdit] = useState(false);
+  const [isNew, setIsNew] = useState(false);
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [page, setPage] = useState(0);
@@ -118,6 +117,34 @@ export default function Client() {
       return;
     }
   }
+  const [local, setLocal, removeLocal] = useLocalStorage('local', {});
+
+  function handleOpenEdit(oneContract) {
+    setIsEdit(true);
+    setLocal(oneContract);
+    console.log('openEdit');
+    return;
+  }
+
+  function handleCloseEdit() {
+    setIsEdit(false);
+    console.log('closeEdit');
+    removeLocal();
+    return;
+  }
+
+  function handleOpenNew() {
+    setIsNew(true);
+    console.log('openNew');
+    return;
+  }
+
+  function handleCloseNew() {
+    console.log('closeNew');
+    setIsNew(false);
+    return;
+  }
+
   function handleChangeInput(e) {
     setQuery(e.target.value);
     return;
@@ -255,7 +282,7 @@ export default function Client() {
                   }}
                 />
               </button>
-              <Content />
+              <ClientContent formatDate={formatarData} cliente={cliente} />
             </div>
             <div className='content__item_minicards'>
               <div className='content__item_minicard'>
@@ -351,7 +378,7 @@ export default function Client() {
               <Button
                 className='btn__cadastrar'
                 startIcon={<FileOpen style={{ fontSize: '28px' }} />}
-                onClick={() => setOpenContrato({ ...openContrato, novo: true })}
+                onClick={() => handleOpenNew()}
               >
                 Novo Contrato
               </Button>
@@ -397,7 +424,9 @@ export default function Client() {
                           return (
                             <TableRow key={item.pid}>
                               <TableCell style={estilos.td}>
-                                <IconButton>
+                                <IconButton
+                                  onClick={() => handleOpenEdit(item)}
+                                >
                                   <Description
                                     style={{
                                       width: '23px',
@@ -474,6 +503,25 @@ export default function Client() {
               bancaria={bancarias}
             />
           )}
+        </Dialog>
+      )}
+      {isEdit && (
+        <Dialog
+          open={isEdit}
+          onClose={() => handleCloseEdit()}
+          title={'EDITAR CONTRATO'}
+        >
+          <h1>EDIT CONTRATO</h1>
+          <p>{local.pid}</p>
+        </Dialog>
+      )}
+      {isNew && (
+        <Dialog
+          open={isNew}
+          onClose={() => handleCloseNew()}
+          title={'NOVO CONTRATO'}
+        >
+          <h1>NEW CONTRATO</h1>
         </Dialog>
       )}
     </div>
