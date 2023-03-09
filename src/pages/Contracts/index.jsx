@@ -1,40 +1,79 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import './styles.css';
+import { Box, Modal } from '@mui/material';
 import Header from '../../components/Header';
 import ListContratos from '../../components/ListContratos';
-import { useState } from 'react';
-import './styles.css';
+import EditContractForm from '../../components/ClientProfile/EditContractForm';
+import NewContractForm from '../../components/ClientProfile/NewContractForm';
 import useGeral from '../../hooks/useGeral';
-import ModalNewContract from '../../components/ModalNewContract';
+import { useState } from 'react';
 
 export default function Contracts() {
   const { token } = useGeral();
-  const [openNew, setOpenNew] = useState(false);
-  const [openEdit, setOpenEdit] = useState(false);
+  const [isNew, setIsNew] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
 
-  function handleClose() {
-    setOpenNew(false);
-    setOpenEdit(false);
+  function handleCloseEdit() {
+    setIsEdit(false);
+    return;
+  }
+
+  function handleCloseNew() {
+    setIsNew(false);
+    return;
+  }
+
+  function handleIsEdit() {
+    setIsEdit(true);
+    return;
+  }
+  function handleIsNew() {
+    setIsNew(true);
+    return;
   }
 
   return (
     <div className='container-home'>
       <Header />
       <main className='container-home_main'>
-        <h1 style={{ fontFamily: 'Montserrat', fontSize: '4.8rem' }}>
-          Contratos
-        </h1>
         <ListContratos
           token={token}
-          openNew={openNew}
-          setOpenNew={setOpenNew}
-          handleClose={handleClose}
+          setIsNew={setIsNew}
+          isnew={isNew}
+          isEdit={isEdit}
+          setIsEdit={setIsEdit}
+          handleIsEdit={handleIsEdit}
+          handleIsNew={handleIsNew}
         />
+        <Modal
+          open={isEdit}
+          onClose={() => handleCloseEdit()}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Box>
+            <EditContractForm />
+          </Box>
+        </Modal>
+        <Modal
+          open={isNew}
+          onClose={() => handleCloseNew()}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Box>
+            <NewContractForm />
+          </Box>
+        </Modal>
       </main>
-      <ModalNewContract
-        openNew={openNew}
-        setOpenDialogNew={setOpenNew}
-        handleClose={handleClose}
-      />
     </div>
   );
 }

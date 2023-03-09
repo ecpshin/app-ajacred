@@ -22,6 +22,8 @@ import {
   TablePagination,
   Typography,
   InputAdornment,
+  Modal,
+  Box,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import * as locales from '@mui/material/locale';
@@ -40,6 +42,8 @@ import './styles.css';
 import { useEffect } from 'react';
 import { useMemo } from 'react';
 import { useLocalStorage } from 'react-use';
+import EditContractForm from '../../components/ClientProfile/EditContractForm';
+import NewContractForm from '../../components/ClientProfile/NewContractForm';
 const estilos = {
   th: {
     color: '#000',
@@ -506,23 +510,40 @@ export default function Client() {
         </Dialog>
       )}
       {isEdit && (
-        <Dialog
+        <Modal
           open={isEdit}
           onClose={() => handleCloseEdit()}
-          title={'EDITAR CONTRATO'}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
-          <h1>EDIT CONTRATO</h1>
-          <p>{local.pid}</p>
-        </Dialog>
+          <Box>
+            <EditContractForm data={local} />
+          </Box>
+        </Modal>
       )}
       {isNew && (
-        <Dialog
+        <Modal
           open={isNew}
           onClose={() => handleCloseNew()}
-          title={'NOVO CONTRATO'}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
-          <h1>NEW CONTRATO</h1>
-        </Dialog>
+          <Box
+            style={{
+              border: '1px solid #000',
+            }}
+          >
+            <NewContractForm cliente={cliente} />
+          </Box>
+        </Modal>
       )}
     </div>
   );

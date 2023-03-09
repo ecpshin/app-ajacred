@@ -47,10 +47,14 @@ const formatarData = (string) => {
 
 export default function ListContratos({
   token,
-  openNew,
-  setOpenNew,
-  openEdit,
-  setOpenEdit,
+  setIsEdit,
+  setIsNew,
+  isNew,
+  isEdit,
+  handleIsEdit,
+  handleIsNew,
+  handleCloseEdit,
+  handleCloseNew,
 }) {
   const [contratos, setContratos] = useState([]);
   const [page, setPage] = useState(0);
@@ -90,7 +94,7 @@ export default function ListContratos({
 
   function handleLoadContrato(obj) {
     setContrato(obj);
-    setOpenEdit(!openEdit);
+    setIsEdit(true);
     return;
   }
 
@@ -154,7 +158,7 @@ export default function ListContratos({
           <Button
             className='btn__cadastrar'
             startIcon={<PersonAdd style={{ fontSize: '28px' }} />}
-            onClick={() => setOpenNew(!openNew)}
+            onClick={() => handleIsNew()}
           >
             Novo Contrato
           </Button>
