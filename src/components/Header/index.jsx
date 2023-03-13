@@ -1,6 +1,5 @@
 import { AccountCircle } from "@mui/icons-material";
 import { Dialog, DialogContent } from "@mui/material";
-import { Link } from "react-router-dom";
 import useGeralContext from "../../hooks/useGeralContext";
 import DrawerMenu from "../DrawerMenu";
 import EditUser from "../EditUser";
@@ -46,12 +45,7 @@ export default function Header() {
 					alt='Keep'
 					onClick={() => setOpenMenu(!openMenu)}
 				/>
-				<nav className='header__navbar'>
-					<Link to={"/home"}>Home</Link>
-					<Link to={"/clientes"}>Clientes</Link>
-					<Link to='/contratos'>Contratos</Link>
-					<Link to='/outros'>Outros</Link>
-				</nav>
+
 				<div
 					className='header__infos'
 					style={{
@@ -63,9 +57,7 @@ export default function Header() {
 					}}
 				>
 					<IconButton onClick={handleOpenModal}>
-						<AccountCircle
-							style={{ fontSize: "5.5rem", color: "#fff" }}
-						/>
+						<AccountCircle className='MuiSvgIcon-root2' />
 					</IconButton>
 					<span
 						style={{

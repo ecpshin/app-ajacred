@@ -1,6 +1,7 @@
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import useGeralContext from "./hooks/useGeralContext";
+import Client from "./pages/Client";
 import Clients from "./pages/Clients";
 import Contracts from "./pages/Contracts";
 import Home from "./pages/Home";
@@ -22,6 +23,7 @@ function AppRoutes() {
 				<Route path='/home' element={<Home />} />
 				<Route path='/contratos' element={<Contracts />} />
 				<Route path='/clientes' element={<Clients />} />
+				<Route path='/cliente' element={<Client />} />
 				<Route path='/outros' element={<Others />} />
 			</Route>
 			<Route path='*' element={<NotFound />} />

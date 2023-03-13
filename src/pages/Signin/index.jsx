@@ -53,12 +53,6 @@ export default function Signin() {
 			const { token, usuario } = response.data;
 			setToken(token);
 			setUser(usuario);
-			// setToast({
-			// 	...toast,
-			// 	open: true,
-			// 	message: "Login efetuado com sucesso!",
-			// 	reason: "success",
-			// });
 			toast.success("Login efetuado com sucesso!", {
 				position: "top-right",
 				autoClose: 2000,
@@ -67,20 +61,13 @@ export default function Signin() {
 				pauseOnHover: true,
 				draggable: true,
 				progress: undefined,
-				fontSize: "1.5rem",
 			});
 			setFormLogin({ email: "", senha: "" });
 
 			setTimeout(() => {
 				navigate("/home");
-			}, 3000);
+			}, 3200);
 		} catch (error) {
-			// setToast({
-			// 	...toast,
-			// 	open: true,
-			// 	message: error.response.data,
-			// 	reason: "error",
-			// });
 			toast.error(error.response.data, {
 				position: "top-right",
 				autoClose: 2000,
@@ -89,8 +76,8 @@ export default function Signin() {
 				pauseOnHover: true,
 				draggable: true,
 				progress: undefined,
-				fontSize: "1.5rem",
 			});
+			setFormLogin({ email: "", senha: "" });
 			setTimeout(() => {
 				navigate("/");
 			}, 3200);
@@ -102,6 +89,7 @@ export default function Signin() {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
 	return (
 		<div className='container-signin'>
 			<div

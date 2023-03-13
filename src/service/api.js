@@ -1,9 +1,11 @@
 import axios from "axios";
 
-export default axios.create({
+const api = axios.create({
 	baseURL: "http://localhost:3334",
+	timeout: 10000,
 	headers: {
 		"Content-Type": "application/json",
 	},
-	timeout: 10000,
 });
+
+export default api;

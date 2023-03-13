@@ -1,9 +1,13 @@
+import Header from "../../components/Header";
 import "./styles.css";
 
 function Client() {
 	return (
-		<div className='client'>
-			<h1>Client</h1>
+		<div className='container-home'>
+			<Header />
+			<main className='container-home_main'>
+				<h1>Cliente</h1>
+			</main>
 		</div>
 	);
 }
