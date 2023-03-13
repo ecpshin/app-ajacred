@@ -1,163 +1,164 @@
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
-	Button,
-	Grid,
-	IconButton,
-	InputAdornment,
-	OutlinedInput,
-	TextField,
-	Typography,
-} from "@mui/material";
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import Bg from "../../assets/images/bg.png";
-import Toastify from "../../components/Toastify";
-import useGeralContext from "../../hooks/useGeralContext";
-import api from "../../service/api";
-import "./styles.css";
+  Button,
+  Grid,
+  IconButton,
+  InputAdornment,
+  OutlinedInput,
+  Typography,
+} from '@mui/material';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import Bg from '../../assets/images/bg.png';
+import Toastify from '../../components/Toastify';
+import useGeral from '../../hooks/useGeral';
+import api from '../../service/api';
+import './styles.css';
 
 export default function Signin() {
-	const {
-		setToken,
-		setUser,
-		useState,
-		showPassword,
-		setShowPassword,
-		//toast,
-		token,
-		//setToast,
-		useNavigate,
-	} = useGeralContext();
-	const navigate = useNavigate();
-	const [formLogin, setFormLogin] = useState({
-		email: "",
-		senha: "",
-	});
+  const {
+    form,
+    setForm,
+    initForms,
+    token,
+    setShowPassword,
+    setToken,
+    setUser,
+    showPassword,
+    useNavigate,
+    useEffect,
+  } = useGeral();
+  const navigate = useNavigate();
 
-	function handleShowPassword() {
-		setShowPassword(!showPassword);
-		return;
-	}
+  useEffect(() => {
+    token && navigate('/home');
+    function init() {
+      setForm(initForms.login);
+    }
+    init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-	const handleOnChange = (prop) => (event) => {
-		setFormLogin({ ...formLogin, [prop]: event.target.value });
-		return;
-	};
+  function handleShowPassword() {
+    setShowPassword(!showPassword);
+    return;
+  }
 
-	const handleOnSubmit = async (event) => {
-		event.preventDefault();
+  const handleOnChange = (prop) => (event) => {
+    setForm({ ...form, [prop]: event.target.value });
+    return;
+  };
 
-		try {
-			const response = await api.post("/login", formLogin);
-			const { token, usuario } = response.data;
-			setToken(token);
-			setUser(usuario);
-			toast.success("Login efetuado com sucesso!", {
-				position: "top-right",
-				autoClose: 2000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-			});
-			setFormLogin({ email: "", senha: "" });
+  const handleOnSubmit = async (event) => {
+    event.preventDefault();
 
-			setTimeout(() => {
-				navigate("/home");
-			}, 3200);
-		} catch (error) {
-			toast.error(error.response.data, {
-				position: "top-right",
-				autoClose: 2000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-			});
-			setFormLogin({ email: "", senha: "" });
-			setTimeout(() => {
-				navigate("/");
-			}, 3200);
-		}
-	};
-	useEffect(() => {
-		if (token) {
-			navigate("/home");
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+    if (!form.email || !form.senha) {
+      toast.error('Preencha todos os campos!', {
+        position: 'top-right',
+        autoClose: 1800,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      });
+      return;
+    }
 
-	return (
-		<div className='container-signin'>
-			<div
-				className='panel-left'
-				style={{ backgroundImage: `url(${Bg})` }}
-			></div>
-			<div className='panel-right'>
-				<Grid
-					container
-					display='flex'
-					flex-direction='column'
-					justifyContent='center'
-				>
-					<Grid item xs={7}>
-						<form onSubmit={handleOnSubmit} className='form_login'>
-							<TextField
-								type='email'
-								value={formLogin.email}
-								onChange={handleOnChange("email")}
-								placeholder='Email*'
-								helperText='Digite seu email'
-								required={true}
-								variant='outlined'
-								sx={{ width: "100%" }}
-							/>
-							<OutlinedInput
-								type={showPassword ? "text" : "password"}
-								value={formLogin.senha}
-								onChange={handleOnChange("senha")}
-								placeholder='Senha*'
-								required={true}
-								sx={{ width: "100%" }}
-								endAdornment={
-									<InputAdornment position='end'>
-										<IconButton
-											onClick={handleShowPassword}
-										>
-											{showPassword ? (
-												<VisibilityOff />
-											) : (
-												<Visibility />
-											)}
-										</IconButton>
-									</InputAdornment>
-								}
-							/>
-							<Button
-								type='submit'
-								className='btn-login'
-								onClick={(e) => handleOnSubmit(e)}
-							>
-								Entrar
-							</Button>
-							<Typography
-								className='cadastrese'
-								alignSelf='center'
-							>
-								Ainda não possui conta?
-								<Link to='/signup' className='cadastrese-link'>
-									Cadastre-se
-								</Link>
-							</Typography>
-						</form>
-					</Grid>
-				</Grid>
-			</div>
-			<Toastify />
-			{/* <Alerts /> */}
-		</div>
-	);
+    try {
+      const response = await api.post('/login', form);
+      const { token: userToken, usuario } = response.data;
+      setToken(userToken);
+      setUser(usuario);
+      toast.success('Login efetuado com sucesso!', {
+        position: 'top-right',
+        autoClose: 1800,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      setForm({ ...initForms.login });
+
+      setTimeout(() => {
+        navigate('/home');
+      }, 3200);
+    } catch (error) {
+      toast.error(error.response.data, {
+        position: 'top-right',
+        autoClose: 1800,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      setForm({ email: '', senha: '' });
+      setTimeout(() => {
+        navigate('/');
+      }, 3200);
+    }
+  };
+
+  return (
+    <div className='container-signin'>
+      <div
+        className='panel-left'
+        style={{ backgroundImage: `url(${Bg})` }}
+      ></div>
+      <div className='panel-right'>
+        <Grid
+          container
+          display='flex'
+          flex-direction='column'
+          justifyContent='center'
+        >
+          <Grid item xs={7}>
+            <form onSubmit={handleOnSubmit} className='form_login'>
+              <OutlinedInput
+                type='email'
+                defaultValue={form.email}
+                onChange={handleOnChange('email')}
+                placeholder='Email'
+                required
+                sx={{ width: '100%' }}
+              />
+              <OutlinedInput
+                type={showPassword ? 'text' : 'password'}
+                defaultValue={form.senha}
+                onChange={handleOnChange('senha')}
+                placeholder='Senha'
+                required
+                sx={{ width: '100%' }}
+                endAdornment={
+                  <InputAdornment position='end'>
+                    <IconButton onClick={handleShowPassword}>
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              <Button
+                type='submit'
+                className='btn-login'
+                onClick={(e) => handleOnSubmit(e)}
+              >
+                Entrar
+              </Button>
+              <Typography className='cadastrese' alignSelf='center'>
+                Ainda não possui conta?
+                <Link to='/signup' className='cadastrese-link'>
+                  Cadastre-se
+                </Link>
+              </Typography>
+            </form>
+          </Grid>
+        </Grid>
+      </div>
+      <Toastify />
+      {/* <Alerts /> */}
+    </div>
+  );
 }

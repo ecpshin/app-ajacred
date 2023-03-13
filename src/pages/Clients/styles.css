@@ -1,22 +1,21 @@
 .container-home_main {
-	width: 100%;
-	height: 100%;
-	margin-top: 90.5px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	row-gap: 10px;
-	overflow: hidden;
-	overflow-y: "scroll";
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 10px;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 .container-home_top {
-	width: 90%;
-	height: auto;
-	margin-top: 10px;
-	display: flex;
-	flex-direction: row;
-	align-items: flex-end;
-	justify-content: space-between;
-	color: #ff3401;
+  width: 90%;
+  height: auto;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  color: #ff3401;
 }
