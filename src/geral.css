@@ -1,45 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@400;600;700&family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Ubuntu:wght@500;700&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
 :root {
-  --success-color: hsla(10, 97%, 58%, 1);
+	--success-color: hsla(10, 97%, 58%, 1);
 }
-
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 html {
-  font-family: 'Poppins', sans-serif;
-  font-size: 62.5%;
+	font-size: 62.5%;
+	font-family: "Ubuntu", sans-serif;
 }
 
 .container {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-}
+	width: 100vw;
+	height: 100vh;
 
-.paper-admin {
-  width: 98%;
-  padding: 35px;
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: row;
-  gap: 15px;
-  border-radius: 10px;
-  border: 1px solid #c3c3c3;
-}
-
-@media (max-width: 768px) {
-  .cards__home {
-    flex-direction: column;
-    row-gap: 15px;
-  }
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }

@@ -1,12 +1,15 @@
+:root {
+	font-size: 62.5%;
+}
 .MuiTreeItem-label {
-  color: rgb(255, 255, 255);
-  font-size: 1.4rem !important;
-  cursor: pointer;
+	color: rgb(255, 255, 255);
+	font-size: 1.4rem !important;
+	cursor: pointer;
 }
 
 .MuiDrawer-paper {
-  display: flex;
-  flex-direction: column;
-  padding: 5px;
-  width: 275px;
+	display: flex;
+	flex-direction: column;
+	padding: 5px;
+	width: 275px;
 }
