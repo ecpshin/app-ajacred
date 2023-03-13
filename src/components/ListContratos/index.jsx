@@ -2,10 +2,11 @@ import estilos from './styles';
 import './styles.css';
 import { FolderShared, Description, Search } from '@mui/icons-material';
 import {
-  Button,
+  Box,
   IconButton,
   InputAdornment,
   InputBase,
+  Modal,
   Paper,
   Table,
   TableBody,
@@ -23,6 +24,8 @@ import { useState, useEffect } from 'react';
 import api from '../../service/api';
 import { useParams } from 'react-router-dom';
 import { useLocalStorage } from 'react-use';
+import useGeral from '../../hooks/useGeral';
+import VisualizarContrato from '../ClientProfile/ShowContract';
 
 const estiloSearch = {
   search: { fontSize: '2.45rem', color: '#ff3401' },
@@ -40,17 +43,9 @@ const formatarData = (string) => {
   return new Date(string).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
 };
 
-export default function ListContratos({
-  token,
-  setIsEdit,
-  setIsNew,
-  isNew,
-  isEdit,
-  handleIsEdit,
-  handleIsNew,
-  handleCloseEdit,
-  handleCloseNew,
-}) {
+export default function ListContratos() {
+  const { token } = useGeral();
+  const [isEdit, setIsEdit] = useState(false);
   const [contratos, setContratos] = useState([]);
   const [page, setPage] = useState(0);
   const [query, setQuery] = useState('');
@@ -61,9 +56,22 @@ export default function ListContratos({
     () => createTheme(theme, locales[locale]),
     [locale, theme]
   );
-  const [contrato, setContrato, removeContrato] = useLocalStorage('contrato');
+  const [contrato, setContrato, removeContrato] = useLocalStorage(
+    'contrato',
+    null
+  );
 
   const { situacao } = useParams();
+
+  function handleCloseEdit() {
+    setIsEdit(false);
+    return;
+  }
+
+  function handleIsEdit() {
+    setIsEdit(true);
+    return;
+  }
 
   useEffect(() => {
     function init() {
@@ -89,7 +97,7 @@ export default function ListContratos({
 
   function handleLoadContrato(obj) {
     setContrato(obj);
-    setIsEdit(true);
+    handleIsEdit();
     return;
   }
 
@@ -146,17 +154,10 @@ export default function ListContratos({
             variant='h4'
             sx={{ fontSize: '2.4rem', fontWeight: '500' }}
           >
-            Contratos
+            Lista de Contratos
           </Typography>
         </div>
         <div style={{ display: 'flex', columnGap: '15px' }}>
-          <Button
-            className='btn__cadastrar'
-            startIcon={<Description style={{ fontSize: '28px' }} />}
-            onClick={() => handleIsNew()}
-          >
-            Novo Contrato
-          </Button>
           <InputBase
             label='Pesquisar'
             size='small'
@@ -248,6 +249,23 @@ export default function ListContratos({
           />
         </ThemeProvider>
       </Paper>
+      <Modal
+        open={isEdit}
+        onClose={() => handleCloseEdit()}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Box>
+          <VisualizarContrato
+            contrato={contrato}
+            removeContrato={removeContrato}
+          />
+        </Box>
+      </Modal>
     </>
   );
 }

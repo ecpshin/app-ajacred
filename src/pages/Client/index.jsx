@@ -109,6 +109,16 @@ export default function Client() {
     () => createTheme(theme, locales[locale]),
     [locale, theme]
   );
+
+  useEffect(() => {
+    function init() {
+      handleGetContratos();
+    }
+    init();
+    setLocale('ptBR');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const navigate = useNavigate();
 
   function handleOpen(title) {
@@ -126,25 +136,21 @@ export default function Client() {
   function handleOpenEdit(oneContract) {
     setIsEdit(true);
     setLocal(oneContract);
-    console.log('openEdit');
     return;
   }
 
   function handleCloseEdit() {
     setIsEdit(false);
-    console.log('closeEdit');
     removeLocal();
     return;
   }
 
   function handleOpenNew() {
     setIsNew(true);
-    console.log('openNew');
     return;
   }
 
   function handleCloseNew() {
-    console.log('closeNew');
     setIsNew(false);
     return;
   }
@@ -153,14 +159,6 @@ export default function Client() {
     setQuery(e.target.value);
     return;
   }
-  useEffect(() => {
-    function init() {
-      handleGetContratos();
-    }
-    init();
-    setLocale('ptBR');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   async function handleGetContratos() {
     try {
@@ -169,6 +167,7 @@ export default function Client() {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response.data);
       setContratos(response.data);
     } catch (error) {
       console.log(error);
@@ -521,7 +520,7 @@ export default function Client() {
           }}
         >
           <Box>
-            <EditContractForm data={local} />
+            <EditContractForm contrato={local} />
           </Box>
         </Modal>
       )}

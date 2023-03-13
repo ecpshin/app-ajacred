@@ -3,17 +3,26 @@ import { IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import useGeral from '../../../hooks/useGeral';
 
-function EditContractForm({ data }) {
-  const { user, initForms, form, setForm } = useGeral({});
-  const [localForm, setLocalForm] = useState({});
+function EditContractForm({ contrato, removeContrato }) {
+  const { user, initForms, form, setForm } = useGeral();
+
+  useEffect(() => {
+    init();
+    return;
+  }, []);
+
+  function init() {
+    setForm(initForms.contrato);
+  }
 
   function handleLevel() {
     return user.nivel === 'ROLE_ADMIN';
   }
 
-  const handleSubmitForm = async () => {
+  async function handleSubmitForm() {
+    window.alert('Submit');
     return;
-  };
+  }
 
   function handleInputChange(prop, value) {
     setForm({ ...form, [prop]: value });
@@ -34,14 +43,6 @@ function EditContractForm({ data }) {
     return;
   };
 
-  useEffect(() => {
-    function init() {
-      setForm(initForms.contrato);
-      setLocalForm({ ...data });
-    }
-    init();
-  }, [initForms.contrato, setForm, data]);
-
   return (
     <form className='form' onSubmit={(e) => handleSubmitForm(e)}>
       <div className='form-control'>
@@ -50,9 +51,9 @@ function EditContractForm({ data }) {
           className='input-form'
           type='text'
           name='nrcontrole'
-          onChange={(e) => handleInputChange(e.target.name, e.target.value)}
-          defaultValue={localForm.nrcontrole}
+          defaultValue={contrato.nrcontrole}
           placeholder={'Geração automática'}
+          disabled
         />
       </div>
 
@@ -62,7 +63,7 @@ function EditContractForm({ data }) {
           className='input-form'
           type='text'
           name='nrcontrato'
-          defaultValue={localForm.nrcontrato}
+          defaultValue={contrato.nrcontrato}
           onChange={(e) => handleInputChange(e.target.name, e.target.value)}
           placeholder='Número do contrato | ADE'
         />
@@ -73,8 +74,8 @@ function EditContractForm({ data }) {
           className='input-form'
           type='date'
           name='digitacao'
-          defaultValue={localForm.digitacao}
-          onChange={(e) => handleInputChange(e.target.name, e.target.value)}
+          defaultValue={contrato.digitacao}
+          disabled
         />
       </div>
       <div className='form-control'>
@@ -83,7 +84,7 @@ function EditContractForm({ data }) {
           className='input-form'
           type='date'
           name='finalizacao'
-          defaultValue={localForm.finalizacao}
+          defaultValue={contrato.finalizacao}
           onChange={(e) => handleInputChange(e.target.name, e.target.value)}
         />
       </div>
@@ -93,7 +94,7 @@ function EditContractForm({ data }) {
           className='input-form'
           type='number'
           name='prazo'
-          defaultValue={localForm.prazo}
+          defaultValue={contrato.prazo}
           onChange={(e) => handleInputChange(e.target.name, e.target.value)}
         />
       </div>
@@ -103,7 +104,7 @@ function EditContractForm({ data }) {
           className='input-form'
           type='number'
           name='total'
-          defaultValue={localForm.total}
+          defaultValue={contrato.total}
           onChange={(e) => handleInputChange(e.target.name, e.target.value)}
         />
       </div>
@@ -113,7 +114,7 @@ function EditContractForm({ data }) {
           className='input-form'
           type='number'
           name='parcela'
-          defaultValue={localForm.parcela}
+          defaultValue={contrato.parcela}
           onChange={(e) => handleInputChange(e.target.name, e.target.value)}
         />
       </div>
@@ -123,7 +124,7 @@ function EditContractForm({ data }) {
           className='input-form'
           type='number'
           name='liquido'
-          value={localForm.liquido}
+          value={contrato.liquido}
           onChange={(e) => handleInputChange(e.target.name, e.target.value)}
         />
       </div>
@@ -134,12 +135,10 @@ function EditContractForm({ data }) {
             <select
               className='select-form'
               name='referencia'
-              defaultValue={localForm.referencia}
+              defaultValue={contrato.referencia}
               onChange={(e) => handleSelectItem(e.target.name, e.target.value)}
             >
-              <option value={localForm.referencia}>
-                {localForm.referencia}
-              </option>
+              <option value={contrato.referencia}>{contrato.referencia}</option>
               <option value='LIQUIDO'>LIQUIDO</option>
               <option value='TOTAL'>TOTAL</option>
             </select>
@@ -149,11 +148,11 @@ function EditContractForm({ data }) {
             <select
               className='select-form'
               name='tabela'
-              defaultValue={localForm.tabela}
+              defaultValue={contrato.tabela}
               onSelect={(e) => handleSelectItem(e.target.name, e.target.value)}
             >
-              <option value={!localForm.tabela && 'NORMAL'}>
-                {!localForm.tabela && 'NORMAL'}
+              <option value={!contrato.tabela && 'NORMAL'}>
+                {!contrato.tabela && 'NORMAL'}
               </option>
               <option value={'NORMAL'}>NORMAL</option>
               <option value={'FLEX'}>FLEX</option>
@@ -166,7 +165,7 @@ function EditContractForm({ data }) {
               type='number'
               name='percentual'
               step={0.1}
-              defaultValue={localForm.percentual}
+              defaultValue={contrato.percentual}
               onChange={(e) => handleInputChange(e.target.name, e.target.value)}
               onBlur={() => handleCalcularComissao()}
             />
@@ -178,12 +177,12 @@ function EditContractForm({ data }) {
                 className='input-form comissao'
                 name='comissao'
                 type='number'
-                defaultValue={localForm.comissao}
+                defaultValue={contrato.comissao}
                 onChange={(e) =>
                   handleInputChange(e.target.name, e.target.value)
                 }
               />
-              <IconButton>
+              <IconButton onClick={handleCalcularComissao}>
                 <CalculateRounded style={{ fontSize: '38px', color: '#667' }} />
               </IconButton>
             </div>
@@ -195,10 +194,10 @@ function EditContractForm({ data }) {
         <select
           className='select-form'
           name='operacao'
-          defaultValue={localForm.operacao}
-          onSelect={(e) => handleSelectItem(e.target.name, e.target.value)}
+          defaultValue={contrato.operacao}
+          onCahnge={(e) => handleSelectItem(e.target.name, e.target.value)}
         >
-          <option value={localForm.operacao}>{localForm.operacao}.</option>
+          <option value={contrato.operacao}>{contrato.operacao}</option>
           <option value={'NOVO'}>NOVO</option>
           <option value={'PORTABILIDADE'}>PORTABILIDADE.</option>
         </select>
@@ -208,11 +207,11 @@ function EditContractForm({ data }) {
         <select
           className='select-form'
           name='financeira'
-          defaultValue={localForm.financeira}
+          defaultValue={contrato.financeira}
           onSelect={(e) => handleSelectItem(e.target.name, e.target.value)}
         >
-          <option value={localForm.nome_financeira}>
-            {localForm.nome_financeira}
+          <option value={contrato.nome_financeira}>
+            {contrato.nome_financeira}
           </option>
           <option value={'OLE'}>APROVADO</option>
           <option value={'ITAU'}>CANCELADO.</option>
@@ -223,11 +222,11 @@ function EditContractForm({ data }) {
         <select
           className='select-form'
           name='correspondente'
-          defaultValue={localForm.nome_correspondente}
+          defaultValue={contrato.nome_correspondente}
           onSelect={(e) => handleSelectItem(e.target.name, e.target.value)}
         >
-          <option value={localForm.nome_correspondente}>
-            {localForm.nome_correspondente}
+          <option value={contrato.nome_correspondente}>
+            {contrato.nome_correspondente}
           </option>
           <option value={'AJACRED'}>AJACRED</option>
           <option value={'MEGA PROMOTORA'}>MEGA PROMOTORA</option>
@@ -239,10 +238,10 @@ function EditContractForm({ data }) {
         <select
           className='select-form'
           name='situacao'
-          defaultValue={localForm.situacao}
+          defaultValue={contrato.situacao}
           onSelect={(e) => handleSelectItem(e.target.name, e.target.value)}
         >
-          <option value={localForm.situacao}>{localForm.situacao}</option>
+          <option value={contrato.situacao}>{contrato.situacao}</option>
           <option value={'APROVADO'}>APROVADO</option>
           <option value={'CANCELADO'}>CANCELADO.</option>
         </select>
@@ -252,10 +251,10 @@ function EditContractForm({ data }) {
         <select
           className='select-form'
           name='orgao'
-          defaultValue={localForm.orgao}
+          defaultValue={contrato.orgao}
           onSelect={(e) => handleSelectItem(e.target.name, e.target.value)}
         >
-          <option value={localForm.nome_orgao}>{localForm.nome_orgao}</option>
+          <option value={contrato.nome_orgao}>{contrato.nome_orgao}</option>
           <option value={'INSS'}>INSS</option>
         </select>
       </div>
@@ -264,7 +263,7 @@ function EditContractForm({ data }) {
         <textarea
           name='observacoes'
           rows={5}
-          defaultValue={!localForm.observacoes && 'Nenhuma'}
+          defaultValue={!contrato.observacoes && 'Nenhuma'}
           onChange={(e) => handleInputChange(e.target.name, e.target.value)}
         ></textarea>
       </div>

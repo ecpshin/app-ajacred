@@ -5,7 +5,7 @@ import Clients from './pages/Clients';
 import Contracts from './pages/Contracts';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
-import Others from './pages/Others';
+//import Others from './pages/Others';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 
@@ -22,7 +22,6 @@ export default function AppRoutes() {
         <Route path='/contratos' element={<Contracts />} />
         <Route path='/clientes' element={<Clients />} />
         <Route path='/cliente' element={<Client />} />
-        <Route path='/outros' element={<Others />} />
       </Route>
       <Route path='*' element={<NotFound />} />
     </Routes>

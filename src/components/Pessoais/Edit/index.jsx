@@ -53,6 +53,8 @@ export default function EditPessoais({ cliente, open, setOpen }) {
 
   const handleClear = () => {
     setPessoais({ ...initForms.cliente });
+    setOpen(!open);
+    return;
   };
 
   const handleSubmit = async (e) => {
@@ -226,7 +228,7 @@ export default function EditPessoais({ cliente, open, setOpen }) {
       </DialogContent>
       <DialogActions>
         <Button
-          onClick={() => setOpen(!open)}
+          onClick={() => handleClear()}
           startIcon={<Cancel />}
           style={{
             width: '150px',

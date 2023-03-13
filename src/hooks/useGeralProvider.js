@@ -67,8 +67,8 @@ export default function useGeralContextProvider() {
       cliente: 1,
       nrcontrole: '',
       nrcontrato: '',
-      digitacao: null,
-      finalizacao: null,
+      digitacao: '',
+      finalizacao: '',
       prazo: 0,
       total: 0,
       parcela: 0,
@@ -118,7 +118,7 @@ export default function useGeralContextProvider() {
   };
 
   const dateFormulario = (date) => {
-    const formatacao = new Date(date).toLocaleDateString('en-US', {
+    const formatacao = new Date(date).toLocaleDateString('pt-br', {
       timeZone: 'UTC',
     });
 
@@ -136,6 +136,13 @@ export default function useGeralContextProvider() {
     message: '',
     reason: '',
   });
+
+  const toCurrencyReal = (value) => {
+    return Number(value).toLocaleString('pt-br', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+  };
 
   return {
     bancarias,
@@ -177,6 +184,7 @@ export default function useGeralContextProvider() {
     removeResidenciais,
     removeToken,
     removeUser,
+    toCurrencyReal,
     useLocalStorage,
     useEffect,
     useLocation,

@@ -37,8 +37,10 @@ export default function ModalEditContract() {
 
   const handleSubmitForm = async (e) => {
     e.preventDefault();
-    console.log(localForm);
-    setContrato(null);
+    if (token) {
+      console.log(localForm, form);
+    }
+    setContrato({});
     removeContrato();
     return;
   };
@@ -82,7 +84,7 @@ export default function ModalEditContract() {
         total: 0,
         parcela: 0,
         liquido: 0,
-        refrencia: '',
+        referencia: '',
         tabela: '',
         percentual: 0,
         comissao: 0,
@@ -96,7 +98,7 @@ export default function ModalEditContract() {
       });
     }
     initForm();
-  }, []);
+  }, [user.id]);
 
   return (
     <Modal
