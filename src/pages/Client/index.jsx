@@ -383,6 +383,7 @@ export default function Client() {
                 className='btn__cadastrar'
                 startIcon={<FileOpen style={{ fontSize: '28px' }} />}
                 onClick={() => handleOpenNew()}
+                title='Clique aqui para novo contrato'
               >
                 Novo Contrato
               </Button>
