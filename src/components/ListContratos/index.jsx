@@ -43,7 +43,7 @@ const formatarData = (string) => {
   return new Date(string).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
 };
 
-export default function ListContratos() {
+export default function ListContratos({ situacao }) {
   const { token } = useGeral();
   const [isEdit, setIsEdit] = useState(false);
   const [contratos, setContratos] = useState([]);
@@ -60,8 +60,6 @@ export default function ListContratos() {
     'contrato',
     null
   );
-
-  const { situacao } = useParams();
 
   function handleCloseEdit() {
     setIsEdit(false);
@@ -83,8 +81,10 @@ export default function ListContratos() {
   }, []);
 
   async function handleGetContratos() {
+    const url =
+      situacao === undefined ? `/contratos` : `/contratos/${situacao}/situacao`;
     try {
-      const response = await api.get(`/contratos?search=${situacao}`, {
+      const response = await api.get(url, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

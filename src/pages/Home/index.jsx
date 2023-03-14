@@ -1,4 +1,5 @@
 import { Paper, Typography } from '@mui/material';
+import { redirect } from 'react-router-dom';
 import CardHome from '../../components/CardHome';
 import Header from '../../components/Header';
 import useGeral from '../../hooks/useGeral';
@@ -7,11 +8,10 @@ import './styles.css';
 
 function Home() {
   const { token, useEffect, useNavigate, useState } = useGeral();
-  const navigate = useNavigate();
   const [localData, setLocalData] = useState(
     new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })
   );
-
+  const navigate = useNavigate();
   const [listaLocal, setListaLocal] = useState([]);
 
   function handleLowCase(string) {
@@ -48,7 +48,7 @@ function Home() {
   }, [localData]);
 
   useEffect(() => {
-    !token && navigate('/');
+    if (!token) return navigate('/signin', 'replace');
     handleGetContratos();
     return;
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -98,7 +98,7 @@ function Home() {
           <div className='cards__home'>
             {listaLocal.map((item) => (
               <CardHome
-                key='1'
+                key={item.situacao}
                 quantidade={item.quantidade}
                 situacao={handleStatus(item.situacao)}
                 estilo={handleLowCase(item.situacao)}

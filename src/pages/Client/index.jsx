@@ -76,9 +76,9 @@ const estiloSearch = {
   },
 };
 
-const formatarData = (string) => {
+function formatarData(string) {
   return new Date(string).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-};
+}
 
 export default function Client() {
   const {
@@ -93,6 +93,7 @@ export default function Client() {
     useState,
     useNavigate,
     token,
+    toCurrencyReal,
   } = useGeral();
   const [isEdit, setIsEdit] = useState(false);
   const [isNew, setIsNew] = useState(false);
@@ -204,8 +205,8 @@ export default function Client() {
     return search.length > 0 ? search : false;
   }
 
-  const handleClose = (modalType) => {
-    if (modalType === 'cliente') {
+  const handleClose = (e) => {
+    if (e.type === 'click') {
       setOpen(!open);
       return;
     }
@@ -447,13 +448,13 @@ export default function Client() {
                                 {item.prazo}
                               </TableCell>
                               <TableCell style={estilos.td}>
-                                {item.total}
+                                {toCurrencyReal(item.total)}
                               </TableCell>
                               <TableCell style={estilos.td}>
-                                {item.parcela}
+                                {toCurrencyReal(item.parcela)}
                               </TableCell>
                               <TableCell style={estilos.td}>
-                                {item.liquido}
+                                {toCurrencyReal(item.liquido)}
                               </TableCell>
                               <TableCell style={estilos.td}>
                                 {item.nome_financeira}
@@ -488,9 +489,13 @@ export default function Client() {
         />
       )}
       {open && (
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={open} onClose={(e) => handleClose(e)}>
           {modal.title === 'Residenciais' ? (
-            <EditResidencial residencial={residenciais} setOpen={setOpen} />
+            <EditResidencial
+              id='residencial'
+              residencial={residenciais}
+              setOpen={setOpen}
+            />
           ) : modal.title === 'Pessoais' ? (
             <EditPessoais open={open} setOpen={setOpen} cliente={cliente} />
           ) : modal.title === 'Funcionais' ? (
@@ -511,7 +516,7 @@ export default function Client() {
       {isEdit && (
         <Modal
           open={isEdit}
-          onClose={() => handleCloseEdit()}
+          onClose={handleCloseEdit}
           style={{
             display: 'flex',
             flexDirection: 'column',

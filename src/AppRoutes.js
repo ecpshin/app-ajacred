@@ -5,6 +5,7 @@ import Clients from './pages/Clients';
 import Contracts from './pages/Contracts';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
+import Situacoes from './pages/Others/Situacoes';
 //import Others from './pages/Others';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
@@ -19,9 +20,11 @@ export default function AppRoutes() {
 
       <Route path='' element={<ProtectedRoutes redirectTo='/' />}>
         <Route path='/home' element={<Home />} />
-        <Route path='/contratos' element={<Contracts />} />
         <Route path='/clientes' element={<Clients />} />
         <Route path='/cliente' element={<Client />} />
+        <Route path='/contratos' element={<Contracts />} />
+        <Route path='/contratos/:situacao/situacao' element={<Contracts />} />
+        <Route path='/outros' element={<Situacoes />} />
       </Route>
       <Route path='*' element={<NotFound />} />
     </Routes>

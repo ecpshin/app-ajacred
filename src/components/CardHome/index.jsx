@@ -31,7 +31,7 @@ export default function CardHome({ quantidade, situacao, estilo }) {
       navigate(`/contratos`, 'refresh');
       return;
     }
-    navigate(`/contratos/${toPage}`, 'refresh');
+    navigate(`/contratos/${toPage}/situacao`, 'refresh');
     return;
   }
 
