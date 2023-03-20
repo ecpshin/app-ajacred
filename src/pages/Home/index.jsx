@@ -23,7 +23,7 @@ function Home() {
 
   async function handleGetContratos() {
     try {
-      const response = await api.get('/contratos/situacoes', {
+      const response = await api.get('/contratos/painel', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
