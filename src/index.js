@@ -1,20 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import { GeralContextProvider } from './contexts/GeralContext';
-import { ModalContextProvider } from './contexts/ModalContext';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
 import './geral.css';
+import { GeralContextProvider } from './contexts/GeralContext';
+import Header from './components/Header';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <GeralContextProvider>
-        <ModalContextProvider>
+      <div className='container-fluid'>
+        <GeralContextProvider>
+          <Header />
           <AppRoutes />
-        </ModalContextProvider>
-      </GeralContextProvider>
+        </GeralContextProvider>
+      </div>
     </BrowserRouter>
   </React.StrictMode>
 );

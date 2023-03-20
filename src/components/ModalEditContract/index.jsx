@@ -1,6 +1,6 @@
 import useModalContext from '../../hooks/useModalContext';
 import useGeral from '../../hooks/useGeral';
-import { Box, IconButton, Modal } from '@mui/material';
+import { IconButton, Dialog, DialogContent } from '@mui/material';
 import Calculadora from '@mui/icons-material/CalculateRounded';
 import { useEffect, useState } from 'react';
 import { useLocalStorage } from 'react-use';
@@ -16,21 +16,9 @@ const dateFormulario = (date) => {
 
 export default function ModalEditContract() {
   const { openEdit, setOpenEdit } = useModalContext();
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '900px',
-    backgroundColor: '#fff',
-    padding: '10px',
-    border: '1px solid transparent',
-    borderRadius: '10px',
-    overflow: 'hidden',
-    overflowY: 'scroll',
-  };
-  const [contrato, setContrato, removeContrato] = useLocalStorage('contrato');
+  const style = {};
 
+  const [contrato, setContrato, removeContrato] = useLocalStorage('contrato');
   const { token, user } = useGeral();
   const [form, setForm] = useState({});
   const [localForm, setLocalForm] = useState({ ...contrato });
@@ -101,7 +89,7 @@ export default function ModalEditContract() {
   }, [user.id]);
 
   return (
-    <Modal
+    <Dialog
       open={openEdit}
       onClose={handleClose}
       style={{
@@ -111,10 +99,10 @@ export default function ModalEditContract() {
         alignItems: 'center',
       }}
     >
-      <Box style={style}>
+      <DialogContent>
         <h1 className='box-title'>Editar Contrato</h1>
-        <form className='form' onSubmit={(e) => handleSubmitForm(e)}>
-          <div className='form-control'>
+        <form className='aja-edit-form' onSubmit={(e) => handleSubmitForm(e)}>
+          <div className='aja-form-control'>
             <label className='input-label'>Controle</label>
             <input
               className='input-form'
@@ -126,7 +114,7 @@ export default function ModalEditContract() {
             />
           </div>
 
-          <div className='form-control'>
+          <div className='aja-form-control'>
             <label className='input-label'>Contrato</label>
             <input
               className='input-form'
@@ -137,7 +125,7 @@ export default function ModalEditContract() {
               placeholder='Número do contrato | ADE'
             />
           </div>
-          <div className='form-control'>
+          <div className='aja-form-control'>
             <label className='input-label'>Data digitação</label>
             <input
               className='input-form'
@@ -147,7 +135,7 @@ export default function ModalEditContract() {
               onChange={(e) => handleInputChange(e.target.name, e.target.value)}
             />
           </div>
-          <div className='form-control'>
+          <div className='aja-form-control'>
             <label className='input-label'>Data Finalização</label>
             <input
               className='input-form'
@@ -157,7 +145,7 @@ export default function ModalEditContract() {
               onChange={(e) => handleInputChange(e.target.name, e.target.value)}
             />
           </div>
-          <div className='form-control'>
+          <div className='aja-form-control'>
             <label className='input-label'>Prazo</label>
             <input
               className='input-form'
@@ -167,7 +155,7 @@ export default function ModalEditContract() {
               onChange={(e) => handleInputChange(e.target.name, e.target.value)}
             />
           </div>
-          <div className='form-control'>
+          <div className='aja-form-control'>
             <label className='input-label'>Total</label>
             <input
               className='input-form'
@@ -177,7 +165,7 @@ export default function ModalEditContract() {
               onChange={(e) => handleInputChange(e.target.name, e.target.value)}
             />
           </div>
-          <div className='form-control'>
+          <div className='aja-form-control'>
             <label className='input-label'>Parcela</label>
             <input
               className='input-form'
@@ -187,7 +175,7 @@ export default function ModalEditContract() {
               onChange={(e) => handleInputChange(e.target.name, e.target.value)}
             />
           </div>
-          <div className='form-control'>
+          <div className='aja-form-control'>
             <label className='input-label'>Líquido</label>
             <input
               className='input-form'
@@ -197,7 +185,7 @@ export default function ModalEditContract() {
               onChange={(e) => handleInputChange(e.target.name, e.target.value)}
             />
           </div>
-          <div className='form-control'>
+          <div className='aja-form-control'>
             <label className='input-label'>Referência</label>
             <select
               className='select-form'
@@ -210,7 +198,7 @@ export default function ModalEditContract() {
               <option value='TOTAL'>TOTAL</option>
             </select>
           </div>
-          <div className='form-control'>
+          <div className='aja-form-control'>
             <label className='input-label'>Tabela</label>
             <select
               className='select-form'
@@ -223,7 +211,7 @@ export default function ModalEditContract() {
             </select>
           </div>
 
-          <div className={`form-control ${handleHide(user.nivel)}`}>
+          <div className={`aja-form-control ${handleHide(user.nivel)}`}>
             <label className='input-label'>Percentual</label>
             <input
               className='input-form'
@@ -236,7 +224,9 @@ export default function ModalEditContract() {
             />
           </div>
           <div
-            className={`form-control ${user.nivel === 'ROLE_ADMIN' && 'hide'}`}
+            className={`aja-form-control ${
+              user.nivel === 'ROLE_ADMIN' && 'hide'
+            }`}
           >
             <label className='input-label'>Comissão</label>
             <div className='form-group'>
@@ -254,7 +244,7 @@ export default function ModalEditContract() {
               </IconButton>
             </div>
           </div>
-          <div className='form-control'>
+          <div className='aja-form-control'>
             <label className='input-label'>Operação</label>
             <select
               className='select-form'
@@ -266,7 +256,7 @@ export default function ModalEditContract() {
               <option value={'PORTABILIDADE'}>PORTABILIDADE.</option>
             </select>
           </div>
-          <div className='form-control'>
+          <div className='aja-form-control'>
             <label className='input-label'>Financeira</label>
             <select
               className='select-form'
@@ -278,7 +268,7 @@ export default function ModalEditContract() {
               <option value={'ITAU'}>CANCELADO.</option>
             </select>
           </div>
-          <div className='form-control'>
+          <div className='aja-form-control'>
             <label className='input-label'>Correspondente</label>
             <select className='select-form' name='correspondente'>
               <option value={''}>Selecione...</option>
@@ -287,7 +277,7 @@ export default function ModalEditContract() {
               <option value={'BEVICRED'}>BEVICRED</option>
             </select>
           </div>
-          <div className='form-control'>
+          <div className='aja-form-control'>
             <label className='input-label'>Situação</label>
             <select className='select-form' name='situacao'>
               <option value={''}>Selecione...</option>
@@ -295,14 +285,14 @@ export default function ModalEditContract() {
               <option value={'CANCELADO'}>CANCELADO.</option>
             </select>
           </div>
-          <div className='form-control'>
+          <div className='aja-form-control'>
             <label className='input-label'>Órgão</label>
             <select className='select-form' name='orgao'>
               <option value={''}>Selecione...</option>
               <option value={'INSS'}>INSS</option>
             </select>
           </div>
-          <div className='form-control'>
+          <div className='aja-form-control'>
             <label className='input-label'>Observações</label>
             <textarea
               name='observacoes'
@@ -312,7 +302,7 @@ export default function ModalEditContract() {
               {localForm.observacoes}
             </textarea>
           </div>
-          <div className='form-control'>
+          <div className='aja-form-control'>
             <button
               type='submit'
               className='form-button success'
@@ -325,7 +315,7 @@ export default function ModalEditContract() {
             </button>
           </div>
         </form>
-      </Box>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }

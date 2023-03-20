@@ -1,3 +1,4 @@
+import './styles.css';
 import { Button, IconButton } from '@mui/material';
 import {
   ArrowCircleRight,
@@ -8,22 +9,21 @@ import {
   PendingActions,
   Storage,
 } from '@mui/icons-material';
-import './styles.css';
 import { useNavigate } from 'react-router-dom';
 
 export default function CardHome({ quantidade, situacao, estilo }) {
   const navigate = useNavigate();
 
-  function renderContentStyle(ecss) {
-    return `card-home card-home-${ecss}`;
-  }
-
   function renderHeaderStyle(ecss) {
-    return `card-header ${ecss}`;
+    return `card-home-header ${ecss}`;
   }
 
   function renderFooterStyle(ecss) {
-    return `card-footer ${ecss}`;
+    return `card-home-footer ${ecss}`;
+  }
+
+  function renderContentStyle(ecss) {
+    return `card-home card-home-${ecss}`;
   }
 
   function handleGoToPage(toPage) {
@@ -38,9 +38,9 @@ export default function CardHome({ quantidade, situacao, estilo }) {
   return (
     <div className={renderContentStyle(estilo)}>
       <div className={renderHeaderStyle(estilo)}>
-        <h3 className='card-title'>{situacao}</h3>
+        <h3 className='card-home-title'>{situacao}</h3>
       </div>
-      <div className='card-content'>
+      <div className='card-home-content'>
         <div className='card__icon'>
           <IconButton>
             {estilo === 'cancelado' ? (
@@ -89,7 +89,7 @@ export default function CardHome({ quantidade, situacao, estilo }) {
           </IconButton>
         </div>
         <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontSize: '4.2rem' }}>{quantidade}</h3>
+          <h3 style={{ fontSize: '3.8rem' }}>{quantidade}</h3>
         </div>
       </div>
       <div className={renderFooterStyle(estilo)}>
@@ -97,8 +97,8 @@ export default function CardHome({ quantidade, situacao, estilo }) {
           endIcon={<ArrowCircleRight />}
           style={{
             color: 'white',
-            fontWeight: 'bold',
-            fontSize: '1.4rem',
+            fontWeight: '700',
+            fontSize: '1.2rem',
           }}
           onClick={() => handleGoToPage(situacao)}
         >

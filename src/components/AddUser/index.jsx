@@ -35,7 +35,6 @@ export default function AddUser() {
         email,
         senha,
         nivel: 'ROLE_USER',
-        avatar: 'man.png',
       });
 
       setToast({

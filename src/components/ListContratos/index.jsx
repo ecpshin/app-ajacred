@@ -22,7 +22,6 @@ import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useState, useEffect } from 'react';
 import api from '../../service/api';
-import { useParams } from 'react-router-dom';
 import { useLocalStorage } from 'react-use';
 import useGeral from '../../hooks/useGeral';
 import VisualizarContrato from '../ClientProfile/ShowContract';
@@ -178,7 +177,7 @@ export default function ListContratos({ situacao }) {
           <TableContainer sx={{ maxHeight: 400 }}>
             <Table stickyHeader aria-label='sticky table'>
               <TableHead>
-                <TableRow>
+                <TableRow style={estilos.tr}>
                   <TableCell style={estilos.th}>#</TableCell>
                   <TableCell style={estilos.th}>DATA FINAL</TableCell>
                   <TableCell style={estilos.th}>NOME</TableCell>
@@ -191,7 +190,7 @@ export default function ListContratos({ situacao }) {
                   <TableCell style={estilos.th}>CORRESPONDENTE</TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>
+              <TableBody style={{ fontSize: '1.4rem' }}>
                 {handleSearch() &&
                   handleSearch()
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -204,7 +203,7 @@ export default function ListContratos({ situacao }) {
                             >
                               <FolderShared
                                 style={{
-                                  width: '23px',
+                                  width: '2.2rem',
                                   height: 'auto',
                                   color: '#011557',
                                   cursor: 'pointer',

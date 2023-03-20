@@ -10,6 +10,7 @@ import {
   DialogContent,
   IconButton,
   InputAdornment,
+  OutlinedInput,
   Paper,
   Table,
   TableBody,
@@ -165,24 +166,24 @@ export default function ListClients() {
           >
             Adicionar Cliente
           </Button>
-          <input
-            label='Pesquisar'
+          <OutlinedInput
+            placeholder='Pesquisar'
             size='small'
             sx={estiloSearch.inputSearch}
             value={query}
             onChange={handleChangeInput}
+            onBlur={handleGetClients}
             endAdornment={
               <InputAdornment position='end'>
                 <Search sx={estiloSearch.search} />
               </InputAdornment>
             }
-            onBlur={handleGetClients}
           />
         </div>
       </div>
       <Paper sx={{ width: '90%', overflow: 'hidden' }}>
         <ThemeProvider theme={themeWithLocale}>
-          <TableContainer sx={{ maxHeight: 400 }}>
+          <TableContainer sx={{ maxHeight: 400, fontSize: '1.2rem' }}>
             <Table stickyHeader aria-label='sticky table'>
               <TableHead>
                 <TableRow>
@@ -318,7 +319,7 @@ export default function ListClients() {
               <label className='input-label' htmlFor='observacoes'>
                 Observações
               </label>
-              <textarea rows={5}>{''}</textarea>
+              <textarea rows={5} defaultValue={''}></textarea>
             </div>
           </form>
         </DialogContent>

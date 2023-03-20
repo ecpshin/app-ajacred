@@ -5,10 +5,11 @@ import Clients from './pages/Clients';
 import Contracts from './pages/Contracts';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
-import Situacoes from './pages/Others/Situacoes';
-//import Others from './pages/Others';
+import Financeiras from './pages/Financeiras';
+import Situacoes from './pages/Situacoes';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
+import Header from './components/Header';
 
 export default function AppRoutes() {
   return (
@@ -17,14 +18,14 @@ export default function AppRoutes() {
         <Route path='/' element={<Signin />} />
         <Route path='/signup' element={<Signup />} />
       </Route>
-
       <Route path='' element={<ProtectedRoutes redirectTo='/' />}>
         <Route path='/home' element={<Home />} />
         <Route path='/clientes' element={<Clients />} />
         <Route path='/cliente' element={<Client />} />
         <Route path='/contratos' element={<Contracts />} />
         <Route path='/contratos/:situacao/situacao' element={<Contracts />} />
-        <Route path='/outros' element={<Situacoes />} />
+        <Route path='/situacoes' element={<Situacoes />} />
+        <Route path='/financeiras' element={<Financeiras />} />
       </Route>
       <Route path='*' element={<NotFound />} />
     </Routes>

@@ -158,7 +158,6 @@ export default function Signin() {
         </Grid>
       </div>
       <Toastify />
-      {/* <Alerts /> */}
     </div>
   );
 }

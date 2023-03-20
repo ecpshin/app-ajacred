@@ -1,5 +1,4 @@
 import { Paper, Typography } from '@mui/material';
-import { redirect } from 'react-router-dom';
 import CardHome from '../../components/CardHome';
 import Header from '../../components/Header';
 import useGeral from '../../hooks/useGeral';
@@ -35,6 +34,7 @@ function Home() {
       console.log(error.response.data.message);
     }
   }
+
   function handleRefreshDate() {
     setLocalData(
       new Date().toLocaleString('pt-BR', {
@@ -56,7 +56,6 @@ function Home() {
 
   return (
     <div className='container__home'>
-      <Header />
       <main className='main__content'>
         <Paper
           style={{
@@ -85,7 +84,7 @@ function Home() {
             variant='h1'
             component='h4'
             sx={{
-              fontSize: '1.6rem',
+              fontSize: '2rem',
               color: '#000',
               fontWeight: '400',
             }}

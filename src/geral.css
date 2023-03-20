@@ -1,7 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@400;600;700&family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Ubuntu:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=Open+Sans:wght@400;600;700&family=Roboto+Condensed:wght@400;700&family=Roboto:wght@400;500;700&family=Source+Sans+Pro:wght@400;600&family=Ubuntu+Condensed&family=Ubuntu:wght@300;400;500;700&display=swap');
 
 :root {
+  --ajacred-orange: hsla(21, 100%, 49%, 1);
   --success-color: hsla(10, 97%, 58%, 1);
+  --success-fade: hsla(21, 88%, 61%, 0.644);
+  --cancel-color: hsl(0, 0%, 80%);
 }
 
 * {
@@ -15,13 +18,22 @@ html {
   font-size: 62.5%;
 }
 
-.container {
+.container-fluid {
   width: 100vw;
   height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100vw;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  overflow: hidden;
 }
 
 .paper-admin {
@@ -35,6 +47,26 @@ html {
   gap: 15px;
   border-radius: 10px;
   border: 1px solid #c3c3c3;
+}
+
+.btn-classic {
+  all: unset;
+  cursor: pointer;
+  min-width: 100px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #fff !important;
+  background-color: var(--success-fade) !important;
+  border-radius: 8px;
+}
+
+.btn-classic:hover {
+  background-color: var(--ajacred-orange) !important;
 }
 
 @media (max-width: 768px) {

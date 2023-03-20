@@ -1,28 +1,29 @@
 .card-home {
-  width: 235px;
+  width: 180px;
   padding: 5px;
-  box-shadow: 1px 2px 30px #181818 !important;
+  box-shadow: 1px 2px 18px #181818 !important;
   border: 1px solid transparent;
   border-radius: 10px;
 }
 
-.card-header {
+.card-home-header {
   width: 100%;
   display: flex;
   border-radius: 5px;
 }
 
-.card-footer {
+.card-home-footer {
   width: 100%;
   display: flex;
   border-radius: 5px;
 }
 
-.card-title {
+.card-home-title {
   width: 100%;
   padding: 8px;
-  font-size: 1.8rem;
-  color: #bebebe;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #eeeeee;
 
   display: flex;
   flex-direction: row;
@@ -30,7 +31,7 @@
   align-items: center;
 }
 
-.card-content {
+.card-home-content {
   width: 98%;
   display: flex;
   flex-direction: column;
@@ -58,6 +59,7 @@
 .vencido {
   background-color: #696969;
 }
+
 .total {
   background-color: #696969;
 }

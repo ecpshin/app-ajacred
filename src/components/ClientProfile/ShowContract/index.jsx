@@ -1,13 +1,61 @@
 import './styles.css';
+import api from '../../../service/api';
+import {
+  BtnPremium,
+  LabelCustom,
+  OptionCustom,
+  SelectCustom,
+  TextAreaCustom,
+} from '../../../components/styleds/buttons';
 import useGeral from '../../../hooks/useGeral';
+
 import PersonPinIcon from '@mui/icons-material/PersonPin';
+import { useEffect, useState, useReducer } from 'react';
 
 function content(string) {
   return !string || string.length === 0 ? 'Sem observações' : string;
 }
 
 function VisualizarContrato({ contrato, removeContrato }) {
-  const { dateFormulario, toCurrencyReal } = useGeral();
+  const { dateFormulario, toCurrencyReal, token } = useGeral();
+  const [form, setForm] = useState({ situacao: '', observacoes: '' });
+  const [listaSituacoes, setListaSituacoes] = useState([]);
+  const [reducerValue, forceReducer] = useReducer((x) => x + 1, 0);
+
+  useEffect(() => {
+    handleListaSituacoes();
+    return;
+  }, [listaSituacoes, reducerValue]);
+
+  const handleChangeData = (prop, value) => {
+    setForm({ ...form, [prop]: value });
+    return;
+  };
+
+  const handleListaSituacoes = async () => {
+    try {
+      const response = await api.get('/situacoes');
+      setListaSituacoes(response.data);
+      return;
+    } catch (err) {
+      console.error(err.response.message);
+    }
+  };
+
+  const handleSubmit = async (pid) => {
+    try {
+      const response = await api.patch(`/contratos/${pid}`, form, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      handleListaSituacoes();
+      forceReducer();
+      return;
+    } catch (error) {}
+    return;
+  };
+
   return (
     <div className='show-contract'>
       <div className='fields-row'>
@@ -24,21 +72,21 @@ function VisualizarContrato({ contrato, removeContrato }) {
       </div>
       <div className='fields-row'>
         <div className='field-control'>
-          <label className='field-label'>Controle</label>
+          <LabelCustom>Controle</LabelCustom>
           <span className='fields'>{contrato.nrcontrole}</span>
         </div>
         <div className='field-control'>
-          <label className='field-label'>Contrato</label>
+          <LabelCustom>Contrato</LabelCustom>
           <span className='fields'>{contrato.nrcontrato}</span>
         </div>
         <div className='field-control'>
-          <label className='field-label'>Digitado</label>
+          <LabelCustom>Digitado</LabelCustom>
           <span className='fields field-date'>
             {dateFormulario(contrato.digitacao)}
           </span>
         </div>
         <div className='field-control'>
-          <label className='field-label'>Finalizado</label>
+          <LabelCustom>Finalizado</LabelCustom>
           <span className='fields field-date'>
             {dateFormulario(contrato.finalizacao)}
           </span>
@@ -46,23 +94,23 @@ function VisualizarContrato({ contrato, removeContrato }) {
       </div>
       <div className='fields-row'>
         <div className='field-control'>
-          <label className='field-label'>Prazo</label>
+          <LabelCustom>Prazo</LabelCustom>
           <span className='fields field-valor'>{contrato.prazo}</span>
         </div>
         <div className='field-control'>
-          <label className='field-label'>Total</label>
+          <LabelCustom>Total</LabelCustom>
           <span className='fields field-valor'>
             {toCurrencyReal(contrato.total)}
           </span>
         </div>
         <div className='field-control'>
-          <label className='field-label'>Parcela</label>
+          <LabelCustom>Parcela</LabelCustom>
           <span className='fields field-valor'>
             {toCurrencyReal(contrato.parcela)}
           </span>
         </div>
         <div className='field-control'>
-          <label className='field-label'>Líquido</label>
+          <LabelCustom>Líquido</LabelCustom>
           <span className='fields field-valor'>
             {toCurrencyReal(contrato.liquido)}
           </span>
@@ -70,36 +118,55 @@ function VisualizarContrato({ contrato, removeContrato }) {
       </div>
       <div className='fields-row'>
         <div className='field-control'>
-          <label className='field-label'>Operação</label>
+          <LabelCustom>Operação</LabelCustom>
           <span className='fields'>{contrato.operacao}</span>
         </div>
         <div className='field-control'>
-          <label className='field-label'>Financeira</label>
+          <LabelCustom>Financeira</LabelCustom>
           <span className='fields'>{contrato.nome_financeira}</span>
         </div>
       </div>
       <div className='fields-row'>
         <div className='field-control'>
-          <label className='field-label'>Correspondente</label>
-          <span className='fields'>{contrato.nome_correspondente} </span>
+          <LabelCustom>Correspondente</LabelCustom>
+          <span className='fields'>{contrato.nome_correspondente}</span>
         </div>
         <div className='field-control'>
-          <label className='field-label'>Situação</label>
-          <span className='fields'>{contrato.situacao}</span>
+          <LabelCustom>Situação*</LabelCustom>
+          <SelectCustom
+            name='situacao'
+            defaultValue={contrato.situacao}
+            onChange={(e) => handleChangeData('situacao', e.target.value)}
+          >
+            <OptionCustom value='{contrato.situacao}'>
+              {contrato.situacao}
+            </OptionCustom>
+            {listaSituacoes.map((item) => (
+              <OptionCustom key={item.id} value={item.id}>
+                {item.descricao}
+              </OptionCustom>
+            ))}
+          </SelectCustom>
         </div>
       </div>
-      <div className='field-control'>
-        <label className='field-label'>Órgão</label>
-        <span className='fields'>{contrato.nome_orgao} </span>
+      <div className='fields-row'>
+        <div className='field-control'>
+          <LabelCustom>Órgão</LabelCustom>
+          <span className='fields'>{contrato.nome_orgao} </span>
+        </div>
+        <div className='field-control'>
+          <LabelCustom>Observações*</LabelCustom>
+          <TextAreaCustom
+            className='fields'
+            defaultValue={content(contrato.observacoes)}
+            onChange={(e) => handleChangeData('observacoes', e.target.value)}
+          ></TextAreaCustom>
+        </div>
       </div>
-      <div className='field-control'>
-        <label className='field-label'>Observações</label>
-        <textarea
-          className='fields'
-          value={content(contrato.observacoes)}
-          style={{ background: 'none' }}
-          disabled
-        ></textarea>
+      <div className='fields-row'>
+        <BtnPremium type='submit' onClick={() => handleSubmit(contrato.pid)}>
+          Atualizar
+        </BtnPremium>
       </div>
     </div>
   );

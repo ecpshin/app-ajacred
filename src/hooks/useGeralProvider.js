@@ -9,6 +9,8 @@ export default function useGeralContextProvider() {
   const [showPassword, setShowPassword] = useState(false);
   const [search, setSearch] = useState('');
   const [clients, setClients] = useState([]);
+  const [forms, setForms] = useState({});
+  const [form, setForm] = useState({});
   const [token, setToken, removeToken] = useLocalStorage('token', '');
   const [user, setUser, removeUser] = useLocalStorage('user');
   const [cliente, setCliente, removeCliente] = useLocalStorage('cliente');
@@ -18,6 +20,7 @@ export default function useGeralContextProvider() {
     useLocalStorage('bancarias');
   const [residenciais, setResidenciais, removeResidenciais] =
     useLocalStorage('residenciais');
+
   const niveis = [
     {
       id: 1,
@@ -32,6 +35,7 @@ export default function useGeralContextProvider() {
       level: 'ROLE_BLOCK',
     },
   ];
+
   const initForms = {
     cliente: {
       nome: '',
@@ -106,9 +110,16 @@ export default function useGeralContextProvider() {
       email: '',
       senha: '',
     },
+    financeiras: {
+      id: 0,
+      nome: '',
+      tipo: 'BANCO',
+    },
+    situacoes: {
+      id: 0,
+      descricao: '',
+    },
   };
-
-  const [form, setForm] = useState({});
 
   const handleChangeCliente = (prop) => (event) => {
     setForm({
@@ -149,6 +160,8 @@ export default function useGeralContextProvider() {
     cliente,
     clients,
     form,
+    forms,
+    setForms,
     funcionais,
     initForms,
     niveis,
@@ -188,7 +201,7 @@ export default function useGeralContextProvider() {
     useLocalStorage,
     useEffect,
     useLocation,
-    useNavigate,
     useState,
+    useNavigate,
   };
 }

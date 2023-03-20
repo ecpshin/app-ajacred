@@ -1,8 +1,8 @@
+import './styles.css';
 import {
   Badge,
   Edit,
   Description,
-  PeopleAlt,
   Search,
   FileOpen,
 } from '@mui/icons-material';
@@ -36,9 +36,8 @@ import EditResidencial from '../../components/Residenciais/EditResidencial';
 import ShowData from '../../components/ShowData';
 import useGeral from '../../hooks/useGeral';
 import ClientContent from '../../components/ClientContent';
-import ModalEditContract from '../../components/ModalEditContract';
+//import ModalEditContract from '../../components/ModalEditContract';
 import api from '../../service/api';
-import './styles.css';
 import { useEffect } from 'react';
 import { useMemo } from 'react';
 import { useLocalStorage } from 'react-use';
@@ -52,7 +51,7 @@ const estilos = {
     fontWeight: '600',
   },
   td: {
-    fontSize: '1.2em',
+    fontSize: '1.2rem',
     fontWeight: '500',
   },
   pagination: {
@@ -223,7 +222,6 @@ export default function Client() {
 
   return (
     <div className='container-cliente'>
-      <Header />
       <main className='container-main'>
         <Stack
           spacing={2}
@@ -370,7 +368,7 @@ export default function Client() {
                 columnGap: '10px',
               }}
             >
-              <PeopleAlt sx={{ fontSize: '38px' }} />
+              <FileOpen sx={{ fontSize: '38px' }} />
               <Typography
                 variant='h4'
                 sx={{ fontSize: '2.4rem', fontWeight: '500' }}
@@ -383,6 +381,7 @@ export default function Client() {
                 className='btn__cadastrar'
                 startIcon={<FileOpen style={{ fontSize: '28px' }} />}
                 onClick={() => handleOpenNew()}
+                title='Clique aqui para novo contrato'
               >
                 Novo Contrato
               </Button>
@@ -482,12 +481,12 @@ export default function Client() {
           </div>
         </div>
       </main>
-      {openDialog && (
+      {/* {openDialog && (
         <ModalEditContract
           openDialog={openDialog}
           setOpenDialog={setOpenDialog}
         />
-      )}
+      )} */}
       {open && (
         <Dialog open={open} onClose={(e) => handleClose(e)}>
           {modal.title === 'Residenciais' ? (
@@ -540,11 +539,7 @@ export default function Client() {
             alignItems: 'center',
           }}
         >
-          <Box
-            style={{
-              border: '1px solid #000',
-            }}
-          >
+          <Box>
             <NewContractForm cliente={cliente} />
           </Box>
         </Modal>
