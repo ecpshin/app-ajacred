@@ -80,7 +80,7 @@ export default function Signin() {
         progress: undefined,
       });
 
-      setForm({ ...initForms.login });
+      setForm({ email: '', senha: '' });
 
       setTimeout(() => {
         navigate('/home');
@@ -124,7 +124,7 @@ export default function Signin() {
             >
               <OutlinedInput
                 type='email'
-                defaultValue={form.email}
+                value={form.email ? form.email : ''}
                 onChange={handleOnChange('email')}
                 placeholder='Email'
                 required
@@ -132,7 +132,7 @@ export default function Signin() {
               />
               <OutlinedInput
                 type={showPassword ? 'text' : 'password'}
-                defaultValue={form.senha}
+                value={form.senha ? form.senha : ''}
                 onChange={handleOnChange('senha')}
                 placeholder='Senha'
                 required

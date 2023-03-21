@@ -208,6 +208,7 @@ function Financeiras() {
         progress: undefined,
         theme: 'light',
       });
+      clearForm();
     }
   };
 

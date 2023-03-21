@@ -9,6 +9,7 @@ import Financeiras from './pages/Financeiras';
 import Situacoes from './pages/Situacoes';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
+import Tipos from './pages/Others/Tipos';
 
 export default function AppRoutes() {
   return (
@@ -25,6 +26,9 @@ export default function AppRoutes() {
         <Route path='/contratos/:situacao/situacao' element={<Contracts />} />
         <Route path='/situacoes' element={<Situacoes />} />
         <Route path='/financeiras' element={<Financeiras />} />
+        <Route path='/servicos'>
+          <Route path='/servicos/tipos' element={<Tipos />} />
+        </Route>
       </Route>
       <Route path='*' element={<NotFound />} />
     </Routes>
