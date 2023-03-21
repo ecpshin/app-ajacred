@@ -106,6 +106,13 @@ function Header() {
                   >
                     Financeiras
                   </button>
+                  <button
+                    tpe='button'
+                    className='btn-menu'
+                    onClick={() => handleOnClick('/servicos/tipos')}
+                  >
+                    Tipos
+                  </button>
                 </div>
               </div>
             </nav>
