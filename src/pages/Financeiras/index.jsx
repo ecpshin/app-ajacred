@@ -14,6 +14,7 @@ import {
   BtnCancel,
   BtnPrimary,
 } from '../../components/styleds/buttons';
+import { tipos } from '../../service/combos';
 
 function Financeiras() {
   const { token, forms, setForms, useNavigate } = useGeral();
@@ -55,17 +56,13 @@ function Financeiras() {
 
   function handleOnEdition(obj) {
     setLocal(obj);
+    setEditForm(obj);
     setEdition(!edition);
     return;
   }
 
   async function handleSubmitEditionForm() {
-    if (
-      !editForm.nome ||
-      editForm.nome === '' ||
-      !editForm.tipo ||
-      editForm === ''
-    ) {
+    if (editForm.nome && editForm.tipo === '') {
       toast.error('Edite pelo menos um campo!', {
         position: 'top-center',
         autoClose: 3000,
@@ -76,11 +73,8 @@ function Financeiras() {
         progress: undefined,
         theme: 'light',
       });
-      navigate('/financeiras', { replace: 'refresh' });
-      forceReducer();
-      return;
     }
-
+    console.log(editForm);
     if (editForm.nome !== '' && local.nome !== editForm.nome) {
       local.nome = editForm.nome;
     }
@@ -89,11 +83,11 @@ function Financeiras() {
       local.tipo = editForm.tipo;
     }
     try {
-      const response = await api.patch('/financeiras', local, {
+      const response = await api.patch(`/financeiras/${local.id}`, local, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         console.log(response.data);
         toast.success('Atualizado com sucesso!', {
           position: 'top-center',
@@ -108,13 +102,13 @@ function Financeiras() {
         setTimeout(() => {
           clearForm();
           forceReducer();
-          setEdition(false);
+          setEdition(!edition);
         }, 2100);
         return;
       }
       //return;
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   }
 
@@ -139,7 +133,7 @@ function Financeiras() {
         },
       });
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         toast.success('Cadastro realizado com sucesso!', {
           position: 'top-center',
           autoClose: 2000,
@@ -249,7 +243,6 @@ function Financeiras() {
                     type='text'
                     name='nome'
                     value={forms.nome ? forms.nome : ''}
-                    defaultValue={''}
                     onChange={(e) => handleChangeInput('nome', e.target.value)}
                   />
                   <span>{forms.nome}</span>
@@ -260,16 +253,13 @@ function Financeiras() {
                     id='tipo'
                     name='tipo'
                     className='form-grupo_select'
+                    value={forms.tipo ? forms.tipo : ''}
                     onChange={(e) => handleChangeSelect('tipo', e.target.value)}
                   >
-                    {forms.tipo && (
-                      <option value={forms.tipo}>{forms.tipo}</option>
-                    )}
-                    <option value={'BANCO'}>BANCO</option>
-                    <option value={'FINANCEIRA'}>FINANCEIRA</option>
-                    <option value={'PARCEIRO'}>PARCEIRO(A)</option>
-                    <option value={'PROMOTORA'}>PROMOTORA</option>
-                    <option value={'SEGURADORA'}>SEGURADORA</option>
+                    {tipos.map((tipo) => (
+                      <option value={tipo}>{tipo}</option>
+                    ))}
+                    ;
                   </select>
                 </div>
                 <div className='btn-group'>
@@ -345,8 +335,10 @@ function Financeiras() {
                     id='nome'
                     type='text'
                     name='nome'
-                    defaultValue={local.nome}
-                    onChange={(e) => handleEditInput('nome', e.target.value)}
+                    value={editForm.nome}
+                    onChange={(e) =>
+                      handleEditInput(e.target.name, e.target.value)
+                    }
                   />
                 </div>
                 <div className='form-grupo'>
@@ -354,11 +346,11 @@ function Financeiras() {
                   <select
                     id='tipo'
                     name='tipo'
-                    defaultValue={forms.tipo}
+                    value={editForm.tipo}
                     className='form-grupo_select'
                     onChange={(e) => handleEditSelect('tipo', e.target.value)}
                   >
-                    <option value=''>{local.tipo}</option>
+                    <option value={local.tipo}>{local.tipo}</option>
                     <option value={'BANCO'}>BANCO</option>
                     <option value={'FINANCEIRA'}>FINANCEIRA</option>
                     <option value={'PARCEIRO'}>PARCEIRO(A)</option>
