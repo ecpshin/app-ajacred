@@ -1,6 +1,5 @@
 import './styles.css';
 import api from '../../service/api';
-import Header from '../../components/Header';
 import useGeral from '../../hooks/useGeral';
 import { useEffect, useReducer, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
@@ -17,21 +16,18 @@ import {
 } from '../../components/styleds/buttons';
 
 function Financeiras() {
-  const { token, forms, setForms, initForms } = useGeral();
+  const { token, forms, setForms, useNavigate } = useGeral();
   const [edition, setEdition] = useState(false);
   const [local, setLocal] = useLocalStorage('local', {});
   const [editForm, setEditForm] = useState({});
   const [lista, setLista] = useState([]);
   const [reducerValue, forceReducer] = useReducer((x) => x + 1, 0);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    function init() {
-      setForms(initForms.financeiras);
-      clearForm();
-      handleGetAll();
-      return;
-    }
-    init();
+    setForms({ nome: '', tipo: '' });
+    handleGetAll();
+    return;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reducerValue]);
 
@@ -53,6 +49,7 @@ function Financeiras() {
   function handleOnClose() {
     setEdition(false);
     clearForm();
+    navigate('/financeiras', { replace: 'refresh' });
     return;
   }
 
@@ -79,6 +76,8 @@ function Financeiras() {
         progress: undefined,
         theme: 'light',
       });
+      navigate('/financeiras', { replace: 'refresh' });
+      forceReducer();
       return;
     }
 
@@ -91,9 +90,7 @@ function Financeiras() {
     }
     try {
       const response = await api.patch('/financeiras', local, {
-        headers: {
-          ...token,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (response.status === 200) {
@@ -138,11 +135,11 @@ function Financeiras() {
     try {
       const response = await api.post('/financeiras', forms, {
         headers: {
-          ...token,
+          Authorization: `Bearer ${token}`,
         },
       });
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         toast.success('Cadastro realizado com sucesso!', {
           position: 'top-center',
           autoClose: 2000,
@@ -154,8 +151,8 @@ function Financeiras() {
           theme: 'light',
         });
         setTimeout(() => {
-          clearForm();
           forceReducer();
+          clearForm();
         }, 2100);
       }
       return;
@@ -202,6 +199,8 @@ function Financeiras() {
         progress: undefined,
         theme: 'light',
       });
+      clearForm();
+      handleGetAll();
       forceReducer();
       return;
     } catch (error) {
@@ -219,10 +218,10 @@ function Financeiras() {
   };
 
   function clearForm() {
-    setEditForm({ nome: '', tipo: 'BANCO' });
+    setEditForm({ nome: '', tipo: '' });
     setForms({ nome: '', tipo: '' });
     setLocal({});
-    return;
+    navigate('/financeiras', 'refresh');
   }
 
   return (
@@ -238,6 +237,8 @@ function Financeiras() {
             </div>
             <div className='card-financeira_body'>
               <form
+                method='post'
+                action='/financeiras'
                 className='form-financeira_card'
                 onSubmit={(e) => e.preventDefault()}
               >
@@ -247,20 +248,23 @@ function Financeiras() {
                     id='nome'
                     type='text'
                     name='nome'
-                    defaultValue={forms.nome}
+                    value={forms.nome ? forms.nome : ''}
+                    defaultValue={''}
                     onChange={(e) => handleChangeInput('nome', e.target.value)}
                   />
+                  <span>{forms.nome}</span>
                 </div>
                 <div className='form-grupo'>
                   <label htmlFor='nome'>Tipo</label>
                   <select
                     id='tipo'
                     name='tipo'
-                    defaultValue={forms.tipo}
                     className='form-grupo_select'
                     onChange={(e) => handleChangeSelect('tipo', e.target.value)}
                   >
-                    <option value={''}>Selecione...</option>
+                    {forms.tipo && (
+                      <option value={forms.tipo}>{forms.tipo}</option>
+                    )}
                     <option value={'BANCO'}>BANCO</option>
                     <option value={'FINANCEIRA'}>FINANCEIRA</option>
                     <option value={'PARCEIRO'}>PARCEIRO(A)</option>
@@ -269,7 +273,7 @@ function Financeiras() {
                   </select>
                 </div>
                 <div className='btn-group'>
-                  <BtnCustom type='submit' onClick={() => handleSubmitForm()}>
+                  <BtnCustom type='submit' onClick={handleSubmitForm}>
                     Enviar
                   </BtnCustom>
                   <BtnCancel type='reset'>Cancelar</BtnCancel>

@@ -28,7 +28,7 @@ import {
 import { Link } from 'react-router-dom';
 import * as locales from '@mui/material/locale';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
-import Header from '../../components/Header';
+
 import EditBancarias from '../../components/Bancarias/Edit';
 import EditFuncionais from '../../components/Funcionais/Edit';
 import EditPessoais from '../../components/Pessoais/Edit';

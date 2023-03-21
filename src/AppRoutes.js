@@ -9,7 +9,6 @@ import Financeiras from './pages/Financeiras';
 import Situacoes from './pages/Situacoes';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
-import Header from './components/Header';
 
 export default function AppRoutes() {
   return (

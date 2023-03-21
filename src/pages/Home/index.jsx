@@ -1,6 +1,5 @@
 import { Paper, Typography } from '@mui/material';
 import CardHome from '../../components/CardHome';
-import Header from '../../components/Header';
 import useGeral from '../../hooks/useGeral';
 import api from '../../service/api';
 import './styles.css';

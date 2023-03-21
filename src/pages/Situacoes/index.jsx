@@ -11,23 +11,27 @@ import {
   BtnCancel,
 } from '../../components/styleds/buttons';
 
+import { useNavigate } from 'react-router-dom';
+
 function Situacoes() {
-  const { forms, setForms, initForms, token } = useGeral();
-  const [editForm, setEditForm] = useState({});
+  const { token } = useGeral();
+  const [situacao, setSituacao] = useState({ descricao: '' });
+  const [editForm, setEditForm] = useState({ descricao: '' });
   const [lista, setLista] = useState([]);
   const [edition, setEdition] = useState(false);
   const [reducerValue, forceReducer] = useReducer((x) => x + 1, 0);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    init();
+    function iniciar() {
+      init();
+    }
+    iniciar();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reducerValue]);
 
-  function init() {
-    handleGetAll();
-    setEditForm(initForms.situacoes);
-    setForms(initForms.situacoes);
-    setEdition(false);
+  async function init() {
+    await handleGetAll();
     return;
   }
 
@@ -47,26 +51,45 @@ function Situacoes() {
   }
 
   async function handleSubmitForm() {
-    if (!forms.descricao || forms.descricao.length === 0) {
-      alert('O campo descrição é obrigatório');
+    if (!situacao.descricao || situacao.descricao === '') {
+      toast.error('campo descrição é obrigatório!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
       return;
     }
 
-    const { id: _, ...data } = forms;
-
     try {
-      const response = await api.post('/situacoes', data, {
-        headers: { ...token },
+      const response = await api.post('/situacoes', situacao, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-
-      if (response.status !== 201) {
-        console.log('Erro 400');
+      if (response.status === 201) {
+        toast.success('Salvo com sucesso!', {
+          position: 'top-center',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+        forceReducer();
+        setSituacao({ descricao: '' });
+        init();
+        navigate('/situacoes', { replace: 'refresh' });
         return;
       }
-      setForms(initForms.situacoes);
-      return;
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error.response.message);
     }
   }
 
@@ -76,13 +99,13 @@ function Situacoes() {
       return;
     }
 
-    if (forms.descricao !== editForm.descricao) {
-      editForm.descricao = forms.descricao;
+    if (situacao.descricao !== editForm.descricao) {
+      editForm.descricao = situacao.descricao;
     }
 
     try {
       const response = await api.patch('/situacoes', editForm, {
-        headers: { ...token },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (response.status !== 200) {
@@ -90,7 +113,7 @@ function Situacoes() {
         return;
       }
       init();
-      //forceReducer();
+      forceReducer();
       return;
     } catch (error) {
       console.log(error.response.data);
@@ -133,7 +156,7 @@ function Situacoes() {
   }
 
   const handleChangeValue = (prop, value) => {
-    setForms({ ...forms, [prop]: value });
+    setSituacao({ ...situacao, [prop]: value });
     return;
   };
 
@@ -162,7 +185,7 @@ function Situacoes() {
                     id='nome'
                     type='text'
                     name='nome'
-                    defaultValue={forms.descricao}
+                    value={situacao.descricao}
                     onChange={(e) =>
                       handleChangeValue('descricao', e.target.value)
                     }
@@ -170,7 +193,7 @@ function Situacoes() {
                 </div>
                 {
                   <div className='btn-group'>
-                    <BtnCustom type='submit' onClick={() => handleSubmitForm()}>
+                    <BtnCustom type='submit' onClick={handleSubmitForm}>
                       Enviar
                     </BtnCustom>
                     <BtnCancel type='reset'>Cancelar</BtnCancel>
@@ -201,16 +224,16 @@ function Situacoes() {
                   <td>{item.descricao}</td>
                   <td className='btn-actions'>
                     <IconButton
-                      className='btn btn-warning'
+                      style={{ backgroundColor: '#ffc700' }}
                       onClick={() => handleOnEdition(item)}
                     >
                       <BorderColor />
                     </IconButton>
                     <IconButton
-                      className='btn btn-danger'
+                      style={{ backgroundColor: 'red' }}
                       onClick={() => handleDelete(item)}
                     >
-                      <DeleteForever />
+                      <DeleteForever style={{ color: '#f3f3f3' }} />
                     </IconButton>
                   </td>
                 </tr>
@@ -246,6 +269,8 @@ function Situacoes() {
                     id='descricao'
                     type='text'
                     name='descricao'
+                    value={editForm.descricao}
+                    defaultValue={''}
                     onChange={(e) =>
                       handleEditValue('descricao', e.target.value)
                     }

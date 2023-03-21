@@ -100,6 +100,7 @@ export default function Signin() {
         navigate('/');
       }, 3200);
     }
+    return;
   };
 
   return (
@@ -116,7 +117,11 @@ export default function Signin() {
           justifyContent='center'
         >
           <Grid item xs={7}>
-            <form onSubmit={handleOnSubmit} className='form_login'>
+            <form
+              onSubmit={handleOnSubmit}
+              method='post'
+              className='form_login'
+            >
               <OutlinedInput
                 type='email'
                 defaultValue={form.email}
