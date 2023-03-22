@@ -10,6 +10,7 @@ import Situacoes from './pages/Situacoes';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 import Tipos from './pages/Others/Tipos';
+import Orgaos from './pages/Others/Orgaos';
 
 export default function AppRoutes() {
   return (
@@ -28,6 +29,7 @@ export default function AppRoutes() {
         <Route path='/financeiras' element={<Financeiras />} />
         <Route path='/servicos'>
           <Route path='/servicos/tipos' element={<Tipos />} />
+          <Route path='/servicos/orgaos' element={<Orgaos />} />
         </Route>
       </Route>
       <Route path='*' element={<NotFound />} />

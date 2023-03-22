@@ -113,6 +113,13 @@ function Header() {
                   >
                     Tipos
                   </button>
+                  <button
+                    tpe='button'
+                    className='btn-menu'
+                    onClick={() => handleOnClick('/servicos/orgaos')}
+                  >
+                    Órgãos
+                  </button>
                 </div>
               </div>
             </nav>
