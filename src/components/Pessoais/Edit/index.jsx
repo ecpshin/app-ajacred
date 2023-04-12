@@ -1,25 +1,54 @@
 import { Cancel, Save } from '@mui/icons-material';
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  FormControl,
-  FormLabel,
-  Grid,
-  InputBase,
-  MenuItem,
-  Select,
-  TextareaAutosize,
-  Typography,
-} from '@mui/material';
 import useGeral from '../../../hooks/useGeral';
-
+import { sexos, estadosCivil } from '../../ListClients/combos';
 function formatarData(data) {
   const formata = data.split('T');
   return formata[0];
 }
 
-export default function EditPessoais({ cliente, open, setOpen }) {
+const styles = {
+  buttonCancel: {
+    width: '120px',
+    height: '35px',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: '1rem',
+    border: 'none',
+    fontSize: '1.6rem',
+    backgroundColor: 'grey',
+    color: '#fff',
+    borderRadius: '5px',
+  },
+  buttonSuccess: {
+    width: '120px',
+    height: '35px',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: '1rem',
+    border: 'none',
+    fontSize: '1.6rem',
+    backgroundColor: '#fa5700',
+    color: '#fff',
+    borderRadius: '5px',
+  },
+  titles: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '100%',
+    color: '#fa5700',
+    fontSize: '1.8rem',
+    fontWeight: '600',
+    borderBottom: '1px solid #ccc',
+    padding: '10px',
+  },
+};
+
+export default function EditPessoais({ title, cliente, open, setOpen }) {
   const { useState, initForms } = useGeral();
   const [pessoais, setPessoais] = useState(initForms.cliente);
   const {
@@ -35,19 +64,8 @@ export default function EditPessoais({ cliente, open, setOpen }) {
     estado_civil,
     observacoes,
   } = cliente;
-  const sexos = ['MASCULINO', 'FEMININO', 'NÃO BINÁRIO', 'OUTRO'];
-  const ecivis = [
-    'SOLTEIRO(A)',
-    'CASADO(A)',
-    'DIVORCIADO(a)',
-    'FALECIDO(a)',
-    'VIÚVO(a)',
-    'SEPARADO(a)',
-    'UNIÃO ESTÁVEL',
-    'UNIÃO MESMO SEXO',
-  ];
 
-  const handleChange = (prop) => (e) => {
+  const handleOnChange = (prop) => (e) => {
     setPessoais({ ...pessoais, [prop]: e.target.value });
   };
 
@@ -59,197 +77,185 @@ export default function EditPessoais({ cliente, open, setOpen }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(pessoais);
+    handleClear();
   };
 
   return (
     <div>
-      <DialogContent style={{ width: '100%' }}>
-        <Grid container columnSpacing={1} style={{ rowGap: '1rem' }}>
-          <Grid item xs={12}>
-            <Typography variant='h4' component='h2'>
-              Editar Dados Pessoais
-            </Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <InputBase
-              type='text'
+      <form onSubmit={(e) => e.preventDefault()} className='form-box'>
+        <h3
+          style={{
+            fontSize: '2.6rem',
+            textAlign: 'center',
+            margin: '1.5rem 0',
+          }}
+        >
+          {title}
+        </h3>
+        <div className='form-box-row'>
+          <div className='form-box-group'>
+            <label htmlFor='nome' className='form-box-label'>
+              Nome
+            </label>
+            <input
               name='nome'
-              onChange={handleChange('nome')}
-              defaultValue={nome}
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <InputBase
               type='text'
-              name='cpf'
-              onChange={handleChange('cpf')}
-              defaultValue={cpf}
+              value={nome}
+              onChange={(e) => handleOnChange(e)}
+              id='nome'
             />
-          </Grid>
-          <Grid item xs={4}>
-            <InputBase
-              type='date'
-              name='nascimento'
-              onChange={handleChange('nascimento')}
-              defaultValue={formatarData(nascimento)}
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <InputBase
-              name='rg'
-              type='text'
-              onChange={handleChange('rg')}
-              defaultValue={rg}
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <InputBase
-              name='expedicao'
-              type='date'
-              onChange={handleChange('expedicao')}
-              defaultValue={formatarData(expedicao)}
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <InputBase
-              name='naturalidade'
-              type='text'
-              onChange={handleChange('naturalidade')}
-              defaultValue={naturalidade}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <InputBase
+          </div>
+          <div className='form-box-group-2'>
+            <div className='form-box-group'>
+              <label htmlFor='cpf'>CPF</label>
+              <input
+                name='cpf'
+                type='text'
+                value={cpf}
+                onChange={(e) => handleOnChange(e)}
+                id='cpf'
+              />
+            </div>
+            <div className='form-box-group'>
+              <label htmlFor='rg'>RG</label>
+              <input
+                name='rg'
+                label='Doc. de Identidade (RG)'
+                type='text'
+                value={rg}
+                onChange={(e) => handleOnChange(e)}
+                id='rg'
+              />
+            </div>
+            <div className='form-box-group'>
+              <label htmlFor='expedicao'>Data de Expedição</label>
+              <input
+                name='expedicao'
+                label='Data de Expedição'
+                type='date'
+                value={formatarData(expedicao)}
+                onChange={(e) => handleOnChange(e)}
+                id='expedicao'
+              />
+            </div>
+          </div>
+        </div>
+        <div className='form-box-row'>
+          <div className='form-box-group-2'>
+            <div className='form-box-group'>
+              <label htmlFor='nascimento'>Data de Nascimento</label>
+              <input
+                name='nascimento'
+                type='date'
+                value={formatarData(nascimento)}
+                onChange={(e) => handleOnChange(e)}
+                id='nascimento'
+              />
+            </div>
+            <div className='form-box-group'>
+              <label htmlFor='naturalidade'>Naturalidade - UF</label>
+              <input
+                name='naturalidade'
+                type='text'
+                value={naturalidade}
+                onChange={(e) => handleOnChange(e)}
+                id={'naturalidade'}
+                title='Cidade e estado onde nasceu.'
+              />
+            </div>
+          </div>
+          <div className='form-box-group'>
+            <label htmlFor='genitora'>Nome da Mãe</label>
+            <input
               name='genitora'
               type='text'
-              onChange={handleChange('genitora')}
-              defaultValue={genitora}
+              value={genitora}
+              onChange={(e) => handleOnChange(e)}
+              id='genitora'
             />
-          </Grid>
-          <Grid item xs={6}>
-            <InputBase
+          </div>
+          <div className='form-box-group'>
+            <label htmlFor='genitor'>Nome do Pai</label>
+            <input
               name='genitor'
               type='text'
-              onChange={handleChange('genitor')}
-              defaultValue={genitor}
+              value={genitor}
+              onChange={(e) => handleOnChange(e)}
+              id='genitor'
             />
-          </Grid>
-          <Grid item xs={6}>
-            <FormControl fullWidth>
-              <FormLabel
-                sx={{
-                  color: '#000',
-                  fontSize: '1.2rem',
-                  fontWeight: 600,
-                }}
-              >
-                Sexo
-              </FormLabel>
-              <Select
-                size='small'
-                fullWidth
-                sx={{
-                  color: '#000',
-                  fontSize: '1.2rem',
-                  fontWeight: 600,
-                }}
-                onChange={handleChange('sexo')}
-                value={sexo}
-              >
-                {sexos.map((sexo) => (
-                  <MenuItem key={sexo} value={sexo}>
-                    {sexo}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={6}>
-            <FormControl fullWidth>
-              <FormLabel
-                id='estado-civil'
-                sx={{
-                  color: '#000',
-                  fontSize: '1.2rem',
-                  fontWeight: 600,
-                }}
-              >
-                Estado Civil
-              </FormLabel>
-              <Select
-                size='small'
-                fullWidth
-                sx={{
-                  color: '#000',
-                  fontSize: '1.3rem',
-                  fontWeight: 600,
-                }}
-                value={estado_civil.toLocaleUpperCase()}
-                onChange={handleChange('estado_civil')}
-              >
-                {ecivis.map((ecivil) => (
-                  <MenuItem key={ecivil} value={ecivil}>
-                    {ecivil}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <FormControl fullWidth>
-              <FormLabel
-                sx={{
-                  width: '100%',
-                  textAlign: 'left',
-                  fontSize: '1.2rem',
-                  fontWeight: 600,
-                  color: '#000',
-                  m: 0.5,
-                }}
-              >
-                Observações
-              </FormLabel>
-              <TextareaAutosize
-                name='observacoes'
-                minRows={3}
-                defaultValue={
-                  observacoes ? pessoais.observacoes : 'Não há observações!'
-                }
-                style={{
-                  border: '1px solid #c3c3c3',
-                  fontSize: '1.3rem',
-                  padding: '1rem',
-                }}
-              />
-            </FormControl>
-          </Grid>
-        </Grid>
-      </DialogContent>
-      <DialogActions>
-        <Button
-          onClick={() => handleClear()}
-          startIcon={<Cancel />}
+          </div>
+        </div>
+        <div className='form-box-row'>
+          <div className='form-box-group'>
+            <label htmlFor='sexo'>Sexo</label>
+            <select
+              name='sexo'
+              defaultValue={sexo}
+              onChange={(e) => handleOnChange(e)}
+              id='sexo'
+            >
+              <option value=''>{sexo}</option>
+              {sexos.map((sexo) => (
+                <option key={sexo.id} value={sexo.descricao}>
+                  {sexo.descricao}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className='form-box-group'>
+            <label htmlFor='estado_civil'>Estado Civil</label>
+            <select
+              name='estado_civil'
+              defaultValue={estado_civil}
+              onChange={(e) => handleOnChange(e)}
+              id='estado_civil'
+            >
+              <option value=''>{estado_civil}</option>
+              {estadosCivil.map((ecivil) => (
+                <option key={ecivil.id} value={ecivil.descricao}>
+                  {ecivil.descricao}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className='form-box-group'>
+            <label htmlFor='observacoes'>Observações</label>
+            <textarea
+              name='observacoes'
+              id='observacoes'
+              defaultValue={observacoes}
+              onChange={(e) => handleOnChange(e)}
+            >
+              {observacoes}
+            </textarea>
+          </div>
+        </div>
+        <div
+          className='form-box-group-2'
           style={{
-            width: '150px',
-            backgroundColor: 'red',
-            color: '#fff',
+            justifyContent: 'center',
+            gap: '1.5rem',
+            marginTop: '1.0rem',
           }}
         >
-          Cancelar
-        </Button>
-        <Button
-          onClick={handleSubmit}
-          startIcon={<Save />}
-          style={{
-            width: '150px',
-            backgroundColor: 'green',
-            color: '#fff',
-          }}
-        >
-          Salvar
-        </Button>
-      </DialogActions>
+          <button
+            type='submit'
+            style={styles.buttonSuccess}
+            onClick={() => handleSubmit()}
+          >
+            <Save style={{ fontSize: '2rem' }} />
+            Atualizar
+          </button>
+          <button
+            type='reset'
+            style={styles.buttonCancel}
+            onClick={() => handleClear()}
+          >
+            <Cancel style={{ fontSize: '2rem' }} />
+            Fechar
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

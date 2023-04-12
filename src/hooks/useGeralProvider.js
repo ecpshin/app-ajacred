@@ -47,7 +47,7 @@ export default function useGeralContextProvider() {
       genitora: '',
       genitor: '',
       sexo: '',
-      estadoCivil: '',
+      estado_civil: '',
       observacoes: '',
     },
     endereco: {

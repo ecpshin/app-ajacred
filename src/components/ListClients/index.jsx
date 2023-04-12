@@ -4,10 +4,11 @@ import {
   PersonAdd,
   Search,
 } from '@mui/icons-material';
+
 import {
   Button,
-  Dialog,
-  DialogContent,
+  Modal,
+  Box,
   IconButton,
   InputAdornment,
   OutlinedInput,
@@ -28,6 +29,7 @@ import useGeral from '../../hooks/useGeral';
 import api from '../../service/api';
 import estilos from './styles';
 import './styles.css';
+import { estadosCivil, sexos, febraban } from './combos';
 
 const estiloSearch = {
   search: { fontSize: '2.45rem', color: '#ff3401' },
@@ -61,12 +63,125 @@ export default function ListClients() {
   const [query, setQuery] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [locale, setLocale] = useState('ptBR');
+  const [form, setForm] = useState({
+    nome: '',
+    cpf: '',
+    rg: '',
+    expedicao: '',
+    nascimento: '',
+    naturalidade: '',
+    genitora: '',
+    genitor: '',
+    sexo: '',
+    estado_civil: '',
+    observacoes: '',
+  });
+  const [address, setAddress] = useState({
+    cep: '00000000',
+    logradouro: '',
+    complemento: '',
+    bairro: '',
+    municipio: '',
+    uf: '',
+  });
+
+  const [finance, setFinance] = useState({
+    codigo: '',
+    banco: '',
+    agencia: '',
+    conta: '',
+    tipo: '',
+    operacao: '',
+  });
+
+  const [funcao, setFuncao] = useState({
+    nrbeneficio: '',
+    emails: '',
+    senhas: '',
+    phone1: '',
+    phone2: '',
+    phone3: '',
+    phone4: '',
+  });
+
   const theme = useTheme();
   const themeWithLocale = useMemo(
     () => createTheme(theme, locales[locale]),
     [locale, theme]
   );
   const navigate = useNavigate();
+
+  async function init() {
+    await handleGetClients();
+    setForm({
+      nome: '',
+      cpf: '',
+      rg: '',
+      expedicao: '',
+      nascimento: '',
+      naturalidade: '',
+      genitora: '',
+      genitor: '',
+      sexo: '',
+      estado_civil: '',
+      observacoes: '',
+    });
+
+    setAddress({
+      cep: '00000000',
+      logradouro: '',
+      complemento: '',
+      bairro: '',
+      municipio: '',
+      uf: '',
+    });
+
+    setFuncao({
+      nrbeneficio: '',
+      emails: '',
+      senhas: '',
+      phone1: '',
+      phone2: '',
+      phone3: '',
+      phone4: '',
+    });
+
+    setFinance({
+      codigo: '',
+      banco: '',
+      agencia: '',
+      conta: '',
+      tipo: '',
+      operacao: '',
+    });
+    return;
+  }
+
+  async function handleSubmitCliente() {
+    delete finance.codigo;
+    const data = {
+      form,
+      address,
+      funcao,
+      finance,
+    };
+    try {
+      const response = await api.post('/clientes', data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 201) {
+        init();
+        setOpen(!open);
+        return;
+      }
+      return;
+    } catch (error) {
+      console.log(error.response.message);
+      return;
+    }
+  }
 
   async function handleGoClient(client) {
     try {
@@ -96,8 +211,10 @@ export default function ListClients() {
         },
       });
       setClients(response.data);
+      return;
     } catch (error) {
       console.log(error.response.data);
+      return;
     }
   }
 
@@ -112,6 +229,34 @@ export default function ListClients() {
 
   function handleChangeInput(e) {
     setQuery(e.target.value);
+  }
+
+  function handleOnChange(e, table) {
+    const prop = e.target.name;
+    const value = e.target.value;
+
+    if (table === 'cliente') {
+      setForm({ ...form, [prop]: value.toUpperCase() });
+    }
+
+    if (table === 'address') {
+      setAddress({ ...address, [prop]: value.toUpperCase() });
+    }
+
+    if (table === 'bancaria') {
+      setFinance({ ...finance, [prop]: value.toUpperCase() });
+    }
+
+    if (table === 'funcional') {
+      setFuncao({ ...funcao, [prop]: value.toUpperCase() });
+    }
+
+    return;
+  }
+
+  function handleOnSelect(e, table) {
+    setForm({ ...form, [e.target.name]: e.target.value.toUpperCase() });
+    return;
   }
 
   function handleSearch() {
@@ -131,12 +276,63 @@ export default function ListClients() {
     return search.length > 0 ? search : false;
   }
 
-  useEffect(() => {
-    function init() {
-      handleGetClients();
+  async function handleLostFocus(value) {
+    const response = await fetch(`https://viacep.com.br/ws/${value}/json/`);
+    await response
+      .json()
+      .then(function (data) {
+        address.cep = data.cep;
+        address.logradouro = data.logradouro.toUpperCase();
+        address.complemento = '-';
+        address.bairro = data.bairro.toUpperCase();
+        address.municipio = data.localidade.toUpperCase();
+        address.uf = data.uf.toUpperCase();
+
+        document.getElementById('cep').value = address.cep;
+        document.getElementById('logradouro').value =
+          address.logradouro.toUpperCase();
+        document.getElementById('complemento').value = '-';
+        document.getElementById('bairro').value = address.bairro.toUpperCase();
+        document.getElementById('municipio').value =
+          address.localidade.toUpperCase();
+        document.getElementById('uf').value = address.uf.toUpperCase();
+      })
+      .catch(function (err) {
+        console.error('Failed retrieving information', err);
+      });
+    return;
+  }
+
+  function handleSearchBanco(e) {
+    let banco = e.target.value;
+    let el = document.querySelector('#banco');
+
+    if (banco.length === 1 && e.key === 'Enter') {
+      banco = `00${banco}`;
+      el.value = banco;
+      finance.codigo = banco;
     }
+
+    if (banco.length === 2 && e.key === 'Enter') {
+      banco = `0${banco}`;
+      el.value = banco;
+      finance.codigo = banco;
+    }
+
+    const search = febraban.find((item) => item.codigo === banco);
+
+    if (search) {
+      finance.banco = `${search.codigo}-${search.nome}`;
+      document.getElementById('banco').value = finance.banco;
+    }
+
+    return;
+  }
+
+  useEffect(() => {
     init();
     setLocale('ptBR');
+    return;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -242,88 +438,372 @@ export default function ListClients() {
           />
         </ThemeProvider>
       </Paper>
-      <Dialog open={open} onClose={() => setOpen(!open)}>
-        <DialogContent
-          sx={{
-            width: '580px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
+      <Modal
+        open={open}
+        onClose={() => setOpen(!open)}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Box
+          width={'70%'}
+          height={'500px'}
+          display={'flex'}
+          backgroundColor={'#fff'}
+          style={{
+            borderRadius: '8px',
+            flexWrap: 'wrap',
+            overflowY: 'scroll',
           }}
         >
-          <h1 className='dialog-title'>Cadastrar Cliente</h1>
-          <form className='form-box'>
-            <div className='form-box-control'>
-              <label className='input-label'>Nome</label>
-              <input name='nome' type='text' placeholder='Nome' />
+          <form onSubmit={(e) => e.preventDefault()} className='form-box'>
+            <h4>Dados Pessoais</h4>
+            <div className='form-box-row'>
+              <div className='form-box-group'>
+                <label htmlFor='nome' className='form-box-label'>
+                  Nome
+                </label>
+                <input
+                  name='nome'
+                  type='text'
+                  value={form.nome}
+                  onChange={(e) => handleOnChange(e, 'cliente')}
+                  id='nome'
+                />
+              </div>
+              <div className='form-box-group-2'>
+                <div className='form-box-group'>
+                  <label htmlFor='cpf'>CPF</label>
+                  <input
+                    name='cpf'
+                    type='text'
+                    value={form.cpf}
+                    onChange={(e) => handleOnChange(e, 'cliente')}
+                    id='cpf'
+                  />
+                </div>
+                <div className='form-box-group'>
+                  <label htmlFor='rg'>RG</label>
+                  <input
+                    name='rg'
+                    label='Doc. de Identidade (RG)'
+                    type='text'
+                    value={form.rg}
+                    onChange={(e) => handleOnChange(e, 'cliente')}
+                    id='rg'
+                  />
+                </div>
+                <div className='form-box-group'>
+                  <label htmlFor='expedicao'>Data de Expedição</label>
+                  <input
+                    name='expedicao'
+                    label='Data de Expedição'
+                    type='date'
+                    value={form.expedicao}
+                    onChange={(e) => handleOnChange(e, 'cliente')}
+                    id='expedicao'
+                  />
+                </div>
+              </div>
             </div>
-            <div className='form-box-control'>
-              <label className='input-label'>CPF</label>
-              <input name='cpf' type='text' placeholder='CPF' />
+            <div className='form-box-row'>
+              <div className='form-box-group-2'>
+                <div className='form-box-group'>
+                  <label htmlFor='nascimento'>Data de Nascimento</label>
+                  <input
+                    name='nascimento'
+                    type='date'
+                    value={form.nascimento}
+                    onChange={(e) => handleOnChange(e, 'cliente')}
+                    id='nascimento'
+                  />
+                </div>
+                <div className='form-box-group'>
+                  <label htmlFor='naturalidade'>Naturalidade - UF</label>
+                  <input
+                    name='naturalidade'
+                    type='text'
+                    value={form.naturalidade}
+                    onChange={(e) => handleOnChange(e, 'cliente')}
+                    id={'naturalidade'}
+                    title='Cidade e estado onde nasceu.'
+                  />
+                </div>
+              </div>
+              <div className='form-box-group'>
+                <label htmlFor='genitora'>Nome da Mãe</label>
+                <input
+                  name='genitora'
+                  type='text'
+                  value={form.genitora}
+                  onChange={(e) => handleOnChange(e, 'cliente')}
+                  id='genitora'
+                />
+              </div>
+              <div className='form-box-group'>
+                <label htmlFor='genitor'>Nome do Pai</label>
+                <input
+                  name='genitor'
+                  type='text'
+                  value={form.genitor}
+                  onChange={(e) => handleOnChange(e, 'cliente')}
+                  id='genitor'
+                />
+              </div>
             </div>
-            <div className='form-box-control'>
-              <label className='input-label'>RG</label>
-              <input name='rg' type='text' placeholder='RG' />
+            <div className='form-box-row'>
+              <div className='form-box-group'>
+                <label htmlFor='sexo'>Sexo</label>
+                <select
+                  name='sexo'
+                  value={form.sexo}
+                  onChange={(e) => handleOnSelect(e, 'cliente')}
+                  id='sexo'
+                >
+                  <option value=''>SEXO</option>
+                  {sexos.map((sexo) => (
+                    <option key={sexo.id} value={sexo.descricao}>
+                      {sexo.descricao}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className='form-box-group'>
+                <label htmlFor='estado_civil'>Estado Civil</label>
+                <select
+                  name='estado_civil'
+                  value={form.estado_civil}
+                  onChange={(e) => handleOnSelect(e, 'cliente')}
+                  id='estado_civil'
+                >
+                  <option value=''>Estado Civil</option>
+                  {estadosCivil.map((ecivil) => (
+                    <option key={ecivil.id} value={ecivil.descricao}>
+                      {ecivil.descricao}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className='form-box-group'>
+                <label htmlFor='observacoes'>Observações</label>
+                <textarea
+                  name='observacoes'
+                  id='observacoes'
+                  value={form.observacoes}
+                  onChange={(e) => handleOnChange(e, 'cliente')}
+                ></textarea>
+              </div>
             </div>
-            <div className='form-box-control'>
-              <label className='input-label'>Data Exp. RG</label>
-              <input
-                name='expedicao'
-                type='datetime-local'
-                title='Data da expedição'
-              />
+            <hr />
+            <h4>Dados Residenciais</h4>
+            <div className='form-box-row'>
+              <div className='form-box-group' style={{ width: '150px' }}>
+                <label>CEP</label>
+                <input
+                  name='cep'
+                  id='cep'
+                  value={address.cep}
+                  onChange={(e) => handleOnChange(e, 'address')}
+                  onBlur={(e) => handleLostFocus(e.target.value)}
+                />
+              </div>
+              <div className='form-box-group'>
+                <label>Endereço</label>
+                <input
+                  name='logradouro'
+                  id='logradouro'
+                  defaultValue={address.lograoduro}
+                  onChange={(e) => handleOnChange(e, 'address')}
+                />
+              </div>
             </div>
-            <div className='form-box-control'>
-              <label className='input-label'>Data nascimento</label>
-              <input
-                name='nascimento'
-                type='datetime-local'
-                title='Data de nascimento'
-              />
+            <div className='form-box-row'>
+              <div className='form-box-group'>
+                <label htmlFor='complemento'>Complemento</label>
+                <input
+                  name='complemento'
+                  id='complemento'
+                  value={address.complemento}
+                  onChange={(e) => handleOnChange(e, 'address')}
+                />
+              </div>
+              <div className='form-box-group'>
+                <label>Bairro</label>
+                <input
+                  name='bairro'
+                  id='bairro'
+                  value={address.bairro}
+                  onChange={(e) => handleOnChange(e, 'address')}
+                />
+              </div>
+              <div className='form-box-group'>
+                <label>Município</label>
+                <input
+                  name='municipio'
+                  id='municipio'
+                  value={address.municipio}
+                  onChange={(e) => handleOnChange(e, 'address')}
+                />
+              </div>
+              <div className='form-box-group' style={{ width: '80px' }}>
+                <label>UF</label>
+                <input
+                  name='uf'
+                  id='uf'
+                  value={address.uf}
+                  onChange={(e) => handleOnChange(e, 'address')}
+                />
+              </div>
             </div>
-            <div className='form-box-control'>
-              <label className='input-label'>Naturalidade</label>
-              <input
-                name='naturalidade'
-                type='text'
-                placeholder='Naturalidade'
-              />
+            <hr />
+            <h4>Dados Funcionais</h4>
+            <div className='form-box-row'>
+              <div className='form-box-group'>
+                <label>Benefícios</label>
+                <textarea
+                  name='nrbeneficio'
+                  rows={3}
+                  value={funcao.nrbeneficio}
+                  onChange={(e) => handleOnChange(e, 'funcional')}
+                ></textarea>
+              </div>
+              <div className='form-box-group'>
+                <label>Senhas</label>
+                <textarea
+                  name='senhas'
+                  rows={3}
+                  value={funcao.senhas}
+                  onChange={(e) => handleOnChange(e, 'funcional')}
+                ></textarea>
+              </div>
+              <div className='form-box-group'>
+                <label>E-mails</label>
+                <textarea
+                  name='emails'
+                  rows={3}
+                  value={funcao.emails}
+                  onChange={(e) => handleOnChange(e, 'funcional')}
+                ></textarea>
+              </div>
             </div>
-            <div className='form-box-control'>
-              <label className='input-label'>Genitora</label>
-              <input name='genitora' type='text' placeholder='Nome da mãe' />
+            <div className='form-box-row'>
+              <div className='form-box-group'>
+                <label>Telefone (Principal)</label>
+                <input
+                  type='tel'
+                  name='phone1'
+                  value={funcao.phone1}
+                  onChange={(e) => handleOnChange(e, 'funcional')}
+                />
+              </div>
+              <div className='form-box-group'>
+                <label>Tlefone 2</label>
+                <input
+                  type='tel'
+                  name='phone2'
+                  value={funcao.phone2}
+                  onChange={(e) => handleOnChange(e, 'funcional')}
+                />
+              </div>
+              <div className='form-box-group'>
+                <label>Telefone 3</label>
+                <input
+                  type='tel'
+                  name='phone3'
+                  value={funcao.phone3}
+                  onChange={(e) => handleOnChange(e, 'funcional')}
+                />
+              </div>
+              <div className='form-box-group'>
+                <label>Telefone 4</label>
+                <input
+                  type='tel'
+                  name='phone4'
+                  value={funcao.phone4}
+                  onChange={(e) => handleOnChange(e, 'funcional')}
+                />
+              </div>
             </div>
-            <div className='form-box-control'>
-              <label className='input-label'>Genitor</label>
-              <input name='genitor' type='text' placeholder='Nome do pai' />
+            <hr />
+            <h4>Informações Bancárias</h4>
+            <div className='form-box-row'>
+              <div className='form-box-group' style={{ width: '8rem' }}>
+                <label>Código</label>
+                <input
+                  name='codigo'
+                  type='text'
+                  value={finance.codigo}
+                  maxLength='3'
+                  onChange={(e) => handleOnChange(e, 'bancaria')}
+                  onKeyUp={(e) => handleSearchBanco(e)}
+                  id='codigo'
+                />
+              </div>
+              <div className='form-box-group'>
+                <label>Banco</label>
+                <input
+                  type='text'
+                  name='banco'
+                  id='banco'
+                  value={finance.banco}
+                  onChange={(e) => handleOnChange(e, 'bancaria')}
+                />
+              </div>
+              <div className='form-box-group' style={{ width: '8rem' }}>
+                <label>Agência</label>
+                <input
+                  name='agencia'
+                  type='text'
+                  maxLength='10'
+                  value={finance.agencia}
+                  onChange={(e) => handleOnChange(e, 'bancaria')}
+                  id='agencia'
+                />
+              </div>
+              <div className='form-box-group'>
+                <label>Conta Nº</label>
+                <input
+                  type='text'
+                  name='conta'
+                  value={finance.conta}
+                  onChange={(e) => handleOnChange(e, 'bancaria')}
+                  id='conta'
+                />
+              </div>
+              <div className='form-box-group'>
+                <label>Tipo</label>
+                <input
+                  name='tipo'
+                  type='text'
+                  value={finance.tipo}
+                  onChange={(e) => handleOnChange(e, 'bancaria')}
+                  id='tipo'
+                />
+              </div>
+              <div className='form-box-group'>
+                <label>Operação</label>
+                <input
+                  name='operacao'
+                  type='text'
+                  value={finance.operacao}
+                  onChange={(e) => handleOnChange(e, 'bancaria')}
+                  id='operacao'
+                />
+              </div>
             </div>
-            <div className='form-box-control'>
-              <label className='input-label'>Sexo</label>
-              <select name='sexo' label='Sexo'>
-                <option value='Masculino'>Masculino</option>
-                <option value='Feminino'>Feminino</option>
-              </select>
-            </div>
-            <div className='form-box-control'>
-              <label className='input-label'>Estado Civil</label>
-              <select name='estado_civil' label='Estado Civil'>
-                <option value='Solteiro(a)' selected={true}>
-                  Solteiro(a)
-                </option>
-                <option value='Casado(a)'>Casado(a)</option>
-                <option value='Divorciado(a)'>Divorciado(a)</option>
-              </select>
-            </div>
-            <div className='form-textarea-control'>
-              <label className='input-label' htmlFor='observacoes'>
-                Observações
-              </label>
-              <textarea rows={5} defaultValue={''}></textarea>
-            </div>
+            <button
+              type='submit'
+              className='btn__cadastrar'
+              onClick={() => handleSubmitCliente()}
+            >
+              Salvar
+            </button>
           </form>
-        </DialogContent>
-      </Dialog>
+        </Box>
+      </Modal>
     </>
   );
 }

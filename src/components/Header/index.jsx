@@ -1,7 +1,7 @@
 import './styles.css';
 import useGeral from '../../hooks/useGeral';
 import icons from './styles';
-import Logout from '@mui/icons-material/ExitToApp';
+import Logout from '@mui/icons-material/Logout';
 import AdminUser from '@mui/icons-material/AdminPanelSettings';
 import { Dialog, DialogContent, IconButton } from '@mui/material';
 import EditUser from '../EditUser';
