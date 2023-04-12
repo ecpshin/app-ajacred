@@ -1,7 +1,7 @@
 import './styles.css';
 import useGeral from '../../hooks/useGeral';
 import icons from './styles';
-import Logout from '@mui/icons-material/ExitToApp';
+import Logout from '@mui/icons-material/Logout';
 import AdminUser from '@mui/icons-material/AdminPanelSettings';
 import { Dialog, DialogContent, IconButton } from '@mui/material';
 import EditUser from '../EditUser';
@@ -112,6 +112,13 @@ function Header() {
                     onClick={() => handleOnClick('/servicos/tipos')}
                   >
                     Tipos
+                  </button>
+                  <button
+                    tpe='button'
+                    className='btn-menu'
+                    onClick={() => handleOnClick('/servicos/orgaos')}
+                  >
+                    Órgãos
                   </button>
                 </div>
               </div>

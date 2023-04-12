@@ -6,9 +6,9 @@ import {
   Search,
   FileOpen,
 } from '@mui/icons-material';
+
 import {
   Breadcrumbs,
-  Dialog,
   Button,
   InputBase,
   IconButton,
@@ -481,36 +481,57 @@ export default function Client() {
           </div>
         </div>
       </main>
-      {/* {openDialog && (
-        <ModalEditContract
-          openDialog={openDialog}
-          setOpenDialog={setOpenDialog}
-        />
-      )} */}
       {open && (
-        <Dialog open={open} onClose={(e) => handleClose(e)}>
-          {modal.title === 'Residenciais' ? (
-            <EditResidencial
-              id='residencial'
-              residencial={residenciais}
-              setOpen={setOpen}
-            />
-          ) : modal.title === 'Pessoais' ? (
-            <EditPessoais open={open} setOpen={setOpen} cliente={cliente} />
-          ) : modal.title === 'Funcionais' ? (
-            <EditFuncionais
-              title='Funcionais'
-              setOpen={setOpen}
-              funcional={funcionais}
-            />
-          ) : (
-            <EditBancarias
-              title='Bancárias'
-              setOpen={setOpen}
-              bancaria={bancarias}
-            />
-          )}
-        </Dialog>
+        <Modal
+          open={open}
+          onClose={(e) => handleClose(e)}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Box
+            width={'fit-content'}
+            height={'500px'}
+            display={'flex'}
+            backgroundColor={'#fff'}
+            style={{
+              borderRadius: '8px',
+              flexWrap: 'wrap',
+              overflowY: 'auto',
+            }}
+          >
+            {modal.title === 'Residenciais' ? (
+              <EditResidencial
+                id='residencial'
+                title='Dados Residenciais'
+                residencial={residenciais}
+                setOpen={setOpen}
+              />
+            ) : modal.title === 'Pessoais' ? (
+              <EditPessoais
+                title='Dados Pessoais'
+                open={open}
+                setOpen={setOpen}
+                cliente={cliente}
+              />
+            ) : modal.title === 'Funcionais' ? (
+              <EditFuncionais
+                title='Funcionais'
+                setOpen={setOpen}
+                funcional={funcionais}
+              />
+            ) : (
+              <EditBancarias
+                title='Bancárias'
+                setOpen={setOpen}
+                bancaria={bancarias}
+              />
+            )}
+          </Box>
+        </Modal>
       )}
       {isEdit && (
         <Modal

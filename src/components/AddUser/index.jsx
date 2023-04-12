@@ -30,7 +30,7 @@ export default function AddUser() {
     }
 
     try {
-      const response = await api.post('http://localhost:3334/usuarios', {
+      const response = await api.post('/usuarios', {
         nome,
         email,
         senha,

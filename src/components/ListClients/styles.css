@@ -7,18 +7,48 @@ p.MuiTablePagination-selectLabel {
   font-weight: 600;
 }
 .MuiInputBase-root {
-  font-size: 1.3rem !important;
+  font-size: 1.2rem !important;
   font-weight: 600;
 }
 .MuiSvgIcon-root1 {
   font-size: 1.4rem !important;
 }
-input,
-select {
+
+input {
   all: unset;
+  display: flex;
+  padding: 8px 10px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1.4rem;
+}
+
+textarea {
+  display: flex;
+  padding: 8px 10px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1.4rem;
+}
+
+textarea:active,
+textarea:focus {
+  outline: 1px #f27000 solid !important;
+}
+
+select {
+  height: 38px;
   padding: 8px 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  font-size: 1.2rem !important;
+  color: #000;
+}
+
+select option {
+  font-size: 1.2rem;
 }
 
 .btn__cadastrar {
@@ -65,23 +95,49 @@ select {
 
 .form-box {
   width: 100%;
-  height: auto;
-  padding: 10px 5px;
-  gap: 8px;
+  padding: 15px;
+  gap: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  background-color: #fff;
+}
+
+.form-box-row {
+  width: 100%;
+  padding: 10px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  flex-wrap: wrap;
-  border: 1px solid #ccc;
+  gap: 10px;
+  background-color: #f7dfad;
+  border: 1px solid #fa5700;
+  border-radius: 8px;
 }
 
-.form-box-control {
-  width: 48%;
-  row-gap: 5px;
+.form-box-group {
+  width: 100%;
+  gap: 5px;
   display: flex;
   flex-direction: column;
 }
 
+.form-box-group-2 {
+  width: 100%;
+  gap: 5px;
+  display: flex;
+  flex-direction: row;
+}
+
+.form-box-group label {
+  width: 100%;
+  background-color: #f27000;
+  padding: 5px;
+  color: #f3f3f3;
+  font-size: 1.4rem;
+  font-weight: 600;
+  border-radius: 4px;
+}
 .form-textarea-control {
   width: 100%;
   row-gap: 5px;
