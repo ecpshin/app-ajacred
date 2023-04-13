@@ -1,6 +1,8 @@
 import { Cancel, Save } from '@mui/icons-material';
 import useGeral from '../../../hooks/useGeral';
 import { sexos, estadosCivil } from '../../ListClients/combos';
+import api from '../../../service/api';
+
 function formatarData(data) {
   const formata = data.split('T');
   return formata[0];
@@ -49,25 +51,15 @@ const styles = {
 };
 
 export default function EditPessoais({ title, cliente, open, setOpen }) {
-  const { useState, initForms } = useGeral();
-  const [pessoais, setPessoais] = useState(initForms.cliente);
-  const {
-    nome,
-    cpf,
-    rg,
-    expedicao,
-    nascimento,
-    naturalidade,
-    genitora,
-    genitor,
-    sexo,
-    estado_civil,
-    observacoes,
-  } = cliente;
+  const { useState, initForms, token } = useGeral();
+  const [pessoais, setPessoais] = useState(cliente);
 
-  const handleOnChange = (prop) => (e) => {
-    setPessoais({ ...pessoais, [prop]: e.target.value });
-  };
+  function handleOnChange(e) {
+    const prop = e.target.name;
+    const value = e.target.value;
+    setPessoais({ ...pessoais, [prop]: value });
+    return;
+  }
 
   const handleClear = () => {
     setPessoais({ ...initForms.cliente });
@@ -75,9 +67,27 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
     return;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    const { id: _, ...data } = pessoais;
+    try {
+      const response = await api.patch(
+        `/clientes/${pessoais.id}`,
+        { ...data },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response.data);
+      handleClear();
+      return;
+    } catch (error) {
+      console.log(error.message);
+    }
+
     handleClear();
+    return;
   };
 
   return (
@@ -100,18 +110,18 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
             <input
               name='nome'
               type='text'
-              value={nome}
+              defaultValue={pessoais.nome}
               onChange={(e) => handleOnChange(e)}
               id='nome'
             />
           </div>
           <div className='form-box-group-2'>
-            <div className='form-box-group'>
+            <div className='form-box-group' style={{ width: '120px' }}>
               <label htmlFor='cpf'>CPF</label>
               <input
                 name='cpf'
                 type='text'
-                value={cpf}
+                defaultValue={pessoais.cpf}
                 onChange={(e) => handleOnChange(e)}
                 id='cpf'
               />
@@ -122,18 +132,18 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
                 name='rg'
                 label='Doc. de Identidade (RG)'
                 type='text'
-                value={rg}
+                value={pessoais.rg}
                 onChange={(e) => handleOnChange(e)}
                 id='rg'
               />
             </div>
-            <div className='form-box-group'>
+            <div className='form-box-group' style={{ width: '120px' }}>
               <label htmlFor='expedicao'>Data de Expedição</label>
               <input
                 name='expedicao'
                 label='Data de Expedição'
                 type='date'
-                value={formatarData(expedicao)}
+                defaultValue={formatarData(pessoais.expedicao)}
                 onChange={(e) => handleOnChange(e)}
                 id='expedicao'
               />
@@ -147,7 +157,7 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
               <input
                 name='nascimento'
                 type='date'
-                value={formatarData(nascimento)}
+                defaultValue={formatarData(pessoais.nascimento)}
                 onChange={(e) => handleOnChange(e)}
                 id='nascimento'
               />
@@ -157,7 +167,7 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
               <input
                 name='naturalidade'
                 type='text'
-                value={naturalidade}
+                defaultValue={pessoais.naturalidade}
                 onChange={(e) => handleOnChange(e)}
                 id={'naturalidade'}
                 title='Cidade e estado onde nasceu.'
@@ -169,7 +179,7 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
             <input
               name='genitora'
               type='text'
-              value={genitora}
+              defaultValue={pessoais.genitora}
               onChange={(e) => handleOnChange(e)}
               id='genitora'
             />
@@ -179,7 +189,7 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
             <input
               name='genitor'
               type='text'
-              value={genitor}
+              defaultValue={pessoais.genitor}
               onChange={(e) => handleOnChange(e)}
               id='genitor'
             />
@@ -190,11 +200,11 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
             <label htmlFor='sexo'>Sexo</label>
             <select
               name='sexo'
-              defaultValue={sexo}
+              defaultValue={pessoais.sexo}
               onChange={(e) => handleOnChange(e)}
               id='sexo'
             >
-              <option value=''>{sexo}</option>
+              <option value=''>{pessoais.sexo}</option>
               {sexos.map((sexo) => (
                 <option key={sexo.id} value={sexo.descricao}>
                   {sexo.descricao}
@@ -206,11 +216,11 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
             <label htmlFor='estado_civil'>Estado Civil</label>
             <select
               name='estado_civil'
-              defaultValue={estado_civil}
+              defaultValue={pessoais.estado_civil}
               onChange={(e) => handleOnChange(e)}
               id='estado_civil'
             >
-              <option value=''>{estado_civil}</option>
+              <option value=''>{pessoais.estado_civil}</option>
               {estadosCivil.map((ecivil) => (
                 <option key={ecivil.id} value={ecivil.descricao}>
                   {ecivil.descricao}
@@ -223,11 +233,9 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
             <textarea
               name='observacoes'
               id='observacoes'
-              defaultValue={observacoes}
+              defaultValue={pessoais.observacoes}
               onChange={(e) => handleOnChange(e)}
-            >
-              {observacoes}
-            </textarea>
+            ></textarea>
           </div>
         </div>
         <div

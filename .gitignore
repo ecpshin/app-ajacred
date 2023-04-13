@@ -4,6 +4,10 @@
 /node_modules
 /.pnp
 .pnp.js
+.idea/ajacred-api.iml
+.idea/modules.xml
+.idea/vcs.xml
+.vscode
 app-ajacred.code-workspace
 
 # testing

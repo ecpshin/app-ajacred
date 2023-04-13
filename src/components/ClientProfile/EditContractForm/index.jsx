@@ -36,7 +36,6 @@ function EditContractForm({ contrato, removeContrato }) {
       form.referencia === 'TOTAL'
         ? Number(form.total) * Number(form.percentual)
         : Number(form.liquido) * Number(form.percentual);
-    console.log(calculo);
     setForm({ ...form, comissao: calculo / 100 });
     return;
   };
