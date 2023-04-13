@@ -1,15 +1,6 @@
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import {
-  Button,
-  Grid,
-  IconButton,
-  InputAdornment,
-  OutlinedInput,
-  Typography,
-} from '@mui/material';
-import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Bg from '../../assets/images/bg.png';
+import LogoApp from '../../assets/images/logo_300.png';
 import Toastify from '../../components/Toastify';
 import useGeral from '../../hooks/useGeral';
 import api from '../../service/api';
@@ -21,10 +12,8 @@ export default function Signin() {
     setForm,
     initForms,
     token,
-    setShowPassword,
     setToken,
     setUser,
-    showPassword,
     useNavigate,
     useEffect,
   } = useGeral();
@@ -38,11 +27,6 @@ export default function Signin() {
     init();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  function handleShowPassword() {
-    setShowPassword(!showPassword);
-    return;
-  }
 
   const handleOnChange = (prop) => (event) => {
     setForm({ ...form, [prop]: event.target.value });
@@ -110,57 +94,38 @@ export default function Signin() {
         style={{ backgroundImage: `url(${Bg})` }}
       ></div>
       <div className='panel-right'>
-        <Grid
-          container
-          display='flex'
-          flex-direction='column'
-          justifyContent='center'
-        >
-          <Grid item xs={7}>
-            <form
-              onSubmit={handleOnSubmit}
-              method='post'
-              className='form_login'
+        <div className='panel-login'>
+          <form
+            onSubmit={(e) => e.preventDefault()}
+            method='post'
+            className='form_login'
+          >
+            <img src={LogoApp} alt='Logo' />
+            <input
+              className='input-login'
+              type='email'
+              value={form.email ? form.email : ''}
+              onChange={handleOnChange('email')}
+              placeholder='Email'
+              required
+            />
+            <input
+              className='input-login'
+              type={'password'}
+              value={form.senha ? form.senha : ''}
+              onChange={handleOnChange('senha')}
+              placeholder='Senha'
+              required
+            />
+            <button
+              type='submit'
+              className='btn-login'
+              onClick={(e) => handleOnSubmit(e)}
             >
-              <OutlinedInput
-                type='email'
-                value={form.email ? form.email : ''}
-                onChange={handleOnChange('email')}
-                placeholder='Email'
-                required
-                sx={{ width: '100%' }}
-              />
-              <OutlinedInput
-                type={showPassword ? 'text' : 'password'}
-                value={form.senha ? form.senha : ''}
-                onChange={handleOnChange('senha')}
-                placeholder='Senha'
-                required
-                sx={{ width: '100%' }}
-                endAdornment={
-                  <InputAdornment position='end'>
-                    <IconButton onClick={handleShowPassword}>
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-              <Button
-                type='submit'
-                className='btn-login'
-                onClick={(e) => handleOnSubmit(e)}
-              >
-                Entrar
-              </Button>
-              <Typography className='cadastrese' alignSelf='center'>
-                Ainda não possui conta?
-                <Link to='/signup' className='cadastrese-link'>
-                  Cadastre-se
-                </Link>
-              </Typography>
-            </form>
-          </Grid>
-        </Grid>
+              Entrar
+            </button>
+          </form>
+        </div>
       </div>
       <Toastify />
     </div>

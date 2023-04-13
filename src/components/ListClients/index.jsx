@@ -449,7 +449,7 @@ export default function ListClients() {
         }}
       >
         <Box
-          width={'70%'}
+          width={'80%'}
           height={'500px'}
           display={'flex'}
           backgroundColor={'#fff'}
@@ -497,7 +497,7 @@ export default function ListClients() {
                   />
                 </div>
                 <div className='form-box-group'>
-                  <label htmlFor='expedicao'>Data de Expedição</label>
+                  <label htmlFor='expedicao'>Expedição</label>
                   <input
                     name='expedicao'
                     label='Data de Expedição'
@@ -512,7 +512,7 @@ export default function ListClients() {
             <div className='form-box-row'>
               <div className='form-box-group-2'>
                 <div className='form-box-group'>
-                  <label htmlFor='nascimento'>Data de Nascimento</label>
+                  <label htmlFor='nascimento'>Nascimento</label>
                   <input
                     name='nascimento'
                     type='date'

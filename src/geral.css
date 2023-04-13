@@ -69,7 +69,7 @@ html {
   background-color: var(--ajacred-orange) !important;
 }
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .cards__home {
     flex-direction: column;
     row-gap: 15px;
