@@ -6,7 +6,7 @@ import Contracts from './pages/Contracts';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import Financeiras from './pages/Financeiras';
-import Situacoes from './pages/Situacoes';
+import Situacoes from './pages/Others/Situacoes';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 import Tipos from './pages/Others/Tipos';

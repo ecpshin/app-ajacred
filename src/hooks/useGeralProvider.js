@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'react-use';
+import api from '../service/api';
 
 export default function useGeralContextProvider() {
   const [open, setOpen] = useState(false);
@@ -155,6 +156,19 @@ export default function useGeralContextProvider() {
     });
   };
 
+  const handleListClients = async (token) => {
+    try {
+      const clients = await api.get('/clientes', {
+        headers: {
+          Auhtorization: `Bearer ${token}`,
+        },
+      });
+      return clients;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return {
     bancarias,
     cliente,
@@ -176,6 +190,7 @@ export default function useGeralContextProvider() {
     token,
     user,
     handleChangeCliente,
+    handleListClients,
     removeCliente,
     dateFormulario,
     setBancarias,

@@ -4,7 +4,11 @@ import CalculateRounded from '@mui/icons-material/CalculateRounded';
 import { useEffect } from 'react';
 import useGeral from '../../hooks/useGeral';
 
-export default function ModalNewContract({ openNew, setOpenNew }) {
+export default function ModalNewContract({
+  openNew,
+  setOpenNew,
+  handleGetContratos,
+}) {
   const style = {
     position: 'absolute',
     top: '50%',

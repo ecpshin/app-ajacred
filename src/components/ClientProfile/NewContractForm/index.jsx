@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import api from '../../../service/api';
 import { MyInput } from '../../StyledComponents/components';
 
-function NewContractForm({ cliente, setIsNew }) {
+function NewContractForm({ id, setIsNew, handleGetContratos }) {
   const { user, initForms, token } = useGeral();
   const [localForm, setLocalForm] = useState(initForms.contrato);
   const inputComissao = document.querySelector('.comissao');
@@ -23,8 +23,8 @@ function NewContractForm({ cliente, setIsNew }) {
 
   async function handleSubmitlocalForm(e) {
     e.preventDefault();
-    const data = { ...localForm, usuario: user.id };
-
+    const data = { ...localForm, usuario: user.id, cliente: id };
+    console.log(data);
     try {
       const response = await api.post('/contrato', data, {
         headers: {
@@ -35,6 +35,8 @@ function NewContractForm({ cliente, setIsNew }) {
         console.log(response.data);
       }
       handleClearForm();
+      handleGetContratos();
+      return;
     } catch (error) {
       console.error(error.response);
     }
@@ -62,7 +64,7 @@ function NewContractForm({ cliente, setIsNew }) {
     return;
   }
 
-  useEffect(() => {}, [cliente]);
+  useEffect(() => {}, [id]);
 
   return (
     <form className='aja-form' onSubmit={(e) => e.preventDefault}>

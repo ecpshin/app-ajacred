@@ -2,14 +2,14 @@ import './styles.css';
 import { useEffect, useState, useReducer } from 'react';
 import { Dialog, DialogContent, IconButton } from '@mui/material';
 import { DeleteForever, BorderColor } from '@mui/icons-material';
-import useGeral from '../../hooks/useGeral';
-import api from '../../service/api';
+import useGeral from '../../../hooks/useGeral';
+import api from '../../../service/api';
 import { ToastContainer, toast } from 'react-toastify';
 import {
   BtnCustom,
   BtnPrimary,
   BtnCancel,
-} from '../../components/styleds/buttons';
+} from '../../../components/styleds/buttons';
 
 import { useNavigate } from 'react-router-dom';
 

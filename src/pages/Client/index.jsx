@@ -167,6 +167,7 @@ export default function Client() {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response.data);
       setContratos(response.data);
     } catch (error) {
       console.log(error);
@@ -545,7 +546,10 @@ export default function Client() {
           }}
         >
           <Box>
-            <EditContractForm contrato={local} />
+            <EditContractForm
+              contrato={local}
+              handleGetContratos={handleGetContratos}
+            />
           </Box>
         </Modal>
       )}
@@ -561,7 +565,11 @@ export default function Client() {
           }}
         >
           <Box>
-            <NewContractForm cliente={cliente} setIsNew={setIsNew} />
+            <NewContractForm
+              id={cliente.id}
+              setIsNew={setIsNew}
+              handleGetContratos={handleGetContratos}
+            />
           </Box>
         </Modal>
       )}
