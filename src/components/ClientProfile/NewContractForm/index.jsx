@@ -2,9 +2,12 @@ import { CalculateRounded } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import { useState } from 'react';
 import useGeral from '../../../hooks/useGeral';
+import { useEffect } from 'react';
+import api from '../../../service/api';
+import { MyInput } from '../../StyledComponents/components';
 
-function NewContractForm() {
-  const { user, initForms } = useGeral();
+function NewContractForm({ cliente, setIsNew }) {
+  const { user, initForms, token } = useGeral();
   const [localForm, setLocalForm] = useState(initForms.contrato);
   const inputComissao = document.querySelector('.comissao');
 
@@ -12,9 +15,29 @@ function NewContractForm() {
     return user.nivel === 'ROLE_ADMIN';
   }
 
-  async function handleSubmitlocalForm() {
-    console.log(localForm);
+  function handleClearForm() {
+    setLocalForm(initForms.contrato);
+    setIsNew(false);
     return;
+  }
+
+  async function handleSubmitlocalForm(e) {
+    e.preventDefault();
+    const data = { ...localForm, usuario: user.id };
+
+    try {
+      const response = await api.post('/contrato', data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status !== 201) {
+        console.log(response.data);
+      }
+      handleClearForm();
+    } catch (error) {
+      console.error(error.response);
+    }
   }
 
   function handleInputChange(prop, value) {
@@ -39,23 +62,26 @@ function NewContractForm() {
     return;
   }
 
+  useEffect(() => {}, [cliente]);
+
   return (
-    <form className='aja-form' onSubmit={(e) => handleSubmitlocalForm(e)}>
+    <form className='aja-form' onSubmit={(e) => e.preventDefault}>
       <div className='aja-form-row'>
         <div className='aja-form-control'>
           <label className='aja-form-label'>Controle</label>
-          <input
+          <MyInput
             className='input-form'
             type='text'
             name='nrcontrole'
-            onChange={(e) => handleInputChange('nrcontrole', e.target.value)}
             defaultValue={localForm.nrcontrole}
+            onChange={(e) => handleInputChange('nrcontrole', e.target.value)}
+            readOnly
             placeholder={'Geração automática'}
           />
         </div>
         <div className='aja-form-control'>
           <label className='aja-form-label'>Contrato</label>
-          <input
+          <MyInput
             className='input-form'
             type='text'
             name='nrcontrato'
@@ -66,7 +92,7 @@ function NewContractForm() {
         </div>
         <div className='aja-form-control'>
           <label className='aja-form-label'>Data digitação</label>
-          <input
+          <MyInput
             className='input-form'
             type='date'
             name='digitacao'
@@ -76,8 +102,8 @@ function NewContractForm() {
         </div>
         <div className='aja-form-control'>
           <label className='aja-form-label'>Data Finalização</label>
-          <input
-            className='input-form'
+          <MyInput
+            className='MyInput-form'
             type='date'
             name='finalizacao'
             defaultValue={localForm.finalizacao}
@@ -88,7 +114,7 @@ function NewContractForm() {
       <div className='aja-form-row'>
         <div className='aja-form-control'>
           <label className='aja-form-label'>Prazo</label>
-          <input
+          <MyInput
             className='input-form'
             type='number'
             name='prazo'
@@ -98,7 +124,7 @@ function NewContractForm() {
         </div>
         <div className='aja-form-control'>
           <label className='aja-form-label'>Total</label>
-          <input
+          <MyInput
             className='input-form'
             type='number'
             name='total'
@@ -108,7 +134,7 @@ function NewContractForm() {
         </div>
         <div className='aja-form-control'>
           <label className='aja-form-label'>Parcela</label>
-          <input
+          <MyInput
             className='input-form'
             type='number'
             name='parcela'
@@ -118,7 +144,7 @@ function NewContractForm() {
         </div>
         <div className='aja-form-control'>
           <label className='aja-form-label'>Líquido</label>
-          <input
+          <MyInput
             className='input-form'
             type='number'
             name='liquido'
@@ -147,7 +173,7 @@ function NewContractForm() {
             <select
               className='select-form'
               name='tabela'
-              value={localForm.tabela}
+              defaultValue={localForm.tabela}
               onChange={(e) => handleSelectItem('tabela', e.target.value)}
             >
               <option value={''}>Selecione...</option>
@@ -162,7 +188,7 @@ function NewContractForm() {
               type='number'
               name='percentual'
               step={0.1}
-              defaultValue={localForm.percentual}
+              value={localForm.percentual}
               onChange={(e) => handleInputChange('percentual', e.target.value)}
             />
           </div>
@@ -193,8 +219,8 @@ function NewContractForm() {
             onChange={(e) => handleSelectItem('operacao', e.target.value)}
           >
             <option value=''>Selecione...</option>
-            <option value={'NOVO'}>NOVO</option>
-            <option value={'PORTABILIDADE'}>PORTABILIDADE.</option>
+            <option value='1'>NOVO</option>
+            <option value='2'>PORTABILIDADE.</option>
           </select>
         </div>
         <div className='aja-form-control'>
@@ -206,8 +232,8 @@ function NewContractForm() {
             onChange={(e) => handleSelectItem('financeira', e.target.value)}
           >
             <option value=''>Selecione...</option>
-            <option value={'OLE'}>APROVADO</option>
-            <option value={'ITAU'}>CANCELADO.</option>
+            <option value='1'>BMG</option>
+            <option value='2'>OLE</option>
           </select>
         </div>
         <div className='aja-form-control'>
@@ -219,9 +245,9 @@ function NewContractForm() {
             onChange={(e) => handleSelectItem('correspondente', e.target.value)}
           >
             <option value=''>Selecione...</option>
-            <option value={'AJACRED'}>AJACRED</option>
-            <option value={'MEGA PROMOTORA'}>MEGA PROMOTORA</option>
-            <option value={'BEVICRED'}>BEVICRED</option>
+            <option value={'1'}>AJACRED</option>
+            <option value={'2'}>MEGA PROMOTORA</option>
+            <option value={'3'}>BEVICRED</option>
           </select>
         </div>
         <div className='aja-form-control'>
@@ -233,9 +259,9 @@ function NewContractForm() {
             onChange={(e) => handleSelectItem('situacao', e.target.value)}
           >
             <option value=''>Selecione...</option>
-            <option value={'DIGITADO'}>DIGITADO</option>
-            <option value={'APROVADO'}>APROVADO</option>
-            <option value={'CANCELADO'}>CANCELADO.</option>
+            <option value={'1'}>DIGITADO</option>
+            <option value={'2'}>APROVADO</option>
+            <option value={'3'}>CANCELADO.</option>
           </select>
         </div>
       </div>
@@ -249,8 +275,7 @@ function NewContractForm() {
             onChange={(e) => handleSelectItem('orgao', e.target.value)}
           >
             <option value=''>Selecione...</option>
-            <option value={localForm.nome_orgao}>{localForm.nome_orgao}</option>
-            <option value={'INSS'}>INSS</option>
+            <option value={'1'}>INSS</option>
           </select>
         </div>
         <div className='aja-form-control'>
@@ -258,7 +283,7 @@ function NewContractForm() {
           <textarea
             name='observacoes'
             rows={5}
-            value={localForm.observacoes}
+            defaultValue={localForm.observacoes}
             onChange={(e) => handleInputChange('observacoes', e.target.value)}
           ></textarea>
         </div>
@@ -267,11 +292,15 @@ function NewContractForm() {
         <button
           type='submit'
           className='form-button success'
-          onClick={() => handleSubmitlocalForm()}
+          onClick={(e) => handleSubmitlocalForm(e)}
         >
           Salvar
         </button>
-        <button type='reset' className='form-button cancel'>
+        <button
+          type='reset'
+          className='form-button cancel'
+          onClick={() => handleClearForm()}
+        >
           Cancelar
         </button>
       </div>

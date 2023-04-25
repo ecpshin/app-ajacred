@@ -1,27 +1,13 @@
-p {
-  font-size: 1.3rem !important;
-}
-p.MuiTablePagination-displayedRows,
-p.MuiTablePagination-selectLabel {
-  font-size: 1.3rem !important;
-  font-weight: 600;
-}
-.MuiInputBase-root {
-  font-size: 1.2rem !important;
-  font-weight: 600;
-}
-.MuiSvgIcon-root1 {
-  font-size: 1.4rem !important;
-}
-
 input {
   all: unset;
+  min-width: 70px;
+  padding: 8px;
   display: flex;
-  padding: 8px 10px;
   background: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 1.4rem;
+  font-size: 1.2rem !important;
+  font-weight: 600;
 }
 
 textarea {
@@ -31,6 +17,7 @@ textarea {
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1.4rem;
+  font-weight: 600;
 }
 
 textarea:active,
@@ -45,6 +32,7 @@ select {
   border-radius: 5px;
   font-size: 1.2rem !important;
   color: #000;
+  font-weight: 600;
 }
 
 select option {

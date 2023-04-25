@@ -2,6 +2,7 @@ import { Cancel, Save } from '@mui/icons-material';
 import useGeral from '../../../hooks/useGeral';
 import { sexos, estadosCivil } from '../../ListClients/combos';
 import api from '../../../service/api';
+import './style.css';
 
 function formatarData(data) {
   const formata = data.split('T');
@@ -92,16 +93,12 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
 
   return (
     <div>
-      <form onSubmit={(e) => e.preventDefault()} className='form-box'>
-        <h3
-          style={{
-            fontSize: '2.6rem',
-            textAlign: 'center',
-            margin: '1.5rem 0',
-          }}
-        >
-          {title}
-        </h3>
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className='form-box'
+        style={{ width: '100%' }}
+      >
+        <h3 className='dialog-title'>{title}</h3>
         <div className='form-box-row'>
           <div className='form-box-group'>
             <label htmlFor='nome' className='form-box-label'>
@@ -117,7 +114,9 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
           </div>
           <div className='form-box-group-2'>
             <div className='form-box-group' style={{ width: '120px' }}>
-              <label htmlFor='cpf'>CPF</label>
+              <label className='form-box-label' htmlFor='cpf'>
+                CPF
+              </label>
               <input
                 name='cpf'
                 type='text'
@@ -127,7 +126,9 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
               />
             </div>
             <div className='form-box-group'>
-              <label htmlFor='rg'>RG</label>
+              <label htmlFor='rg' className='form-box-label'>
+                RG
+              </label>
               <input
                 name='rg'
                 label='Doc. de Identidade (RG)'
@@ -138,7 +139,9 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
               />
             </div>
             <div className='form-box-group' style={{ width: '120px' }}>
-              <label htmlFor='expedicao'>Data de Expedição</label>
+              <label htmlFor='expedicao' className='form-box-label'>
+                Expedição
+              </label>
               <input
                 name='expedicao'
                 label='Data de Expedição'
@@ -153,7 +156,9 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
         <div className='form-box-row'>
           <div className='form-box-group-2'>
             <div className='form-box-group'>
-              <label htmlFor='nascimento'>Data de Nascimento</label>
+              <label htmlFor='nascimento' className='form-box-label'>
+                Nascimento
+              </label>
               <input
                 name='nascimento'
                 type='date'
@@ -163,7 +168,9 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
               />
             </div>
             <div className='form-box-group'>
-              <label htmlFor='naturalidade'>Naturalidade - UF</label>
+              <label htmlFor='naturalidade' className='form-box-label'>
+                Naturalidade - UF
+              </label>
               <input
                 name='naturalidade'
                 type='text'
@@ -175,7 +182,9 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
             </div>
           </div>
           <div className='form-box-group'>
-            <label htmlFor='genitora'>Nome da Mãe</label>
+            <label htmlFor='genitora' className='form-box-label'>
+              Nome da Mãe
+            </label>
             <input
               name='genitora'
               type='text'
@@ -185,7 +194,9 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
             />
           </div>
           <div className='form-box-group'>
-            <label htmlFor='genitor'>Nome do Pai</label>
+            <label htmlFor='genitor' className='form-box-label'>
+              Nome do Pai
+            </label>
             <input
               name='genitor'
               type='text'
@@ -197,7 +208,9 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
         </div>
         <div className='form-box-row'>
           <div className='form-box-group'>
-            <label htmlFor='sexo'>Sexo</label>
+            <label htmlFor='sexo' className='form-box-label'>
+              Sexo
+            </label>
             <select
               name='sexo'
               defaultValue={pessoais.sexo}
@@ -213,7 +226,9 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
             </select>
           </div>
           <div className='form-box-group'>
-            <label htmlFor='estado_civil'>Estado Civil</label>
+            <label htmlFor='estado_civil' className='form-box-label'>
+              Estado Civil
+            </label>
             <select
               name='estado_civil'
               defaultValue={pessoais.estado_civil}
@@ -229,7 +244,9 @@ export default function EditPessoais({ title, cliente, open, setOpen }) {
             </select>
           </div>
           <div className='form-box-group'>
-            <label htmlFor='observacoes'>Observações</label>
+            <label htmlFor='observacoes' className='form-box-label'>
+              Observações
+            </label>
             <textarea
               name='observacoes'
               id='observacoes'

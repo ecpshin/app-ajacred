@@ -397,11 +397,8 @@ export default function ListClients() {
                     .map((client) => {
                       return (
                         <TableRow key={client.id}>
-                          <TableCell
-                            style={estilos.td}
-                            onClick={() => handleGoClient(client)}
-                          >
-                            <IconButton>
+                          <TableCell style={estilos.td}>
+                            <IconButton onClick={() => handleGoClient(client)}>
                               <FolderShared
                                 style={{
                                   width: '23px',

@@ -1,0 +1,8 @@
+use sg;
+
+insert into site_contatos(nome, telefone, email, motivo_contato, mensagem)values('João', '(88) 91111-2222', 'joao@contato.com.br', 3, 'É muito difícil localizar a opção de listar todos os produtos');
+insert into site_contatos(nome, telefone, email, motivo_contato, mensagem)values('Rosa', '(33) 92222-3333', 'rosa@contato.com.br', 1, 'Quando custa essa aplicação?');
+insert into site_contatos(nome, telefone, email, motivo_contato, mensagem)values('Fernando', '(11) 94444-5555', 'fernando@contato.com.br', 1, 'Como consigo criar multiplos usuários para minha empresa?');
+insert into site_contatos(nome, telefone, email, motivo_contato, mensagem)values('André', '(88) 95555-6666', 'andre@contato.com.br', 2, 'Parabéns pela ferramenta, estou obtendo ótimos resultados!');
+insert into site_contatos(nome, telefone, email, motivo_contato, mensagem)values('Ana', '(33) 96666-7777', 'ana@contato.com.br', 3, 'Não gostei muito das cores, consigo mudar de tema?');
+insert into site_contatos(nome, telefone, email, motivo_contato, mensagem)values('Helena', '(11) 97777-8888', 'helena@contato.com.br', 2, 'Consigo controlar toda a minha empresa de modo fácil e prático.');

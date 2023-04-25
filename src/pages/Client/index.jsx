@@ -167,7 +167,6 @@ export default function Client() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data);
       setContratos(response.data);
     } catch (error) {
       console.log(error);
@@ -485,7 +484,8 @@ export default function Client() {
         <Modal
           open={open}
           onClose={(e) => handleClose(e)}
-          sx={{
+          style={{
+            width: '100%',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
@@ -493,13 +493,13 @@ export default function Client() {
           }}
         >
           <Box
-            width={'fit-content'}
-            height={'500px'}
-            display={'flex'}
-            backgroundColor={'#fff'}
             style={{
+              width: '70%',
+              height: '500px',
+              display: 'flex',
+              flexDirection: 'column',
               borderRadius: '8px',
-              flexWrap: 'wrap',
+              backgroundColor: '#fff',
               overflowY: 'auto',
             }}
           >
@@ -561,7 +561,7 @@ export default function Client() {
           }}
         >
           <Box>
-            <NewContractForm cliente={cliente} />
+            <NewContractForm cliente={cliente} setIsNew={setIsNew} />
           </Box>
         </Modal>
       )}

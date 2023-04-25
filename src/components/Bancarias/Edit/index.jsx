@@ -1,70 +1,38 @@
-import { Search } from '@mui/icons-material';
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  InputBase,
-  SvgIcon,
-} from '@mui/material';
+import { DialogActions, DialogTitle } from '@mui/material';
 import useGeral from '../../../hooks/useGeral';
 import api from '../../../service/api';
 
 const styles = {
-  form: {
-    width: '400px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    gap: '1rem',
-  },
   actions: {
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    borderTop: '1px solid #ccc',
+    justifyContent: 'center',
     padding: '1rem 2rem',
   },
+
   buttonCancel: {
-    width: '75px',
+    width: '120px',
     height: '35px',
     border: 'none',
     backgroundColor: 'grey',
     color: '#fff',
     borderRadius: '5px',
+    fontSize: '1.4rem',
+    fontWeight: '600',
   },
+
   buttonSuccess: {
-    width: '75px',
+    width: '120px',
     height: '35px',
     border: 'none',
     backgroundColor: '#fa5700',
     color: '#fff',
     borderRadius: '5px',
+    fontSize: '1.4rem',
+    fontWeight: '600',
   },
-  content: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    gap: '1rem',
-  },
-  inputs: {
-    width: '100%',
-    height: '35px',
-    padding: '0 1rem',
-    borderRadius: '5px',
-    border: '1px solid #ccc',
-  },
-  inputSearch: {
-    width: '30%',
-    height: '35px',
-    padding: '0 1rem',
-    borderRadius: '5px',
-    border: '1px solid #ccc',
-  },
-  label: {
-    color: '#fa5700',
-  },
+
   titles: {
     display: 'flex',
     flexDirection: 'column',
@@ -73,8 +41,9 @@ const styles = {
     color: '#fa5700',
     fontSize: '1.8rem',
     fontWeight: '600',
-    borderBottom: '1px solid #ccc',
-    padding: '10px',
+    padding: '5px',
+    textTransform: 'uppercase',
+    margin: '25px 0',
   },
 };
 
@@ -110,9 +79,9 @@ export default function EditBancarias({ title, setOpen, bancaria }) {
     setForm({ ...form, [name]: event.target.value });
   };
 
-  const handleSearch = async () => {
+  const handleSearch = async (e) => {
     try {
-      const response = await api.get(`/banco/${form.codigo}`, {
+      const response = await api.get(`/banco/${e.target.value}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -132,83 +101,73 @@ export default function EditBancarias({ title, setOpen, bancaria }) {
       <DialogTitle id='form-dialog-title' style={styles.titles}>
         Atualizar Informações {title}
       </DialogTitle>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <DialogContent style={styles.content}>
-          <label htmlFor='banco' style={styles.label}>
-            Banco
-          </label>
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            <InputBase
+      <form onSubmit={handleSubmit} className='form-box'>
+        <div className='form-box-row'>
+          <div className='form-box-group' style={{ width: '15%' }}>
+            <label htmlFor='banco'>Código</label>
+            <input
               id='codigo'
               type='text'
               value={form.codigo}
               onChange={handleChange('codigo')}
-              style={styles.inputSearch}
-              size='small'
-              endAdornment={
-                <SvgIcon
-                  component={Search}
-                  onClick={handleSearch}
-                  style={{ cursor: 'pointer' }}
-                />
-              }
+              onBlur={(e) => handleSearch(e)}
             />
-            <InputBase
+          </div>
+          <div className='form-box-group' style={{ width: '85%' }}>
+            <label>Banco</label>
+            <input
               id='banco'
               type='text'
               value={form.banco}
               onChange={handleChange('banco')}
-              style={styles.inputs}
             />
           </div>
-          <label htmlFor='agencia' style={styles.label}>
-            Agência
-          </label>
-          <InputBase
-            id='agencia'
-            type='text'
-            value={form.agencia}
-            onChange={handleChange('agencia')}
-            style={styles.inputs}
-          />
-          <label htmlFor='conta' style={styles.label}>
-            Conta
-          </label>
-          <InputBase
-            id='conta'
-            type='text'
-            value={form.conta}
-            onChange={handleChange('conta')}
-            style={styles.inputs}
-          />
-          <label htmlFor='tipo' style={styles.label}>
-            Tipo
-          </label>
-          <InputBase
-            id='tipo'
-            type='text'
-            value={form.tipo}
-            onChange={handleChange('tipo')}
-            style={styles.inputs}
-          />
-          <label htmlFor='operacao' style={styles.label}>
-            Operação
-          </label>
-          <InputBase
-            id='operacao'
-            type='text'
-            value={form.operacao}
-            onChange={handleChange('operacao')}
-            style={styles.inputs}
-          />
-        </DialogContent>
+        </div>
+        <div className='form-box-row'>
+          <div className='form-box-group' style={{ width: '15%' }}>
+            <label>Agência</label>
+            <input
+              id='agencia'
+              type='text'
+              value={form.agencia}
+              onChange={handleChange('agencia')}
+            />
+          </div>
+          <div className='form-box-group' style={{ width: '35%' }}>
+            <label>Conta</label>
+            <input
+              id='conta'
+              type='text'
+              value={form.conta}
+              onChange={handleChange('conta')}
+            />
+          </div>
+          <div className='form-box-group' style={{ width: '35%' }}>
+            <label htmlFor='tipo'>Tipo</label>
+            <input
+              id='tipo'
+              type='text'
+              value={form.tipo}
+              onChange={handleChange('tipo')}
+            />
+          </div>
+          <div className='form-box-group' style={{ width: '15%' }}>
+            <label> Operação</label>
+            <input
+              id='operacao'
+              type='text'
+              value={form.operacao}
+              onChange={handleChange('operacao')}
+            />
+          </div>
+        </div>
         <DialogActions style={styles.actions}>
-          <Button onClick={() => setOpen(false)} style={styles.buttonCancel}>
-            Cancelar
-          </Button>
-          <Button onClick={handleSubmit} style={styles.buttonSuccess}>
+          <button onClick={handleSubmit} style={styles.buttonSuccess}>
             Confirmar
-          </Button>
+          </button>
+          <button onClick={() => setOpen(false)} style={styles.buttonCancel}>
+            Cancelar
+          </button>
         </DialogActions>
       </form>
     </div>

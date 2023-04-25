@@ -1,59 +1,50 @@
-import {
-  DialogActions,
-  DialogContent,
-  Grid,
-  InputBase,
-  TextareaAutosize,
-} from '@mui/material';
+import { DialogActions, DialogContent, TextareaAutosize } from '@mui/material';
 import useGeral from '../../../hooks/useGeral';
 
 const styles = {
   form: {
-    width: '400px',
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     gap: '0.5rem',
+    border: '1px solid #ccc',
   },
   actions: {
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    borderTop: '1px solid #ccc',
+    justifyContent: 'center',
+    padding: '1rem 2rem',
   },
   buttonCancel: {
-    width: '75px',
+    width: '120px',
     height: '35px',
     border: 'none',
     backgroundColor: 'grey',
     color: '#fff',
     borderRadius: '5px',
+    fontSize: '1.4rem',
+    fontWeight: '600',
   },
   buttonSuccess: {
-    width: '75px',
+    width: '120px',
     height: '35px',
     border: 'none',
     backgroundColor: '#fa5700',
     color: '#fff',
     borderRadius: '5px',
+    fontSize: '1.4rem',
+    fontWeight: '600',
   },
   content: {
     display: 'flex',
     flexDirection: 'column',
-    width: '100%',
+    justifyContent: 'center',
     gap: '0.8rem',
   },
-  inputs: {
-    width: '100%',
-    height: '35px',
-    padding: '0 1rem',
-    borderRadius: '5px',
-    border: '1px solid #ccc',
-  },
-  label: {
-    color: '#fa5700',
-  },
+
   titles: {
     display: 'flex',
     flexDirection: 'column',
@@ -62,8 +53,8 @@ const styles = {
     color: '#fa5700',
     fontSize: '1.8rem',
     fontWeight: '600',
-    borderBottom: '1px solid #ccc',
-    padding: '10px',
+    margin: '35px 0 20px 0',
+    textTransform: 'uppercase',
   },
 };
 
@@ -93,64 +84,70 @@ export default function EditFuncionais({ funcional, setOpen }) {
 
   return (
     <div>
-      <DialogContent style={styles.titles}>
-        Editar informações funcionais
-      </DialogContent>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <DialogContent style={styles.content}>
-          <label style={styles.label}>Benefícios</label>
-          <TextareaAutosize
-            minRows={3}
-            onChange={(e) => handleChange('nrbeneficio', e)}
-            defaultValue={form.nrbeneficio}
-          />
-          <label style={styles.label}>Emails</label>
-          <TextareaAutosize
-            minRows={3}
-            onChange={(e) => handleChange('emails', e)}
-            defaultValue={form.emails}
-          />
-          <label style={styles.label}>Senhas</label>
-          <TextareaAutosize
-            minRows={3}
-            onChange={(e) => handleChange('senhas', e)}
-            defaultValue={form.senhas}
-          />
-          <Grid container spacing={2}>
-            <Grid item xs={6} style={styles.content}>
-              <label style={styles.label}>Principal</label>
-              <InputBase
-                type='text'
-                onChange={(e) => handleChange('phone1', e)}
-                defaultValue={form.phone1}
-                style={styles.inputs}
-              />
-              <label style={styles.label}>Recado</label>
-              <InputBase
-                type='text'
-                onChange={(e) => handleChange('phone2', e)}
-                defaultValue={form.phone2}
-                style={styles.inputs}
-              />
-            </Grid>
-            <Grid item xs={6} style={styles.content}>
-              <label style={styles.label}>Contato 3</label>
-              <InputBase
-                type='text'
-                onChange={(e) => handleChange('phone3', e)}
-                defaultValue={form.phone3}
-                style={styles.inputs}
-              />
-              <label style={styles.label}>Contato 4</label>
-              <InputBase
-                type='text'
-                onChange={(e) => handleChange('phone4', e)}
-                defaultValue={form.phone4}
-                style={styles.inputs}
-              />
-            </Grid>
-          </Grid>
-        </DialogContent>
+      <h3 style={styles.titles}>Editar informações funcionais</h3>
+      <form onSubmit={handleSubmit} className='form-box'>
+        <div className='form-box-row'>
+          <div className='form-box-group'>
+            <label>Benefícios</label>
+            <TextareaAutosize
+              minRows={3}
+              onChange={(e) => handleChange('nrbeneficio', e)}
+              defaultValue={form.nrbeneficio}
+            />
+          </div>
+          <div className='form-box-group'>
+            <label style={styles.label}>Emails</label>
+            <TextareaAutosize
+              minRows={3}
+              onChange={(e) => handleChange('emails', e)}
+              defaultValue={form.emails}
+            />
+          </div>
+          <div className='form-box-group'>
+            <label style={styles.label}>Senhas</label>
+            <TextareaAutosize
+              minRows={3}
+              onChange={(e) => handleChange('senhas', e)}
+              defaultValue={form.senhas}
+            />
+          </div>
+        </div>
+        <div className='form-box-row'>
+          <div className='form-box-group'>
+            <label style={styles.label}>Principal</label>
+            <input
+              type='text'
+              onChange={(e) => handleChange('phone1', e)}
+              defaultValue={form.phone1}
+            />
+          </div>
+          <div className='form-box-group'>
+            <label style={styles.label}>Recado</label>
+            <input
+              type='text'
+              onChange={(e) => handleChange('phone2', e)}
+              defaultValue={form.phone2}
+            />
+          </div>
+        </div>
+        <div className='form-box-row'>
+          <div className='form-box-group'>
+            <label style={styles.label}>Contato 3</label>
+            <input
+              type='text'
+              onChange={(e) => handleChange('phone3', e)}
+              defaultValue={form.phone3}
+            />
+          </div>
+          <div className='form-box-group'>
+            <label style={styles.label}>Contato 4</label>
+            <input
+              type='text'
+              onChange={(e) => handleChange('phone4', e)}
+              defaultValue={form.phone4}
+            />
+          </div>
+        </div>
         <DialogActions style={styles.actions}>
           <button style={styles.buttonCancel} onClick={() => setOpen(false)}>
             Cancelar
