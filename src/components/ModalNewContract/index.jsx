@@ -22,6 +22,7 @@ export default function ModalNewContract({ openNew, setOpenNew }) {
 
   const handleSubmitForm = async (e) => {
     e.preventDefault();
+    console.log(form);
     setOpenNew(false);
     return;
   };
@@ -236,8 +237,8 @@ export default function ModalNewContract({ openNew, setOpenNew }) {
               defaultValue={form.financeira}
             >
               <option value={''}>Selecione...</option>
-              <option value={'OLE'}>APROVADO</option>
-              <option value={'ITAU'}>CANCELADO.</option>
+              <option value={'OLE'}>Olé</option>
+              <option value={'ITAU'}>Itaú.</option>
             </select>
           </div>
           <div className='form-control'>

@@ -4,4 +4,5 @@ export const tipos = [
   'FINANCEIRA',
   'PARCEIRO(A)',
   'PROMOTORA',
+  'SEGURADORA',
 ];

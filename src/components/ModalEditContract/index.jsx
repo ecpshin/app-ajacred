@@ -264,8 +264,8 @@ export default function ModalEditContract() {
               defaultValue={localForm.financeira}
             >
               <option value={''}>Selecione...</option>
-              <option value={'OLE'}>APROVADO</option>
-              <option value={'ITAU'}>CANCELADO.</option>
+              <option value={'OLE'}>Olé</option>
+              <option value={'ITAU'}>Itaú</option>
             </select>
           </div>
           <div className='aja-form-control'>
