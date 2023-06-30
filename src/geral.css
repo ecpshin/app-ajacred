@@ -20,7 +20,6 @@ html {
 
 .container-fluid {
   width: 100vw;
-  height: 100vh;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -28,7 +27,6 @@ html {
 
 .container {
   width: 100vw;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

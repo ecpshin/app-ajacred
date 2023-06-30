@@ -27,7 +27,8 @@ function Home() {
           Authorization: `Bearer ${token}`,
         },
       });
-      setListaLocal(response.data);
+      
+      setListaLocal(response.status !== 204 ? response.data : []);
       return;
     } catch (error) {
       console.log(error.response.data.message);
@@ -91,19 +92,20 @@ function Home() {
             {localData}
           </Typography>
         </Paper>
-
+        {listaLocal.length > 0 && (
         <Paper elevation={0} className='paper-admin'>
           <div className='cards__home'>
             {listaLocal.map((item) => (
               <CardHome
-                key={item.situacao}
-                quantidade={item.quantidade}
-                situacao={handleStatus(item.situacao)}
-                estilo={handleLowCase(item.situacao)}
+              key={item.situacao}
+              quantidade={item.quantidade}
+              situacao={handleStatus(item.situacao)}
+              estilo={handleLowCase(item.situacao)}
               />
-            ))}
+              ))}
           </div>
         </Paper>
+        )}      
       </main>
     </div>
   );

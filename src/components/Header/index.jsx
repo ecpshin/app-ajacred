@@ -82,7 +82,7 @@ function Header() {
               >
                 Comissões
               </button>
-              <div className='menu-main' style={{ position: 'relative' }}>
+              <div className='menu-main' style={{ position: 'relative', zIndex: 100 }}>
                 <button
                   tpe='button'
                   className='btn-menu'
@@ -119,6 +119,13 @@ function Header() {
                     onClick={() => handleOnClick('/servicos/orgaos')}
                   >
                     Órgãos
+                  </button>
+                  <button
+                    tpe='button'
+                    className='btn-menu'
+                    onClick={() => handleOnClick('/servicos/operacoes')}
+                  >
+                    Operações
                   </button>
                 </div>
               </div>

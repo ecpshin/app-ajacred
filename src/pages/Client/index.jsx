@@ -167,8 +167,13 @@ export default function Client() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data);
-      setContratos(response.data);
+
+      if(response.data){
+        setContratos(response.data);
+        return;
+      }
+      return;
+
     } catch (error) {
       console.log(error);
     }
@@ -380,7 +385,7 @@ export default function Client() {
               <Button
                 className='btn__cadastrar'
                 startIcon={<FileOpen style={{ fontSize: '28px' }} />}
-                onClick={() => handleOpenNew()}
+                onClick={handleOpenNew}
                 title='Clique aqui para novo contrato'
               >
                 Novo Contrato
@@ -551,7 +556,7 @@ export default function Client() {
       )}
       {isNew && (
         <Modal
-          open={isNew}
+          open={isNew}          
           onClose={() => handleCloseNew()}
           style={{
             display: 'flex',
@@ -561,7 +566,7 @@ export default function Client() {
           }}
         >
           <Box>
-            <NewContractForm cliente={cliente} />
+            <NewContractForm cliente={cliente} handleCloseNew={handleCloseNew}/>
           </Box>
         </Modal>
       )}
